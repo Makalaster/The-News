@@ -21,7 +21,6 @@ Your work must:
     - [Bloomberg](http://www.bloomberglabs.com/api/)
 - Allow the user to sort and discover breaking news within different topics (for example: World News, Politics, Entertainment, Sports, etc.)
 - Allow the user to follow specific trending breaking news topics
-- Allow the user to receive push notifications of developments on followed topics from social media accounts of approved providers
 - Include at least one Notifications feature (e.g. reminder, alarm)
 - Include automated (and manual testing if needed) to cover your app.
 - Integrate with the Twitter and/or Facebook APIs to allow article sharing via social media
