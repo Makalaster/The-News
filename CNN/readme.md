@@ -90,18 +90,4 @@ By the end of week 9:
 - [Twitter for Developers](https://dev.twitter.com/)
 - [Facebook for Developers](https://developers.facebook.com/)
 
----
 
-#### Project Feedback + Evaluation
-
-
-Base on the requirements you can earn a maximum of 27 points on this project. Your instructors will score each of your technical requirements using the scale below:
-
-    Score | Expectations
-    ----- | ------------
-    **0** | _Incomplete._
-    **1** | _Does not meet expectations._
-    **2** | _Meets expectations, good job!_
-    **3** | _(If applicable) Exceeds expectations, you wonderful creature, you!_
-
- This will serve as a helpful overall gauge of whether you met the project goals, but __the more important scores are the individual ones__ above, which can help you identify where to focus your efforts for the next project!
