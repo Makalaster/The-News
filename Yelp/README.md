@@ -87,22 +87,13 @@ Visit http://yelp.com/developers and apply for API access [here](https://www.yel
 
 ### Useful Resources
 
-- [Documentation](https://www.yelp.com/developers/documentation/v2/overview)
+- [Documentation](https://www.yelp.com/developers/documentation/v3/overview)
 - [Display requirements](https://www.yelp.com/developers/display_requirements)
-- [Code samples](https://www.yelp.com/developers/documentation/v2/examples)
+- [Code samples](https://www.yelp.com/developers/documentation/v3/examples)
 - [API Console](https://www.yelp.com/developers/api_console)
-- [Full list of API errors](https://www.yelp.com/developers/documentation/v2/errors)
+- [Full list of API errors](https://www.yelp.com/developers/documentation/v3/errors)
 - [FAQ](https://www.yelp.com/developers/faq) & [GitHub](https://github.com/Yelp/yelp-api/issues)
 - [Terms of Use](https://www.yelp.com/developers/api_terms)
 
-### Full List of Yelp API endpoints
-
-
-| Endpoint URL | HTTP method | Functionality |
-|---|---|---|
-| /v2/search | GET | Search for local businesses. |
-| /v2/business/{id} |	GET | Lookup business information by id. |
-| /v2/phone_search | GET | Search for businesses by phone number. |
-
 ### Full List of Yelp Categories
-Please refer to Yelp’s [full category list here](https://www.yelp.com/developers/documentation/v2/all_category_list), as well as the [full neighborhood list](https://www.yelp.com/developers/documentation/v2/neighborhood_list). They’re much too extensive to place in this brief!
+Please refer to Yelp’s [full category list here](https://www.yelp.com/developers/documentation/v3/all_category_list). They’re much too extensive to place in this brief!
