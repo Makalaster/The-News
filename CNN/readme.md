@@ -10,8 +10,6 @@ Project 3 is your opportunity to really let your creativity shine! You will have
 
 Your work must:
 
-- Include **at least 2 prototypes**
-- Include user stories based on your research and feature prioritization in a Trello board for the **complete flow of your app**
 - Pull in articles in real-time from at least one news API. Examples of some news APIs you might choose to use are below--feel free to use any other open news APIs you are able to find:
     - [The New York Times](http://developer.nytimes.com/)
     - [The Financial Times](https://developer.ft.com/docs)
@@ -19,9 +17,11 @@ Your work must:
     - [Bloomberg](http://www.bloomberglabs.com/api/)
 - Allow the user to sort and discover breaking news within different topics (for example: World News, Politics, Entertainment, Sports, etc.)
 - Allow the user to follow specific trending breaking news topics
-- Include at least one Notifications feature (e.g. reminder, alarm)
-- Integrate with the Twitter and/or Facebook APIs to allow article sharing via social media
-- Allow the user to share breaking news developments with friends
+- Include **at least 2 prototypes**
+- Include user stories based on your research and feature prioritization in a Trello board for the **complete flow of your app**
+- Allow sharing of content to social media apps including Twitter and/or Facebook
+- Look great in both landscape and portrait modes and reflect Material Design principles
+- Include at least one **Notification** feature (e.g. reminder, alarm)
 - Include **automated testing** (and manual testing if needed) to cover your app.
 - Use **JobScheduler** to manage periodic background API calls
 - Not crash or hang and should handle for when networking/internet is slow or unavailable
