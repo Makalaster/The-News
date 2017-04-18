@@ -36,7 +36,7 @@ Your work must:
 
 #### Code of Conduct
 
-As always, your app must adhere to General Assembly's [student code of conduct guidelines](../../../resources/guidelines/code-of-conduct.md).
+As always, your app must adhere to General Assembly's [student code of conduct guidelines](https://ga-adi.gitbooks.io/adi-oreo/content/markdown/code-of-conduct.html).
 
 If you have questions about whether or not your work adheres to these guidelines, please speak with a member of your instructional team.
 
