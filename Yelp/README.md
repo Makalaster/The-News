@@ -47,7 +47,7 @@ Your work must:
 
 #### Code of Conduct
 
-As always, your app must adhere to General Assembly's [student code of conduct guidelines](https://charlesdrews.gitbooks.io/ga-adi-macaron/content/markdown/code-of-conduct.html).
+As always, your app must adhere to General Assembly's [student code of conduct guidelines](https://ga-adi.gitbooks.io/adi-oreo/content/markdown/code-of-conduct.html).
 
 If you have questions about whether or not your work adheres to these guidelines, please speak with a member of your instructional team.
 
@@ -76,7 +76,7 @@ If you have questions about whether or not your work adheres to these guidelines
 
 #### Suggested Ways to Get Started
 
-Visit http://yelp.com/developers and apply for API access [here](https://www.yelp.com/login?return_url=/developers/manage_api_keys) using a Yelp user account.
+Visit http://yelp.com/developers and apply for API access [here](https://www.yelp.com/developers/v3/manage_app) using a Yelp user account.
 
 - Think about a user experience which doesn’t create already-available Yelp functionality.
 - Complete as much of the layout as possible before working on your logic.
@@ -87,11 +87,9 @@ Visit http://yelp.com/developers and apply for API access [here](https://www.yel
 
 ### Useful Resources
 
-- [Documentation](https://www.yelp.com/developers/documentation/v3/overview)
+- [Documentation](https://www.yelp.com/developers/documentation/v3/)
 - [Display requirements](https://www.yelp.com/developers/display_requirements)
-- [Code samples](https://www.yelp.com/developers/documentation/v3/examples)
-- [API Console](https://www.yelp.com/developers/api_console)
-- [Full list of API errors](https://www.yelp.com/developers/documentation/v3/errors)
+- [Code samples](https://github.com/Yelp/yelp-fusion#code-samples)
 - [FAQ](https://www.yelp.com/developers/faq) & [GitHub](https://github.com/Yelp/yelp-api/issues)
 - [Terms of Use](https://www.yelp.com/developers/api_terms)
 
