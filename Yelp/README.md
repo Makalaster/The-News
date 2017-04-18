@@ -92,6 +92,11 @@ Visit http://yelp.com/developers and apply for API access [here](https://www.yel
 - [Code samples](https://github.com/Yelp/yelp-fusion#code-samples)
 - [FAQ](https://www.yelp.com/developers/faq) & [GitHub](https://github.com/Yelp/yelp-api/issues)
 - [Terms of Use](https://www.yelp.com/developers/api_terms)
+- [Directory of APIs](http://www.programmableweb.com/apis/directory)
+- [Android API Reference](http://developer.android.com/reference/packages.html)
+- [Android API Guides](http://developer.android.com/guide/index.html)
+- [Twitter for Developers](https://dev.twitter.com/)
+- [Facebook for Developers](https://developers.facebook.com/)
 
 ### Full List of Yelp Categories
 Please refer to Yelp’s [full category list here](https://www.yelp.com/developers/documentation/v3/all_category_list). They’re much too extensive to place in this brief!
