@@ -29,7 +29,9 @@ Your work must:
 
 **Bonus:**
 
-- Integrate additional APIs (news and/or social)
+- Integrate additional APIs (news, other content, social, etc.)
+- Integrate with a mapping and/or navigation API
+- Integrate with a messaging/communication API such as Slack
 - Allow the user to save, bookmark, or ‘like’ content within the app
 
 ---
