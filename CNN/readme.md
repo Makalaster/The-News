@@ -76,6 +76,5 @@ If you have questions about whether or not your work adheres to these guidelines
 - [Directory of APIs](http://www.programmableweb.com/apis/directory)
 - [Android API Reference](http://developer.android.com/reference/packages.html)
 - [Android API Guides](http://developer.android.com/guide/index.html)
-- [Creating a Sync Adapter](http://developer.android.com/training/sync-adapters/creating-sync-adapter.html)
 - [Twitter for Developers](https://dev.twitter.com/)
 - [Facebook for Developers](https://developers.facebook.com/)
