@@ -27,7 +27,7 @@ Your work must:
 	- Uber/Lyft
 - Include **at least 2 prototypes**
 - Include user stories based on your research and feature prioritization in a Trello board for the **complete flow of your app**
-- Integrate with the Twitter and/or Facebook APIs to allow sharing of content via social media
+- Allow sharing of content to social media apps including Twitter and/or Facebook
 - Look great in both landscape and portrait modes and reflect Material Design principles
 - Include at least one **Notification** feature (e.g. reminder, alarm)
 - Include **automated testing** (and manual testing if needed) to cover your app.
