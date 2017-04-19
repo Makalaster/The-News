@@ -1,9 +1,7 @@
 # ![](https://ga-dash.s3.amazonaws.com/production/assets/logo-9f88ae6c9c3871690e33280fcf557f33.png) RUBRIC
 **Project 3: TouchLab | ADI** 	 						
 
-
 #### Performance Evaluation
-> Mark boxes with an 'X'; if did not achieve bonus, mark with a '-'
 
 | Requirements | Incomplete (0) | Does Not Meet Expectations (1) | Meets Expectations (2) |
 |---|---|---|---|
@@ -13,7 +11,7 @@
 | Use the Retrofit library to handle HTTP requests and parse JSON data | | | |
 | Include at least 2 prototypes | | | |
 | Include user stories based on your research and feature prioritization in a Trello board for the complete flow of your app | | | |
-| Integrate with the Twitter and/or Facebook APIs to allow sharing of content via social media | | | |
+| Allow sharing of content to social media apps including Twitter and/or Facebook | | | |
 | Look great in both landscape and portrait modes and reflect Material Design principles | | | |
 | Include at least one Notification feature (e.g. reminder, alarm) | | | |
 | Include automated testing (and manual testing if needed) to cover your app | | | |
@@ -30,7 +28,7 @@
 
 Notes:
 
-<!-- Example: Your getting the hang of this!  Be sure to practice proper indentation and spacing.  Nice work! -->
+<!-- Example: You're getting the hang of this!  Be sure to practice proper indentation and spacing.  Nice work! -->
 
 ---
 

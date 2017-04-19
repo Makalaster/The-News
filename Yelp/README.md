@@ -27,7 +27,7 @@ Your work must:
 	- Uber/Lyft
 - Include **at least 2 prototypes**
 - Include user stories based on your research and feature prioritization in a Trello board for the **complete flow of your app**
-- Integrate with the Twitter and/or Facebook APIs to allow sharing of content via social media
+- Allow sharing of content to social media apps including Twitter and/or Facebook
 - Look great in both landscape and portrait modes and reflect Material Design principles
 - Include at least one **Notification** feature (e.g. reminder, alarm)
 - Include **automated testing** (and manual testing if needed) to cover your app.
@@ -47,7 +47,7 @@ Your work must:
 
 #### Code of Conduct
 
-As always, your app must adhere to General Assembly's [student code of conduct guidelines](https://charlesdrews.gitbooks.io/ga-adi-macaron/content/markdown/code-of-conduct.html).
+As always, your app must adhere to General Assembly's [student code of conduct guidelines](https://ga-adi.gitbooks.io/adi-oreo/content/markdown/code-of-conduct.html).
 
 If you have questions about whether or not your work adheres to these guidelines, please speak with a member of your instructional team.
 
@@ -56,9 +56,9 @@ If you have questions about whether or not your work adheres to these guidelines
 #### Necessary Deliverables
 
 **Project planning:**
-- A completed research plan according to the template provided in class
+- A completed research plan according to the [template provided in class](../worksheets/research-plan-worksheet.pdf)
 - Competitive research in a Google Sheet
-- Written user personas--ideally from both new and longtime Yelp user perspectives
+- Written [user personas](../worksheets/persona-worksheet.pdf) (based on your [synthesis](../worksheets/design-thinking-activity-worksheet.pdf) of your [research findings](../worksheets/research-highlights-worksheet.pdf))
 - A list of prioritized features
 - A project plan presentation (there will be an in-class lab for this)
 - Completed user stories
@@ -76,7 +76,7 @@ If you have questions about whether or not your work adheres to these guidelines
 
 #### Suggested Ways to Get Started
 
-Visit http://yelp.com/developers and apply for API access [here](https://www.yelp.com/login?return_url=/developers/manage_api_keys) using a Yelp user account.
+Visit http://yelp.com/developers and apply for API access [here](https://www.yelp.com/developers/v3/manage_app) using a Yelp user account.
 
 - Think about a user experience which doesn’t create already-available Yelp functionality.
 - Complete as much of the layout as possible before working on your logic.
@@ -87,22 +87,16 @@ Visit http://yelp.com/developers and apply for API access [here](https://www.yel
 
 ### Useful Resources
 
-- [Documentation](https://www.yelp.com/developers/documentation/v2/overview)
+- [Documentation](https://www.yelp.com/developers/documentation/v3/)
 - [Display requirements](https://www.yelp.com/developers/display_requirements)
-- [Code samples](https://www.yelp.com/developers/documentation/v2/examples)
-- [API Console](https://www.yelp.com/developers/api_console)
-- [Full list of API errors](https://www.yelp.com/developers/documentation/v2/errors)
+- [Code samples](https://github.com/Yelp/yelp-fusion#code-samples)
 - [FAQ](https://www.yelp.com/developers/faq) & [GitHub](https://github.com/Yelp/yelp-api/issues)
 - [Terms of Use](https://www.yelp.com/developers/api_terms)
-
-### Full List of Yelp API endpoints
-
-
-| Endpoint URL | HTTP method | Functionality |
-|---|---|---|
-| /v2/search | GET | Search for local businesses. |
-| /v2/business/{id} |	GET | Lookup business information by id. |
-| /v2/phone_search | GET | Search for businesses by phone number. |
+- [Directory of APIs](http://www.programmableweb.com/apis/directory)
+- [Android API Reference](http://developer.android.com/reference/packages.html)
+- [Android API Guides](http://developer.android.com/guide/index.html)
+- [Twitter for Developers](https://dev.twitter.com/)
+- [Facebook for Developers](https://developers.facebook.com/)
 
 ### Full List of Yelp Categories
-Please refer to Yelp’s [full category list here](https://www.yelp.com/developers/documentation/v2/all_category_list), as well as the [full neighborhood list](https://www.yelp.com/developers/documentation/v2/neighborhood_list). They’re much too extensive to place in this brief!
+Please refer to Yelp’s [full category list here](https://www.yelp.com/developers/documentation/v3/all_category_list). They’re much too extensive to place in this brief!

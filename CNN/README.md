@@ -1,8 +1,8 @@
-# ![](https://ga-dash.s3.amazonaws.com/production/assets/logo-9f88ae6c9c3871690e33280fcf557f33.png) Project #3: New York Times Breaking News App
+# ![](https://ga-dash.s3.amazonaws.com/production/assets/logo-9f88ae6c9c3871690e33280fcf557f33.png) Project #3: CNN Breaking News App
 
 #### Overview
 
-Project 3 is your opportunity to really let your creativity shine! You will have the basic app requirements, provided by the NYT, but it is up to you to do user research and design everything. This app will allow the user to discover, follow, and share breaking news. You will also have the opportunity to integrate various APIs, including Twitter and Facebook, as well as a news API.
+Project 3 is your opportunity to really let your creativity shine! You will have the basic app requirements, provided by CNN, but it is up to you to do user research and design everything. This app will allow the user to discover, follow, and share breaking news. You will also have the opportunity to integrate various APIs, including Twitter and Facebook, as well as a news API.
 
 ---
 
@@ -10,21 +10,22 @@ Project 3 is your opportunity to really let your creativity shine! You will have
 
 Your work must:
 
-- Pull in articles in real-time from [The New York Times API](http://developer.nytimes.com/).
+- Pull in articles in real-time from at least one news API. Examples of some news APIs you might choose to use are below--feel free to use any other open news APIs you are able to find:
+    - [The New York Times](http://developer.nytimes.com/)
+    - [The Financial Times](https://developer.ft.com/docs)
+    - [The Guardian](http://open-platform.theguardian.com/access/)
+    - [Bloomberg](http://www.bloomberglabs.com/api/)
 - Allow the user to sort and discover breaking news within different topics (for example: World News, Politics, Entertainment, Sports, etc.)
 - Allow the user to follow specific trending breaking news topics
-- Allow the user to receive push notifications of developments on followed topics from social media accounts of approved providers
-- Allow the user to share breaking news developments with friends
 - Include **at least 2 prototypes**
 - Include user stories based on your research and feature prioritization in a Trello board for the **complete flow of your app**
-- Integrate with the Twitter and/or Facebook APIs to allow sharing of content via social media
+- Allow sharing of content to social media apps including Twitter and/or Facebook
 - Look great in both landscape and portrait modes and reflect Material Design principles
 - Include at least one **Notification** feature (e.g. reminder, alarm)
 - Include **automated testing** (and manual testing if needed) to cover your app.
 - Use **JobScheduler** to manage periodic background API calls
 - Not crash or hang and should handle for when networking/internet is slow or unavailable
 - Have code that is semantically clean and well-organized
-
 
 **Bonus:**
 
@@ -37,7 +38,7 @@ Your work must:
 
 #### Code of Conduct
 
-As always, your app must adhere to General Assembly's [student code of conduct guidelines](https://charlesdrews.gitbooks.io/ga-adi-macaron/content/markdown/code-of-conduct.html).
+As always, your app must adhere to General Assembly's [student code of conduct guidelines](https://ga-adi.gitbooks.io/adi-oreo/content/markdown/code-of-conduct.html).
 
 If you have questions about whether or not your work adheres to these guidelines, please speak with a member of your instructional team.
 
@@ -46,9 +47,9 @@ If you have questions about whether or not your work adheres to these guidelines
 #### Necessary Deliverables
 
 **Project planning:**
-- A completed research plan according to the template provided in class
+- A completed research plan according to the [template provided in class](../worksheets/research-plan-worksheet.pdf)
 - Competitive research in a Google Sheet
-- Written user personas--ideally from both new and longtime Yelp user perspectives
+- Written [user personas](../worksheets/persona-worksheet.pdf) (based on your [synthesis](../worksheets/design-thinking-activity-worksheet.pdf) of your [research findings](../worksheets/research-highlights-worksheet.pdf))
 - A list of prioritized features
 - A project plan presentation (there will be an in-class lab for this)
 - Completed user stories
@@ -74,8 +75,8 @@ If you have questions about whether or not your work adheres to these guidelines
 
 ### Useful Resources
 
+- [Directory of APIs](http://www.programmableweb.com/apis/directory)
 - [Android API Reference](http://developer.android.com/reference/packages.html)
 - [Android API Guides](http://developer.android.com/guide/index.html)
-- [Creating a Sync Adapter](http://developer.android.com/training/sync-adapters/creating-sync-adapter.html)
 - [Twitter for Developers](https://dev.twitter.com/)
 - [Facebook for Developers](https://developers.facebook.com/)
