@@ -56,9 +56,9 @@ If you have questions about whether or not your work adheres to these guidelines
 #### Necessary Deliverables
 
 **Project planning:**
-- A completed research plan according to the template provided in class
+- A completed research plan according to the [template provided in class](../worksheets/research-plan-worksheet.pdf)
 - Competitive research in a Google Sheet
-- Written user personas--ideally from both new and longtime Yelp user perspectives
+- Written user [personas based](../worksheets/persona-worksheet.pdf) on your [synthesis](../worksheets/research-highlights-worksheet.pdf) of your [research findings](../worksheets/design-thinking-activity-worksheet.pdf)
 - A list of prioritized features
 - A project plan presentation (there will be an in-class lab for this)
 - Completed user stories
