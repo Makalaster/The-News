@@ -76,7 +76,7 @@ public class FragmentTopStories extends Fragment {
         categoryIndividualItems.add(new CategoryIndividualItem("image","Text4","Business","today"));
         categoryIndividualItems.add(new CategoryIndividualItem("image","Text5","Business","today"));
 
-        TopStoriesRecyclerViewAdapter adapter = new TopStoriesRecyclerViewAdapter(categoryIndividualItems);
+        TopStoriesRecyclerViewAdapter adapter = new TopStoriesRecyclerViewAdapter(categoryIndividualItems,false);
         recyclerView.setAdapter(adapter);
 
         return view;

@@ -20,10 +20,12 @@ import java.util.List;
 public class TopStoriesRecyclerViewAdapter extends RecyclerView.Adapter<TopStoriesRecyclerViewAdapter.CustomViewHolder>{
 
     List<CategoryIndividualItem> mList;
+    boolean mIsSaveFragment;
 
 
-    public TopStoriesRecyclerViewAdapter(List<CategoryIndividualItem> list) {
+    public TopStoriesRecyclerViewAdapter(List<CategoryIndividualItem> list, boolean isSaveFragment) {
         mList = list;
+        mIsSaveFragment = isSaveFragment;
     }
 
     @Override
@@ -37,10 +39,16 @@ public class TopStoriesRecyclerViewAdapter extends RecyclerView.Adapter<TopStori
         holder.mTitle.setText(mList.get(position).getTitle());
         holder.mCategory.setText(mList.get(position).getCategory());
         holder.mDate.setText(mList.get(position).getDate());
-        if(mList.get(position).isSaved())
-            holder.mHeart.setImageResource(R.mipmap.ic_favorite_black_24dp);
+        if(!mIsSaveFragment) {
+            if (mList.get(position).isSaved())
+                holder.mHeart.setImageResource(R.mipmap.ic_favorite_black_24dp);
+            else
+                holder.mHeart.setImageResource(R.mipmap.ic_favorite_border_black_24dp);
+        }
         else
-            holder.mHeart.setImageResource(R.mipmap.ic_favorite_border_black_24dp);
+        {
+            holder.mHeart.setVisibility(View.GONE);
+        }
 
 
 
