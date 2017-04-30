@@ -14,8 +14,7 @@
         android:layout_height="60dp"
         app:layout_collapseMode="pin"
         android:id="@+id/root_toolbar"
-        android:background="@android:color/black"
-        android:alpha="0.1"/>
+        android:background="@color/colorPrimary"/>
 
     <ImageView
         android:id="@+id/menu_toolbar"
@@ -50,7 +49,7 @@
         android:tint="@null"/>
 
     <ImageView
-        android:id="@+id/search_toolbar"
+        android:id="@+id/share_toolbar"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerVertical="true"
@@ -58,8 +57,20 @@
         android:layout_toLeftOf="@id/options_toolbar"
         android:background="@android:color/transparent"
         android:backgroundTint="@android:color/transparent"
-        android:src="@mipmap/ic_search_white_24dp"
+        android:src="@mipmap/ic_share_white_24dp"
         android:tint="@null"/>
+
+        <ImageView
+            android:id="@+id/heart_toolbar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="10dp"
+            android:layout_toLeftOf="@id/share_toolbar"
+            android:background="@android:color/transparent"
+            android:backgroundTint="@android:color/transparent"
+            android:src="@mipmap/ic_favorite_border_black_24dp"
+            android:tint="@android:color/white"/>
 
 
 </RelativeLayout>

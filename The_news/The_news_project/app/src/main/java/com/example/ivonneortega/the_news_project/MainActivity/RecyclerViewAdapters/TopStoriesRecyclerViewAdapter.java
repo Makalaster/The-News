@@ -1,5 +1,6 @@
 package com.example.ivonneortega.the_news_project.MainActivity.RecyclerViewAdapters;
 
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -9,6 +10,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.ivonneortega.the_news_project.CategoryIndividualItem;
+import com.example.ivonneortega.the_news_project.DetailView.DetailViewActivity;
 import com.example.ivonneortega.the_news_project.R;
 
 import java.util.List;
@@ -49,6 +51,14 @@ public class TopStoriesRecyclerViewAdapter extends RecyclerView.Adapter<TopStori
         {
             holder.mHeart.setVisibility(View.GONE);
         }
+
+        holder.mRoot.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(v.getContext().getApplicationContext(), DetailViewActivity.class);
+                v.getContext().startActivity(intent);
+            }
+        });
 
 
 

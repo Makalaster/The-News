@@ -8,35 +8,52 @@
     android:fitsSystemWindows="true"
     tools:context="com.example.ivonneortega.the_news_project.DetailView.DetailViewActivity">
 
+    <!--<android.support.design.widget.AppBarLayout-->
+        <!--android:id="@+id/app_bar"-->
+        <!--android:layout_width="match_parent"-->
+    <!--android:layout_height="260dp"-->
+        <!--android:fitsSystemWindows="true"-->
+        <!--android:theme="@style/AppTheme.AppBarOverlay">-->
+        <!--&lt;!&ndash;android:layout_height="@dimen/app_bar_height"&ndash;&gt;-->
+
+        <!--<android.support.design.widget.CollapsingToolbarLayout-->
+            <!--android:id="@+id/toolbar_layout"-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="match_parent"-->
+            <!--android:fitsSystemWindows="true"-->
+            <!--android:background="@android:color/holo_blue_bright"-->
+            <!--app:contentScrim="?attr/colorPrimary"-->
+            <!--app:layout_scrollFlags="scroll|exitUntilCollapsed">-->
+
+            <!--&lt;!&ndash;<android.support.v7.widget.Toolbar&ndash;&gt;-->
+                <!--&lt;!&ndash;android:id="@+id/toolbar"&ndash;&gt;-->
+                <!--&lt;!&ndash;android:layout_width="match_parent"&ndash;&gt;-->
+                <!--&lt;!&ndash;android:layout_height="?attr/actionBarSize"&ndash;&gt;-->
+                <!--&lt;!&ndash;app:layout_collapseMode="pin"&ndash;&gt;-->
+                <!--&lt;!&ndash;android:backgroundTint="@android:color/transparent"&ndash;&gt;-->
+                <!--&lt;!&ndash;app:popupTheme="@style/AppTheme.PopupOverlay"/>&ndash;&gt;-->
+
+
+            <!--<include layout="@layout/custom_toolbar_detailview"/>-->
+
+        <!--</android.support.design.widget.CollapsingToolbarLayout>-->
+    <!--</android.support.design.widget.AppBarLayout>-->
+
     <android.support.design.widget.AppBarLayout
-        android:id="@+id/app_bar"
         android:layout_width="match_parent"
-    android:layout_height="260dp"
-        android:fitsSystemWindows="true"
+        android:layout_height="wrap_content"
+        app:elevation="0dp"
         android:theme="@style/AppTheme.AppBarOverlay">
-        <!--android:layout_height="@dimen/app_bar_height"-->
 
-        <android.support.design.widget.CollapsingToolbarLayout
-            android:id="@+id/toolbar_layout"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:fitsSystemWindows="true"
-            android:background="@android:color/holo_blue_bright"
-            app:contentScrim="?attr/colorPrimary"
-            app:layout_scrollFlags="scroll|exitUntilCollapsed">
+        <!--<android.support.v7.widget.Toolbar-->
+        <!--android:id="@+id/toolbar"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="?attr/actionBarSize"-->
+        <!--android:background="?attr/colorPrimary"-->
+        <!--app:popupTheme="@style/AppTheme.PopupOverlay"/>-->
 
-            <!--<android.support.v7.widget.Toolbar-->
-                <!--android:id="@+id/toolbar"-->
-                <!--android:layout_width="match_parent"-->
-                <!--android:layout_height="?attr/actionBarSize"-->
-                <!--app:layout_collapseMode="pin"-->
-                <!--android:backgroundTint="@android:color/transparent"-->
-                <!--app:popupTheme="@style/AppTheme.PopupOverlay"/>-->
+        <include layout="@layout/custom_toolbar_detailview"/>
 
-
-            <include layout="@layout/custom_toolbar_detailview"/>
-
-        </android.support.design.widget.CollapsingToolbarLayout>
     </android.support.design.widget.AppBarLayout>
 
     <include layout="@layout/content_detail_view"/>
