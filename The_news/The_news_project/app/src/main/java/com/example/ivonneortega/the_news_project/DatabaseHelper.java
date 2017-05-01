@@ -1,9 +1,14 @@
 package com.example.ivonneortega.the_news_project;
 
+import android.content.ContentValues;
 import android.content.Context;
+import android.database.Cursor;
 import android.database.DatabaseErrorHandler;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by WilliamAlford on 4/30/17.
@@ -12,23 +17,32 @@ import android.database.sqlite.SQLiteOpenHelper;
 public class DatabaseHelper extends SQLiteOpenHelper {
 
 
-    //Constructor
+    ////////////////////
+    //DB HELPER CONSTRUCTOR
+    ////////////////////
     public DatabaseHelper(Context context){
         super(context, DATABASE_NAME,null,DATABASE_VERSION);
     }
 
 
 
-    //Database Version and Name
+
+    ////////////////////
+    //DB VERSION + NAME
+    ////////////////////
 
     public static final int DATABASE_VERSION = 1;
     public static final String DATABASE_NAME = "news.db";
 
-    //POSITION TABLE
+    ////////////////////
+    //ARTICLE TABLE
+    ////////////////////
 
     public static final String TABLE_ARTICLES = "articles";
 
-    //ARTICLE TABLE ROWS
+    ////////////////////
+    //ARTICLE TABLE COLUMNS
+    ////////////////////
 
     public static final String COL_ID = "id";
     public static final String COL_TITLE = "title";
@@ -40,7 +54,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
 
     private static final String CREATE_TABLE_ARTICLES = "CREATE_TABLE " + TABLE_ARTICLES + "(" +
-            COL_ID + " INTEGER NOT NULLPRIMARY KEY " +
+            COL_ID + " INTEGER NOT NULL PRIMARY KEY " +
             COL_TITLE + " TEXT " +
             COL_BODY + " TEXT " +
             COL_DATE + " TEXT " +
@@ -53,7 +67,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     @Override
     public void onCreate(SQLiteDatabase db) {
-
+        db.execSQL(CREATE_TABLE_ARTICLES);
     }
 
     @Override
@@ -66,6 +80,10 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     }
 
+    ////////////////////
+    //SINGLETON
+    ////////////////////
+
     private static DatabaseHelper sInstance;
 
     public static DatabaseHelper getInstance(Context context){
@@ -74,6 +92,172 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         }
         return sInstance;
     }
+
+
+    ////////////////////
+    //GET ARTICLES BY ID
+    ////////////////////
+
+    public Article getArticlesById(long id) {
+        SQLiteDatabase db = getReadableDatabase();
+        Cursor cursor = db.query(TABLE_ARTICLES,
+                null,
+                COL_ID + " = ?",
+                new String[]{String.valueOf(id)},
+                null,
+                null,
+                null);
+
+        Article articles = null;
+
+        if (cursor.moveToFirst()) {
+
+            articles = new Article(
+
+                    cursor.getLong(cursor.getColumnIndex(COL_ID)),
+                    cursor.getString(cursor.getColumnIndex(COL_TITLE)),
+                    cursor.getString(cursor.getColumnIndex(COL_BODY)),
+                    cursor.getString(cursor.getColumnIndex(COL_DATE)),
+                    cursor.getString(cursor.getColumnIndex(COL_SOURCE)),
+                    cursor.getString(cursor.getColumnIndex(COL_IS_SAVED)),
+                    cursor.getString(cursor.getColumnIndex(COL_CATEGORY))
+
+            );
+            cursor.close();
+            return articles;
+        }
+        else
+        {
+            cursor.close();
+            return null;
+        }
+
+    }
+
+    ////////////////////
+    //INSERT ARTICLE
+    ////////////////////
+
+
+    //TODO NEED TO ADD MORE STUFF DEPENDING ON OUR DATABASE
+    public long insertArticleIntoDatabase(int id, int thisQuantity) {
+        SQLiteDatabase db = getWritableDatabase();
+
+        ContentValues values = new ContentValues();
+        values.put(COL_ID, id);
+
+
+        long idToReturn = db.insert(TABLE_ARTICLES,null,values);
+        db.close();
+        return  idToReturn;
+//        db.update(TABLE_ARTICLES,
+//                values,
+//                COL_ID + " = ?",
+//                new String[]{String.valueOf(id)}
+//        );
+
+
+
+
+    }
+
+
+
+    ////////////////////
+    //DELETE FROM DB BY ID
+    ////////////////////
+
+    public void deleteIndividualArticlesFromDatabase(int id){
+        SQLiteDatabase db = getWritableDatabase();
+        db.delete(TABLE_ARTICLES, COL_ID+"= ?", new String[]{String.valueOf(id)});
+    }
+
+
+
+    ////////////////////
+    //SAVE ARTICLES BY ID
+    ////////////////////
+
+    public void saveArticle(long id){
+        Article article = new Article
+
+        upDateSaves(articles.getmId() ,saved);
+
+    }
+
+
+
+    ////////////////////
+    //UN SAVED ARTICLES BY ID
+    ////////////////////
+
+    public void unSaveArticle(Article articles, int subtract){
+        int saved = articles.getmIsSaved()-subtract;
+
+        upDateSaves(articles.getmId() ,saved);
+
+
+    }
+
+
+
+    ////////////////////
+    //DELETE ALL
+    ////////////////////
+
+    public void deleteAllSavedArticles(){
+        SQLiteDatabase db = getWritableDatabase();
+        ContentValues contentValues = new ContentValues();
+        contentValues.put(COL_IS_SAVED, 0);
+        db.update(TABLE_ARTICLES,
+                contentValues,
+                COL_IS_SAVED + " > 0",
+                null);
+
+        db.close();
+
+    }
+
+
+
+
+    ////////////////////
+    //GET ARTICLES BY TITLE (SEARCH)
+    ////////////////////
+
+    public List<Article> searchPositions(String query){
+        SQLiteDatabase db = this.getReadableDatabase();
+
+
+        Cursor cursor = db.query(TABLE_ARTICLES, // a. table
+                null, // b. column names
+                COL_TITLE +" LIKE ? OR " + COL_CATEGORY + " LIKE ?", // c. selections
+                new String[]{"%" + query +"%", "%" + query +"%"}, // d. selections args
+                null, // e. group by
+                null, // f. having
+                null, // g. order by
+                null); // h. limit
+
+        List<Article> articles = new ArrayList<>();
+
+        if(cursor.moveToFirst()){
+            while (!cursor.isAfterLast()){
+                articles.add(new Artcle(
+                        cursor.getLong(cursor.getColumnIndex(COL_ID)),
+                        cursor.getString(cursor.getColumnIndex(COL_TITLE)),
+                        cursor.getString(cursor.getColumnIndex(COL_BODY)),
+                        cursor.getString(cursor.getColumnIndex(COL_DATE)),
+                        cursor.getString(cursor.getColumnIndex(COL_SOURCE)),
+                        cursor.getString(cursor.getColumnIndex(COL_IS_SAVED)).equals("true"),
+                        cursor.getString(cursor.getColumnIndex(COL_CATEGORY))));
+
+                cursor.moveToNext();
+            }
+        }
+        cursor.close();
+        return articles;
+    }
+
 
 
 
