@@ -2,6 +2,9 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
           package="com.example.ivonneortega.the_news_project">
 
+    <uses-permission android:name="android.permission.INTERNET"/>
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
+
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -34,6 +37,9 @@
             android:label="@string/title_activity_search"
             android:theme="@style/AppTheme">
         </activity>
+
+        <service android:name=".MainActivity.ArticleRefreshService"
+                 android:permission="android.permission.BIND_JOB_SERVICE"/>
     </application>
 
 </manifest>
