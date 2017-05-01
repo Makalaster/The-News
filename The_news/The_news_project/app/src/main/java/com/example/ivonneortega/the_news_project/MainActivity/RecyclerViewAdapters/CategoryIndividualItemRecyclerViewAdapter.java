@@ -8,7 +8,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.example.ivonneortega.the_news_project.CategoryIndividualItem;
+import com.example.ivonneortega.the_news_project.Article;
 import com.example.ivonneortega.the_news_project.DetailView.DetailViewActivity;
 import com.example.ivonneortega.the_news_project.R;
 
@@ -22,10 +22,10 @@ public class CategoryIndividualItemRecyclerViewAdapter extends RecyclerView.Adap
 
     private static final int VIEW_TYPE_MORE = 1 ;
     private static final int VIEW_TYPE_ARTICLE = 2 ;
-    List<CategoryIndividualItem> mList;
+    List<Article> mList;
 
 
-    public CategoryIndividualItemRecyclerViewAdapter(List<CategoryIndividualItem> individualItems) {
+    public CategoryIndividualItemRecyclerViewAdapter(List<Article> individualItems) {
         mList = individualItems;
 
     }
@@ -69,18 +69,18 @@ public class CategoryIndividualItemRecyclerViewAdapter extends RecyclerView.Adap
             holder.mRoot.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Intent intent = new Intent(v.getContext().getApplicationContext(), DetailViewActivity.class);
-                    v.getContext().startActivity(intent);
+                 clickOnProduct(v);
                 }
             });
 
         }
-
-
-
-
     }
 
+    private void clickOnProduct(View v)
+    {
+        Intent intent = new Intent(v.getContext().getApplicationContext(), DetailViewActivity.class);
+        v.getContext().startActivity(intent);
+    }
 
     @Override
     public int getItemCount() {

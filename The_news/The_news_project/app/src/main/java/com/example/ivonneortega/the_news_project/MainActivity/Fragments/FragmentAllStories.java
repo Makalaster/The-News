@@ -9,8 +9,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.example.ivonneortega.the_news_project.AllStories;
-import com.example.ivonneortega.the_news_project.CategoryIndividualItem;
+import com.example.ivonneortega.the_news_project.Category;
+import com.example.ivonneortega.the_news_project.Article;
 import com.example.ivonneortega.the_news_project.MainActivity.RecyclerViewAdapters.RecyclerViewMainActivityAdapter;
 import com.example.ivonneortega.the_news_project.R;
 
@@ -65,19 +65,19 @@ public class FragmentAllStories extends Fragment {
         recyclerView.setLayoutManager(linearLayoutManager);
 
         //Creating a list to test recycler view
-        List<CategoryIndividualItem> categoryIndividualItems = new ArrayList<>();
-        categoryIndividualItems.add(new CategoryIndividualItem("image","This is the text for the article. Testing Text. What happens if I add more?","Business","today"));
-        categoryIndividualItems.add(new CategoryIndividualItem("image","Text2","Business","today"));
-        categoryIndividualItems.add(new CategoryIndividualItem("image","Text3","Business","today"));
-        categoryIndividualItems.add(new CategoryIndividualItem("image","Text4","Business","today"));
-        categoryIndividualItems.add(new CategoryIndividualItem("image","Text5","Business","today"));
+        List<Article> categoryIndividualItems = new ArrayList<>();
+        categoryIndividualItems.add(new Article("image","This is the text for the article. Testing Text. What happens if I add more?","Business","today"));
+        categoryIndividualItems.add(new Article("image","Text2","Business","today"));
+        categoryIndividualItems.add(new Article("image","Text3","Business","today"));
+        categoryIndividualItems.add(new Article("image","Text4","Business","today"));
+        categoryIndividualItems.add(new Article("image","Text5","Business","today"));
 
 
         //Secondary Test
-        List<AllStories> allStories = new ArrayList<>();
-        allStories.add(new AllStories("Category 1",categoryIndividualItems));
-        allStories.add(new AllStories("Category 2",categoryIndividualItems));
-        allStories.add(new AllStories("Category 3",categoryIndividualItems));
+        List<Category> allStories = new ArrayList<>();
+        allStories.add(new Category("Category 1",categoryIndividualItems));
+        allStories.add(new Category("Category 2",categoryIndividualItems));
+        allStories.add(new Category("Category 3",categoryIndividualItems));
 
         //Setting Adapter With lists
         RecyclerViewMainActivityAdapter adapter = new RecyclerViewMainActivityAdapter(allStories);

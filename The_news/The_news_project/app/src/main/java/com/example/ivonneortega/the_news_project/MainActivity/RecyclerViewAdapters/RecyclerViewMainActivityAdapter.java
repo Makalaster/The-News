@@ -7,7 +7,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import com.example.ivonneortega.the_news_project.AllStories;
+import com.example.ivonneortega.the_news_project.Category;
 import com.example.ivonneortega.the_news_project.R;
 
 import java.util.List;
@@ -19,10 +19,10 @@ import java.util.List;
 public class RecyclerViewMainActivityAdapter extends RecyclerView.Adapter<RecyclerViewMainActivityAdapter.AllStoriesViewHolder>  {
 
     private static final String TAG = "StockRecyclerViewAdapte";
-    List<AllStories> mList;
+    List<Category> mList;
 
 
-    public RecyclerViewMainActivityAdapter(List<AllStories> categoriesList) {
+    public RecyclerViewMainActivityAdapter(List<Category> categoriesList) {
         mList = categoriesList;
 
     }

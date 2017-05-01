@@ -6,12 +6,12 @@ import java.util.List;
  * Created by ivonneortega on 4/29/17.
  */
 
-public class AllStories {
+public class Category {
 
     private String mCategoryName;
-    private List<CategoryIndividualItem> mList;
+    private List<Article> mList;
 
-    public AllStories(String categoryName, List<CategoryIndividualItem> list) {
+    public Category(String categoryName, List<Article> list) {
         mCategoryName = categoryName;
         mList = list;
     }
@@ -24,11 +24,11 @@ public class AllStories {
         mCategoryName = categoryName;
     }
 
-    public List<CategoryIndividualItem> getList() {
+    public List<Article> getList() {
         return mList;
     }
 
-    public void setList(List<CategoryIndividualItem> list) {
+    public void setList(List<Article> list) {
         mList = list;
     }
 }

@@ -4,14 +4,14 @@ package com.example.ivonneortega.the_news_project;
  * Created by ivonneortega on 4/29/17.
  */
 
-public class CategoryIndividualItem {
+public class Article {
 
     private String mImage;
     private String mTitle,mCategory,mDate;
     private boolean mIsSaved;
     //private boolean mIsTopStory;
 
-    public CategoryIndividualItem(String image, String title, String category, String date) {
+    public Article(String image, String title, String category, String date) {
         mImage = image;
         mTitle = title;
         mCategory = category;
