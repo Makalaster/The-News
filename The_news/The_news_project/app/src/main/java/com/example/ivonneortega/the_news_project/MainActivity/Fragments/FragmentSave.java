@@ -68,11 +68,11 @@ public class FragmentSave extends Fragment {
 
         //Creating a list to test recycler view
         List<Article> categoryIndividualItems = new ArrayList<>();
-        categoryIndividualItems.add(new Article("image","This is the text for the article. Testing Text. What happens if I add more?","Business","today"));
-        categoryIndividualItems.add(new Article("image","Text2","Business","today"));
-        categoryIndividualItems.add(new Article("image","Text3","Business","today"));
-        categoryIndividualItems.add(new Article("image","Text4","Business","today"));
-        categoryIndividualItems.add(new Article("image","Text5","Business","today"));
+        categoryIndividualItems.add(new Article(1,"image","This is the text for the article. Testing Text. What happens if I add more?","Business","today","this is the body","source",0));
+        categoryIndividualItems.add(new Article(1,"image","This is the text for the article. Testing Text. What happens if I add more?","Business","today","this is the body","source",0));
+        categoryIndividualItems.add(new Article(1,"image","This is the text for the article. Testing Text. What happens if I add more?","Business","today","this is the body","source",0));
+        categoryIndividualItems.add(new Article(1,"image","This is the text for the article. Testing Text. What happens if I add more?","Business","today","this is the body","source",0));
+        categoryIndividualItems.add(new Article(1,"image","This is the text for the article. Testing Text. What happens if I add more?","Business","today","this is the body","source",0));
 
         ArticlesVerticalRecyclerAdapter adapter = new ArticlesVerticalRecyclerAdapter(categoryIndividualItems,true);
         recyclerView.setAdapter(adapter);
