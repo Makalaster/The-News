@@ -51,13 +51,13 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public static final String COL_SOURCE = "source";
     public static final String COL_IS_SAVED = "saved";
     public static final String COL_CATEGORY = "category";
-    public static final String COL_IMAGE = "source";
+    public static final String COL_IMAGE = "image";
     public static final String COL_IS_TOP_STORY = "saved";
-    public static final String COL_URL = "category";
+    public static final String COL_URL = "url";
 
 
 
-    private static final String CREATE_TABLE_ARTICLES = "CREATE_TABLE " + TABLE_ARTICLES + "(" +
+    private static final String CREATE_TABLE_ARTICLES = "CREATE TABLE " + TABLE_ARTICLES + "(" +
             COL_ID + " INTEGER NOT NULL PRIMARY KEY " +
             COL_TITLE + " TEXT " +
             COL_BODY + " TEXT " +
