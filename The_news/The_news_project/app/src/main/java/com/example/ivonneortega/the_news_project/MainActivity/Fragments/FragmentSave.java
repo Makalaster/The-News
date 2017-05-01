@@ -10,7 +10,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.example.ivonneortega.the_news_project.Article;
-import com.example.ivonneortega.the_news_project.MainActivity.RecyclerViewAdapters.TopStoriesRecyclerViewAdapter;
+import com.example.ivonneortega.the_news_project.RecyclerViewAdapters.ArticlesVerticalRecyclerAdapter;
 import com.example.ivonneortega.the_news_project.R;
 
 import java.util.ArrayList;
@@ -74,7 +74,7 @@ public class FragmentSave extends Fragment {
         categoryIndividualItems.add(new Article("image","Text4","Business","today"));
         categoryIndividualItems.add(new Article("image","Text5","Business","today"));
 
-        TopStoriesRecyclerViewAdapter adapter = new TopStoriesRecyclerViewAdapter(categoryIndividualItems,true);
+        ArticlesVerticalRecyclerAdapter adapter = new ArticlesVerticalRecyclerAdapter(categoryIndividualItems,true);
         recyclerView.setAdapter(adapter);
 
         return view;

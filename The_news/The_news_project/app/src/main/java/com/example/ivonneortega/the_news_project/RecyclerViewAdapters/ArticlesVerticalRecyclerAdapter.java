@@ -1,7 +1,8 @@
-package com.example.ivonneortega.the_news_project.MainActivity.RecyclerViewAdapters;
+package com.example.ivonneortega.the_news_project.RecyclerViewAdapters;
 
 import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,29 +15,32 @@ import com.example.ivonneortega.the_news_project.R;
 
 import java.util.List;
 
+import static android.content.ContentValues.TAG;
+
 /**
  * Created by ivonneortega on 4/30/17.
  */
 
-public class TopStoriesRecyclerViewAdapter extends RecyclerView.Adapter<TopStoriesRecyclerViewAdapter.CustomViewHolder>{
+public class ArticlesVerticalRecyclerAdapter extends RecyclerView.Adapter<ArticlesVerticalRecyclerAdapter.ArticlesViewHolder>
+implements View.OnClickListener{
 
     List<Article> mList;
     boolean mIsSaveFragment;
 
 
-    public TopStoriesRecyclerViewAdapter(List<Article> list, boolean isSaveFragment) {
+    public ArticlesVerticalRecyclerAdapter(List<Article> list, boolean isSaveFragment) {
         mList = list;
         mIsSaveFragment = isSaveFragment;
     }
 
     @Override
-    public CustomViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public ArticlesViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         LayoutInflater inflater = LayoutInflater.from(parent.getContext());
-        return new TopStoriesRecyclerViewAdapter.CustomViewHolder(inflater.inflate(R.layout.custom_top_stories,parent,false));
+        return new ArticlesViewHolder(inflater.inflate(R.layout.custom_top_stories,parent,false));
     }
 
     @Override
-    public void onBindViewHolder(CustomViewHolder holder, int position) {
+    public void onBindViewHolder(ArticlesViewHolder holder, int position) {
         holder.mTitle.setText(mList.get(position).getTitle());
         holder.mCategory.setText(mList.get(position).getCategory());
         holder.mDate.setText(mList.get(position).getDate());
@@ -45,6 +49,8 @@ public class TopStoriesRecyclerViewAdapter extends RecyclerView.Adapter<TopStori
                 holder.mHeart.setImageResource(R.mipmap.ic_favorite_black_24dp);
             else
                 holder.mHeart.setImageResource(R.mipmap.ic_favorite_border_black_24dp);
+                holder.mHeart.setOnClickListener(this);
+
         }
         else
         {
@@ -58,6 +64,7 @@ public class TopStoriesRecyclerViewAdapter extends RecyclerView.Adapter<TopStori
                 clickOnProduct(v);
             }
         });
+        holder.mShare.setOnClickListener(this);
 
 
 
@@ -74,14 +81,30 @@ public class TopStoriesRecyclerViewAdapter extends RecyclerView.Adapter<TopStori
         return mList.size();
     }
 
-    public class CustomViewHolder extends RecyclerView.ViewHolder {
+    @Override
+    public void onClick(View v) {
+        switch (v.getId())
+        {
+            case R.id.top_stories_heart:
+                //TODO DO SOMETHING WHEN USER CLICKS ON HEART
+                Log.d(TAG, "onClick: Clicked on heart");
+                break;
+            case R.id.top_stories_share:
+                //TODO DO SOMETHING WHEN USER CLICKS ON SHARE
+                Log.d(TAG, "onClick: Clicked on share");
+
+                break;
+        }
+    }
+
+    public class ArticlesViewHolder extends RecyclerView.ViewHolder {
 
         //Setting Views including Recycler View
         TextView mTitle, mDate, mCategory;
         ImageView mHeart, mShare;
         View mRoot;
 
-        public CustomViewHolder(View itemView) {
+        public ArticlesViewHolder(View itemView) {
             super(itemView);
             mTitle = (TextView) itemView.findViewById(R.id.top_stories_title);
             mDate = (TextView) itemView.findViewById(R.id.top_stories_date);

@@ -2,8 +2,6 @@ package com.example.ivonneortega.the_news_project.CategoryView;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
@@ -13,13 +11,12 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.ImageButton;
 import android.widget.Toast;
 
 import com.example.ivonneortega.the_news_project.Article;
-import com.example.ivonneortega.the_news_project.MainActivity.RecyclerViewAdapters.TopStoriesRecyclerViewAdapter;
+import com.example.ivonneortega.the_news_project.RecyclerViewAdapters.ArticlesVerticalRecyclerAdapter;
 import com.example.ivonneortega.the_news_project.R;
 import com.example.ivonneortega.the_news_project.Search.SearchActivity;
 
@@ -31,7 +28,7 @@ public class CategoryViewActivity extends AppCompatActivity
 
     ImageButton mSearch, mOptions;
     RecyclerView mRecyclerView;
-    TopStoriesRecyclerViewAdapter mAdapter;
+    ArticlesVerticalRecyclerAdapter mAdapter;
 
 
     @Override
@@ -149,7 +146,7 @@ public class CategoryViewActivity extends AppCompatActivity
         categoryIndividualItems.add(new Article("image","Text3","Business","today"));
         categoryIndividualItems.add(new Article("image","Text4","Business","today"));
         categoryIndividualItems.add(new Article("image","Text5","Business","today"));
-        mAdapter = new TopStoriesRecyclerViewAdapter(categoryIndividualItems,false);
+        mAdapter = new ArticlesVerticalRecyclerAdapter(categoryIndividualItems,false);
         mRecyclerView.setAdapter(mAdapter);
 
     }

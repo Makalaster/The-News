@@ -1,4 +1,4 @@
-package com.example.ivonneortega.the_news_project.MainActivity.RecyclerViewAdapters;
+package com.example.ivonneortega.the_news_project.RecyclerViewAdapters;
 
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -16,26 +16,25 @@ import java.util.List;
  * Created by ivonneortega on 4/29/17.
  */
 
-public class RecyclerViewMainActivityAdapter extends RecyclerView.Adapter<RecyclerViewMainActivityAdapter.AllStoriesViewHolder>  {
+public class CategoriesRecyclerAdapter extends RecyclerView.Adapter<CategoriesRecyclerAdapter.CategoriesViewHolder>  {
 
-    private static final String TAG = "StockRecyclerViewAdapte";
     List<Category> mList;
 
 
-    public RecyclerViewMainActivityAdapter(List<Category> categoriesList) {
+    public CategoriesRecyclerAdapter(List<Category> categoriesList) {
         mList = categoriesList;
 
     }
 
 
     @Override
-    public AllStoriesViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public CategoriesViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         LayoutInflater inflater = LayoutInflater.from(parent.getContext());
-        return new AllStoriesViewHolder(inflater.inflate(R.layout.custom_recyclerview_all_stories,parent,false));
+        return new CategoriesViewHolder(inflater.inflate(R.layout.custom_recyclerview_all_stories,parent,false));
     }
 
     @Override
-    public void onBindViewHolder(AllStoriesViewHolder holder, int position) {
+    public void onBindViewHolder(CategoriesViewHolder holder, int position) {
 
         //Title of the Category
         holder.mTitleOfCategory.setText(mList.get(position).getCategoryName());
@@ -49,7 +48,7 @@ public class RecyclerViewMainActivityAdapter extends RecyclerView.Adapter<Recycl
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(holder.mTitleOfCategory.getContext(),LinearLayoutManager.HORIZONTAL,false);
         holder.mRecyclerView.setLayoutManager(linearLayoutManager);
 
-        CategoryIndividualItemRecyclerViewAdapter adapter = new CategoryIndividualItemRecyclerViewAdapter(mList.get(position).getList());
+        ArticleRecyclerAdapter adapter = new ArticleRecyclerAdapter(mList.get(position).getList());
         holder.mRecyclerView.setAdapter(adapter);
 
     }
@@ -60,13 +59,13 @@ public class RecyclerViewMainActivityAdapter extends RecyclerView.Adapter<Recycl
         return mList.size();
     }
 
-    public class AllStoriesViewHolder extends RecyclerView.ViewHolder {
+    public class CategoriesViewHolder extends RecyclerView.ViewHolder {
 
         //Setting Views including Recycler View
         TextView mTitleOfCategory;
         RecyclerView mRecyclerView;
 
-        public AllStoriesViewHolder(View itemView) {
+        public CategoriesViewHolder(View itemView) {
             super(itemView);
             mTitleOfCategory = (TextView) itemView.findViewById(R.id.title_category_main_activity);
             mRecyclerView = (RecyclerView) itemView.findViewById(R.id.recyclerView_each_category);

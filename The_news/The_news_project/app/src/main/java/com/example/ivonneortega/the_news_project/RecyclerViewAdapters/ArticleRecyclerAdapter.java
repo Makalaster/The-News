@@ -1,4 +1,4 @@
-package com.example.ivonneortega.the_news_project.MainActivity.RecyclerViewAdapters;
+package com.example.ivonneortega.the_news_project.RecyclerViewAdapters;
 
 import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
@@ -9,6 +9,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.ivonneortega.the_news_project.Article;
+import com.example.ivonneortega.the_news_project.CategoryView.CategoryViewActivity;
 import com.example.ivonneortega.the_news_project.DetailView.DetailViewActivity;
 import com.example.ivonneortega.the_news_project.R;
 
@@ -18,14 +19,14 @@ import java.util.List;
  * Created by ivonneortega on 4/29/17.
  */
 
-public class CategoryIndividualItemRecyclerViewAdapter extends RecyclerView.Adapter<CategoryIndividualItemRecyclerViewAdapter.CategoryIndividualItemViewHolder> {
+public class ArticleRecyclerAdapter extends RecyclerView.Adapter<ArticleRecyclerAdapter.CategoryIndividualItemViewHolder> {
 
     private static final int VIEW_TYPE_MORE = 1 ;
     private static final int VIEW_TYPE_ARTICLE = 2 ;
     List<Article> mList;
 
 
-    public CategoryIndividualItemRecyclerViewAdapter(List<Article> individualItems) {
+    public ArticleRecyclerAdapter(List<Article> individualItems) {
         mList = individualItems;
 
     }
@@ -50,13 +51,18 @@ public class CategoryIndividualItemRecyclerViewAdapter extends RecyclerView.Adap
     }
 
     @Override
-    public void onBindViewHolder(CategoryIndividualItemRecyclerViewAdapter.CategoryIndividualItemViewHolder holder, int position) {
+    public void onBindViewHolder(ArticleRecyclerAdapter.CategoryIndividualItemViewHolder holder, int position) {
         //This is the recycler view that scrolls horizontally
 
         //If we are not at the last position
         if(position == mList.size()-1)
         {
-
+            holder.mSeeMore.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    goToCategoryView("THIS IS WHERE THE CATEGORY GOES",v);
+                }
+            });
         }
         //If we are at the last position of the list then show the "SEE MORE" TEXTVIEW
         else
@@ -79,6 +85,12 @@ public class CategoryIndividualItemRecyclerViewAdapter extends RecyclerView.Adap
     private void clickOnProduct(View v)
     {
         Intent intent = new Intent(v.getContext().getApplicationContext(), DetailViewActivity.class);
+        v.getContext().startActivity(intent);
+    }
+
+    private void goToCategoryView(String category,View v)
+    {
+        Intent intent = new Intent(v.getContext().getApplicationContext(), CategoryViewActivity.class);
         v.getContext().startActivity(intent);
     }
 

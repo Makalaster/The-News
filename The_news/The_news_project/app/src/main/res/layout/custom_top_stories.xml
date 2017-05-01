@@ -5,10 +5,11 @@
               android:layout_height="140dp"
                 android:id="@+id/top_stories_root"
     android:background="@android:color/white"
-                android:elevation="1dp"
+                android:elevation="1.3dp"
     android:layout_marginLeft="10dp"
     android:layout_marginRight="10dp"
-    android:layout_marginTop="10dp">
+    android:layout_marginBottom="5dp"
+    android:layout_marginTop="5dp">
 
     <ImageView
         android:layout_width="150dp"

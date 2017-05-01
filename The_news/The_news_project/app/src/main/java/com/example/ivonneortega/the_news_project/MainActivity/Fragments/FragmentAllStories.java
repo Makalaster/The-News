@@ -11,7 +11,7 @@ import android.view.ViewGroup;
 
 import com.example.ivonneortega.the_news_project.Category;
 import com.example.ivonneortega.the_news_project.Article;
-import com.example.ivonneortega.the_news_project.MainActivity.RecyclerViewAdapters.RecyclerViewMainActivityAdapter;
+import com.example.ivonneortega.the_news_project.RecyclerViewAdapters.CategoriesRecyclerAdapter;
 import com.example.ivonneortega.the_news_project.R;
 
 import java.util.ArrayList;
@@ -80,7 +80,7 @@ public class FragmentAllStories extends Fragment {
         allStories.add(new Category("Category 3",categoryIndividualItems));
 
         //Setting Adapter With lists
-        RecyclerViewMainActivityAdapter adapter = new RecyclerViewMainActivityAdapter(allStories);
+        CategoriesRecyclerAdapter adapter = new CategoriesRecyclerAdapter(allStories);
         recyclerView.setAdapter(adapter);
 
         return view;
