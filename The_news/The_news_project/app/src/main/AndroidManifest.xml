@@ -37,6 +37,9 @@
             android:label="@string/title_activity_search"
             android:theme="@style/AppTheme">
         </activity>
+
+        <service android:name=".MainActivity.ArticleRefreshService"
+                 android:permission="android.permission.BIND_JOB_SERVICE"/>
     </application>
 
 </manifest>
