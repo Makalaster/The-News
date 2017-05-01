@@ -43,7 +43,9 @@ public class ArticleRefreshService extends JobService {
     public static final String JSON = ".json";
 
     @Override
-    public int onStartCommand(Intent intent,  int flags, int startId) {
+    public void onCreate() {
+        super.onCreate();
+
         if (mNewsWireList.isEmpty()) {
             mNewsWireList.add("World");
             mNewsWireList.add("u.s.");
@@ -58,26 +60,28 @@ public class ArticleRefreshService extends JobService {
         }
 
         if (mTopStoriesList.isEmpty()) {
-            mTopStoriesList.add("World");
-            mTopStoriesList.add("Politics");
-            mTopStoriesList.add("Business");
-            mTopStoriesList.add("Technology");
-            mTopStoriesList.add("Science");
-            mTopStoriesList.add("Sports");
-            mTopStoriesList.add("Movies");
-            mTopStoriesList.add("Fashion");
-            mTopStoriesList.add("Food");
-            mTopStoriesList.add("Health");
+            mTopStoriesList.add("world");
+            mTopStoriesList.add("politics");
+            mTopStoriesList.add("business");
+            mTopStoriesList.add("technology");
+            mTopStoriesList.add("science");
+            mTopStoriesList.add("sports");
+            mTopStoriesList.add("movies");
+            mTopStoriesList.add("fashion");
+            mTopStoriesList.add("food");
+            mTopStoriesList.add("health");
         }
 
-        return super.onStartCommand(intent, flags, startId);
     }
 
     @Override
     public boolean onStartJob(JobParameters params) {
+        Log.d(TAG, "onStartJob: REFRESH JOB STARTED");
+
         ConnectivityManager connMgr = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo networkInfo = connMgr.getActiveNetworkInfo();
         if (networkInfo != null) {
+
             List<String> newsWireUrls = new ArrayList<>();
             for (String topic : mNewsWireList) {
                 newsWireUrls.addAll(queryNewsWire(topic));
@@ -93,9 +97,11 @@ public class ArticleRefreshService extends JobService {
             for (String url : topUrls) {
                 searchArticles(url, 1);
             }
+
+            jobFinished(params, true);
         }
 
-        return false;
+        return true;
     }
 
     private List<String> queryNewsWire(String query) {
@@ -138,7 +144,8 @@ public class ArticleRefreshService extends JobService {
         RequestQueue queue = Volley.newRequestQueue(this);
         final List<String> list = new ArrayList<>();
 
-        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.GET, NYTApiData.URL_TOP_STORY + query +JSON+"?"+"api-key"+NYTApiData.API_KEY, null,
+        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.GET,
+                NYTApiData.URL_TOP_STORY + query + JSON+"?api-key=" + NYTApiData.API_KEY, null,
                 new com.android.volley.Response.Listener<JSONObject>() {
                     @Override
                     public void onResponse(JSONObject response) {
@@ -161,7 +168,7 @@ public class ArticleRefreshService extends JobService {
             @Override
             public void onErrorResponse(VolleyError error) {
                 Toast.makeText(getApplicationContext(), "Error", Toast.LENGTH_SHORT).show();
-                Log.d(TAG, "onErrorResponse: "+error);
+                Log.d(TAG, "onErrorResponse: " + error);
             }
         });
         queue.add(jsonObjectRequest);
@@ -195,6 +202,7 @@ public class ArticleRefreshService extends JobService {
     public boolean onStopJob(JobParameters params) {
         mCall.cancel();
 
+        Log.d(TAG, "onStopJob: JOB STOPPED");
         return false;
     }
 
@@ -212,6 +220,7 @@ public class ArticleRefreshService extends JobService {
         String source = "New York Times";
         int isSaved = 0;
 
+        Log.d(TAG, "addArticleToDatabase: " + url);
         db.insertArticleIntoDatabase(null, mainHeadline, category, date, body, source, isSaved, fromTopStories, url);
     }
 }
