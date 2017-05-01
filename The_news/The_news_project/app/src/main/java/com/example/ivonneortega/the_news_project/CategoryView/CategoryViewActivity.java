@@ -141,11 +141,11 @@ public class CategoryViewActivity extends AppCompatActivity
 
         //TODO GET LIST FROM DATABASE
         List<Article> categoryIndividualItems = new ArrayList<>();
-        categoryIndividualItems.add(new Article(1,"image","This is the text for the article. Testing Text. What happens if I add more?","Business","today","this is the body","source",0));
-        categoryIndividualItems.add(new Article(1,"image","This is the text for the article. Testing Text. What happens if I add more?","Business","today","this is the body","source",0));
-        categoryIndividualItems.add(new Article(1,"image","This is the text for the article. Testing Text. What happens if I add more?","Business","today","this is the body","source",0));
-        categoryIndividualItems.add(new Article(1,"image","This is the text for the article. Testing Text. What happens if I add more?","Business","today","this is the body","source",0));
-        categoryIndividualItems.add(new Article(1,"image","This is the text for the article. Testing Text. What happens if I add more?","Business","today","this is the body","source",0));
+        categoryIndividualItems.add(new Article(1,"image","This is the text for the article. Testing Text. What happens if I add more?","Business","today","this is the body","source",0,0,"url"));
+        categoryIndividualItems.add(new Article(1,"image","This is the text for the article. Testing Text. What happens if I add more?","Business","today","this is the body","source",0,0,"url"));
+        categoryIndividualItems.add(new Article(1,"image","This is the text for the article. Testing Text. What happens if I add more?","Business","today","this is the body","source",0,0,"url"));
+        categoryIndividualItems.add(new Article(1,"image","This is the text for the article. Testing Text. What happens if I add more?","Business","today","this is the body","source",0,0,"url"));
+        categoryIndividualItems.add(new Article(1,"image","This is the text for the article. Testing Text. What happens if I add more?","Business","today","this is the body","source",0,0,"url"));
         mAdapter = new ArticlesVerticalRecyclerAdapter(categoryIndividualItems,false);
         mRecyclerView.setAdapter(mAdapter);
 
