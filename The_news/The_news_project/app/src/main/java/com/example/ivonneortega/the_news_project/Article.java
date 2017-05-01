@@ -6,17 +6,59 @@ package com.example.ivonneortega.the_news_project;
 
 public class Article {
 
+    public static final int TRUE = 0;
+    public static final int FALSE = 1;
+
     private String mImage;
-    private String mTitle,mCategory,mDate;
-    private boolean mIsSaved;
+    private String mTitle,mCategory,mDate, mBody, mSource, mUrl;
+    private long mId;
+    private boolean mIsSaved, mIsTopStory;
     //private boolean mIsTopStory;
 
-    public Article(String image, String title, String category, String date) {
+
+    public String getBody() {
+        return mBody;
+    }
+
+    public void setBody(String body) {
+        mBody = body;
+    }
+
+    public String getSource() {
+        return mSource;
+    }
+
+    public void setSource(String source) {
+        mSource = source;
+    }
+
+    public Article(long id, String image, String title, String category, String date, String body, String source, int isSaved, int isTopStory, String url) {
+        mSource = source;
+        mId = id;
         mImage = image;
         mTitle = title;
         mCategory = category;
         mDate = date;
-        mIsSaved=false;
+        if(isSaved==TRUE)
+            mIsSaved = true;
+        else
+            mIsSaved = false;
+
+        if(isTopStory==TRUE)
+            mIsTopStory = true;
+        else
+            mIsTopStory = false;
+
+        mUrl = url;
+        mBody = body;
+    }
+
+    public long getId() {
+        return mId;
+    }
+
+    public void setId(long id) {
+        mId = id;
     }
 
     public String getImage() {
