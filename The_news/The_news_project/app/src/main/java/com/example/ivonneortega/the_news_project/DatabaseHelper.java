@@ -121,21 +121,15 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
             articles = new Article(
                     cursor.getLong(cursor.getColumnIndex(COL_ID)),
-                    new String("image"),
+                    cursor.getString(cursor.getColumnIndex(COL_IMAGE)),
                     cursor.getString(cursor.getColumnIndex(COL_TITLE)),
                     cursor.getString(cursor.getColumnIndex(COL_CATEGORY)),
                     cursor.getString(cursor.getColumnIndex(COL_DATE)),
                     cursor.getString(cursor.getColumnIndex(COL_BODY)),
                     cursor.getString(cursor.getColumnIndex(COL_SOURCE)),
                     cursor.getInt(cursor.getColumnIndex(COL_IS_SAVED)),
-                    cursor.getString(cursor.getColumnIndex(COL_IMAGE)),
                     cursor.getInt(cursor.getColumnIndex(COL_IS_TOP_STORY)),
                     cursor.getString(cursor.getColumnIndex(COL_URL))
-
-
-
-
-
 
                     );
             cursor.close();
@@ -262,7 +256,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     //GET ARTICLES BY TITLE (SEARCH)
     ////////////////////
 
-    public List<Article> searchPositions(String query){
+    public List<Article> searchArticles(String query){
         SQLiteDatabase db = this.getReadableDatabase();
 
 
@@ -281,14 +275,17 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             while (!cursor.isAfterLast()){
                 articles.add( new Article(
                         cursor.getLong(cursor.getColumnIndex(COL_ID)),
-                        new String("image"),
+                        cursor.getString(cursor.getColumnIndex(COL_IMAGE)),
                         cursor.getString(cursor.getColumnIndex(COL_TITLE)),
                         cursor.getString(cursor.getColumnIndex(COL_CATEGORY)),
                         cursor.getString(cursor.getColumnIndex(COL_DATE)),
                         cursor.getString(cursor.getColumnIndex(COL_BODY)),
                         cursor.getString(cursor.getColumnIndex(COL_SOURCE)),
-                        cursor.getInt(cursor.getColumnIndex(COL_IS_SAVED))
-                ));
+                        cursor.getInt(cursor.getColumnIndex(COL_IS_SAVED)),
+                        cursor.getInt(cursor.getColumnIndex(COL_IS_TOP_STORY)),
+                        cursor.getString(cursor.getColumnIndex(COL_URL)))
+
+                );
 
                 cursor.moveToNext();
             }

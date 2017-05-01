@@ -10,9 +10,9 @@ public class Article {
     public static final int FALSE = 1;
 
     private String mImage;
-    private String mTitle,mCategory,mDate, mBody, mSource;
+    private String mTitle,mCategory,mDate, mBody, mSource, mUrl;
     private long mId;
-    private boolean mIsSaved;
+    private boolean mIsSaved, mIsTopStory;
     //private boolean mIsTopStory;
 
 
@@ -32,7 +32,7 @@ public class Article {
         mSource = source;
     }
 
-    public Article(long id, String image, String title, String category, String date, String body, String source, int isSaved) {
+    public Article(long id, String image, String title, String category, String date, String body, String source, int isSaved, int isTopStory, String url) {
         mSource = source;
         mId = id;
         mImage = image;
@@ -43,6 +43,13 @@ public class Article {
             mIsSaved = true;
         else
             mIsSaved = false;
+
+        if(isTopStory==TRUE)
+            mIsTopStory = true;
+        else
+            mIsTopStory = false;
+
+        mUrl = url;
         mBody = body;
     }
 
