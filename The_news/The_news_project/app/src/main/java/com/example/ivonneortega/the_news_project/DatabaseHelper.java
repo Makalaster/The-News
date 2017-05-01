@@ -231,7 +231,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
 
     ////////////////////
-    //DELETE ALL
+    //DELETE ALL SAVED ARTICLES
     ////////////////////
 
     public void deleteAllSavedArticles(){

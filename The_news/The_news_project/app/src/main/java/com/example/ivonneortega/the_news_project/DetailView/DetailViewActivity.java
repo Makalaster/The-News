@@ -7,17 +7,23 @@ import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.ShareActionProvider;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.Toast;
 
+import com.example.ivonneortega.the_news_project.Article;
 import com.example.ivonneortega.the_news_project.CategoryView.CategoryViewActivity;
 import com.example.ivonneortega.the_news_project.R;
 
+import java.util.ArrayList;
+
 public class DetailViewActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener, View.OnClickListener {
+
+    private ShareActionProvider mShareActionProvider;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -101,10 +107,37 @@ public class DetailViewActivity extends AppCompatActivity
                 break;
             case R.id.share_toolbar:
                 Toast.makeText(this, "Click on share button", Toast.LENGTH_SHORT).show();
+
+              //  mShareActionProvider = (ShareActionProvider) getAction
+
+                ArrayList<Article> articlesToShare = new ArrayList<>();
+
+//                articlesToShare.add();
+//                articlesToShare.add();
+
+
+                Intent socialMediaIntent = new Intent();
+                socialMediaIntent.setAction(Intent.ACTION_SEND_MULTIPLE);
+                socialMediaIntent.putParcelableArrayListExtra(Intent.EXTRA_STREAM, string);
+                socialMediaIntent.setType("");
+                startActivity(Intent.createChooser(socialMediaIntent,"Share these articles with..... "));
+
+
+
+
+
+
+
                 break;
             case R.id.heart_toolbar:
                 Toast.makeText(this, "Click on heart button", Toast.LENGTH_SHORT).show();
                 break;
+        }
+    }
+
+    private void setShareIntent(Intent shareIntent) {
+        if (mShareActionProvider != null) {
+            mShareActionProvider.setShareIntent(shareIntent);
         }
     }
 }
