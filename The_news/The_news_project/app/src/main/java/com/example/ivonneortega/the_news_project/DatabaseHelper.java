@@ -262,7 +262,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     //GET ARTICLES BY TITLE (SEARCH)
     ////////////////////
 
-    public List<Article> searchPositions(String query){
+    public List<Article> searchArticles(String query){
         SQLiteDatabase db = this.getReadableDatabase();
 
 
