@@ -51,6 +51,10 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public static final String COL_SOURCE = "source";
     public static final String COL_IS_SAVED = "saved";
     public static final String COL_CATEGORY = "category";
+    public static final String COL_IMAGE = "source";
+    public static final String COL_IS_TOP_STORY = "saved";
+    public static final String COL_URL = "category";
+
 
 
     private static final String CREATE_TABLE_ARTICLES = "CREATE_TABLE " + TABLE_ARTICLES + "(" +
@@ -61,6 +65,9 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             COL_SOURCE + " TEXT " +
             COL_IS_SAVED + " INTEGER " +
             COL_CATEGORY + " TEXT " +
+            COL_IMAGE + " TEXT " +
+            COL_IS_TOP_STORY + " INTEGER " +
+            COL_URL + " TEXT " +
 
             " ) ";
 
@@ -113,16 +120,24 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         if (cursor.moveToFirst()) {
 
             articles = new Article(
-
                     cursor.getLong(cursor.getColumnIndex(COL_ID)),
+                    new String("image"),
                     cursor.getString(cursor.getColumnIndex(COL_TITLE)),
-                    cursor.getString(cursor.getColumnIndex(COL_BODY)),
+                    cursor.getString(cursor.getColumnIndex(COL_CATEGORY)),
                     cursor.getString(cursor.getColumnIndex(COL_DATE)),
+                    cursor.getString(cursor.getColumnIndex(COL_BODY)),
                     cursor.getString(cursor.getColumnIndex(COL_SOURCE)),
-                    cursor.getString(cursor.getColumnIndex(COL_IS_SAVED)),
-                    cursor.getString(cursor.getColumnIndex(COL_CATEGORY))
+                    cursor.getInt(cursor.getColumnIndex(COL_IS_SAVED)),
+                    cursor.getString(cursor.getColumnIndex(COL_IMAGE)),
+                    cursor.getInt(cursor.getColumnIndex(COL_IS_TOP_STORY)),
+                    cursor.getString(cursor.getColumnIndex(COL_URL))
 
-            );
+
+
+
+
+
+                    );
             cursor.close();
             return articles;
         }
@@ -140,11 +155,22 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
 
     //TODO NEED TO ADD MORE STUFF DEPENDING ON OUR DATABASE
-    public long insertArticleIntoDatabase(int id, int thisQuantity) {
+    public long insertArticleIntoDatabase(long id,String image, String title, String category, String date,
+                                          String body, String source, int isSaved, int isTopStory,String url) {
         SQLiteDatabase db = getWritableDatabase();
 
         ContentValues values = new ContentValues();
         values.put(COL_ID, id);
+        //ADD IMAGE TO DATABASE
+        values.put(COL_TITLE,title);
+        values.put(COL_CATEGORY,category);
+        values.put(COL_DATE,date);
+        values.put(COL_BODY,body);
+        values.put(COL_SOURCE,source);
+        values.put(COL_IS_SAVED,isSaved);
+        values.put(COL_IMAGE,image);
+        values.put(COL_IS_TOP_STORY,isTopStory);
+        values.put(COL_URL,url);
 
 
         long idToReturn = db.insert(TABLE_ARTICLES,null,values);
@@ -167,9 +193,9 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     //DELETE FROM DB BY ID
     ////////////////////
 
-    public void deleteIndividualArticlesFromDatabase(int id){
+    public void deleteIndividualArticlesFromDatabase(long id){
         SQLiteDatabase db = getWritableDatabase();
-        db.delete(TABLE_ARTICLES, COL_ID+"= ?", new String[]{String.valueOf(id)});
+        db.delete(TABLE_ARTICLES, COL_ID+" = ?", new String[]{String.valueOf(id)});
     }
 
 
@@ -179,9 +205,14 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     ////////////////////
 
     public void saveArticle(long id){
-        Article article = new Article
-
-        upDateSaves(articles.getmId() ,saved);
+        SQLiteDatabase db = getWritableDatabase();
+            ContentValues values = new ContentValues();
+            values.put(COL_IS_SAVED,true);
+            db.update(TABLE_ARTICLES,
+                    values,
+                    COL_ID + " = ?",
+                    new String[]{String.valueOf(id)}
+            );
 
     }
 
@@ -191,11 +222,15 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     //UN SAVED ARTICLES BY ID
     ////////////////////
 
-    public void unSaveArticle(Article articles, int subtract){
-        int saved = articles.getmIsSaved()-subtract;
-
-        upDateSaves(articles.getmId() ,saved);
-
+    public void unSaveArticle(long id){
+        SQLiteDatabase db = getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put(COL_IS_SAVED,false);
+        db.update(TABLE_ARTICLES,
+                values,
+                COL_ID + " = ?",
+                new String[]{String.valueOf(id)}
+        );
 
     }
 
@@ -207,15 +242,17 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     public void deleteAllSavedArticles(){
         SQLiteDatabase db = getWritableDatabase();
-        ContentValues contentValues = new ContentValues();
-        contentValues.put(COL_IS_SAVED, 0);
-        db.update(TABLE_ARTICLES,
-                contentValues,
-                COL_IS_SAVED + " > 0",
-                null);
+        Cursor cursor = db.query(TABLE_ARTICLES,null,null,null,null,null,null);
+
+        if(cursor.moveToFirst())
+        {
+            while(!cursor.isAfterLast()) {
+                deleteIndividualArticlesFromDatabase(cursor.getLong(cursor.getColumnIndex(COL_ID)));
+                cursor.moveToNext();
+            }
+        }
 
         db.close();
-
     }
 
 
@@ -242,14 +279,16 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
         if(cursor.moveToFirst()){
             while (!cursor.isAfterLast()){
-                articles.add(new Artcle(
+                articles.add( new Article(
                         cursor.getLong(cursor.getColumnIndex(COL_ID)),
+                        new String("image"),
                         cursor.getString(cursor.getColumnIndex(COL_TITLE)),
-                        cursor.getString(cursor.getColumnIndex(COL_BODY)),
+                        cursor.getString(cursor.getColumnIndex(COL_CATEGORY)),
                         cursor.getString(cursor.getColumnIndex(COL_DATE)),
+                        cursor.getString(cursor.getColumnIndex(COL_BODY)),
                         cursor.getString(cursor.getColumnIndex(COL_SOURCE)),
-                        cursor.getString(cursor.getColumnIndex(COL_IS_SAVED)).equals("true"),
-                        cursor.getString(cursor.getColumnIndex(COL_CATEGORY))));
+                        cursor.getInt(cursor.getColumnIndex(COL_IS_SAVED))
+                ));
 
                 cursor.moveToNext();
             }
