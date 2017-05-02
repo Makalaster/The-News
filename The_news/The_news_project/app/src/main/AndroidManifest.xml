@@ -18,11 +18,13 @@
             android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
                 <category android:name="android.intent.category.LAUNCHER"/>
+
                 <action android:name="android.intent.action.MAIN"/>
             </intent-filter>
             <intent-filter>
-                <data android:mimeType="text/plain" />
-                <action android:name="android.intent.action.SEND" />
+                <data android:mimeType="text/plain"/>
+
+                <action android:name="android.intent.action.SEND"/>
             </intent-filter>
         </activity>
         <activity
@@ -41,12 +43,18 @@
             android:theme="@style/AppTheme">
         </activity>
 
-        <service android:name=".MainActivity.ArticleRefreshService"
-                 android:permission="android.permission.BIND_JOB_SERVICE"/>
+        <service
+            android:name=".MainActivity.ArticleRefreshService"
+            android:permission="android.permission.BIND_JOB_SERVICE"/>
 
-        <activity android:name=".DetailView.CollectionDemoActivity"
-                  android:label="CollectionDemoActivity"
-                  android:theme="@style/AppTheme">
+        <activity
+            android:name=".DetailView.CollectionDemoActivity"
+            android:label="CollectionDemoActivity"
+            android:theme="@style/AppTheme">
+        </activity>
+        <activity
+            android:name=".SettingsActivity"
+            android:label="@string/title_activity_settings">
         </activity>
     </application>
 
