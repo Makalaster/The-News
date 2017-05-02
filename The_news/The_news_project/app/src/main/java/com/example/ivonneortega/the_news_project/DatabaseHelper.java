@@ -293,7 +293,34 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return articles;
     }
 
+    public Article getArticleByUrl(String url) {
+        SQLiteDatabase db = getReadableDatabase();
 
+        Cursor cursor = db.query(TABLE_ARTICLES,
+                null,
+                COL_URL + " = ?",
+                new String[]{url},
+                null, null, null);
+
+        Article article = null;
+
+        if (cursor.moveToFirst()) {
+            article = new Article(cursor.getLong(cursor.getColumnIndex(COL_ID)),
+                    cursor.getString(cursor.getColumnIndex(COL_IMAGE)),
+                    cursor.getString(cursor.getColumnIndex(COL_TITLE)),
+                    cursor.getString(cursor.getColumnIndex(COL_CATEGORY)),
+                    cursor.getString(cursor.getColumnIndex(COL_DATE)),
+                    cursor.getString(cursor.getColumnIndex(COL_BODY)),
+                    cursor.getString(cursor.getColumnIndex(COL_SOURCE)),
+                    cursor.getInt(cursor.getColumnIndex(COL_IS_SAVED)),
+                    cursor.getInt(cursor.getColumnIndex(COL_IS_TOP_STORY)),
+                    cursor.getString(cursor.getColumnIndex(COL_URL)));
+        }
+
+        cursor.close();
+
+        return article;
+    }
 
 
 }

@@ -122,7 +122,7 @@ public class ArticleRefreshService extends JobService {
                         try
                         {
                             JSONArray results = response.getJSONArray("results");
-                            for(int i=0;i<results.length();i++)
+                            for(int i = 0; i < results.length(); i++)
                             {
                                 JSONObject article = results.getJSONObject(i);
                                 addArticleToDatabase(article, 1);
@@ -154,15 +154,12 @@ public class ArticleRefreshService extends JobService {
                     public void onResponse(JSONObject response) {
                         try
                         {
-                            JSONArray items = response.getJSONArray("results");
+                            JSONArray results = response.getJSONArray("results");
 
-                            for(int i=0;i<items.length();i++)
+                            for(int i = 0; i < results.length(); i++)
                             {
-                                JSONObject aux = items.getJSONObject(i);
-                                String url = aux.getString("url");
-                                Log.d(TAG, "onResponse: newsWire url - " + url);
-                                //searchArticlesRetrofit(url, 0);
-                                //searchArticles(url, 0);
+                                JSONObject article = results.getJSONObject(i);
+                                addArticleToDatabase(article, 1);
                             }
 
                         } catch (JSONException e) {
@@ -203,11 +200,12 @@ public class ArticleRefreshService extends JobService {
         } catch (JSONException e) {
             e.printStackTrace();
         }
-
         String source = "New York Times";
         int isSaved = 0;
 
-        db.insertArticleIntoDatabase(image, title, category, date, null, source, isSaved, fromTopStories, url);
+        if (db.getArticleByUrl(url) == null) {
+            db.insertArticleIntoDatabase(image, title, category, date, null, source, isSaved, fromTopStories, url);
+        }
     }
 
     public void searchArticles(String url, final int fromTopStories) {
