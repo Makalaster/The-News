@@ -5,7 +5,6 @@ import android.app.job.JobScheduler;
 import android.content.ComponentName;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.GravityCompat;
@@ -17,10 +16,9 @@ import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageButton;
-import android.widget.ImageView;
 import android.widget.Toast;
 
-import com.example.ivonneortega.the_news_project.Article;
+import com.example.ivonneortega.the_news_project.data.Article;
 import com.example.ivonneortega.the_news_project.CategoryView.CategoryViewActivity;
 import com.example.ivonneortega.the_news_project.DatabaseHelper;
 import com.example.ivonneortega.the_news_project.MainActivity.Fragments.FragmentAdapterMainActivity;
@@ -72,11 +70,12 @@ public class MainActivity extends AppCompatActivity
 
         JobInfo refreshJob = new JobInfo.Builder(ARTICLE_REFRESH_JOB, componentName)
                 .setRequiredNetworkType(JobInfo.NETWORK_TYPE_ANY)
+                .setRequiresCharging(true)
                 .build();
 
         jobScheduler.schedule(refreshJob);
 
-        DatabaseHelper.getInstance(this).deleteAllSavedArticles();
+        //DatabaseHelper.getInstance(this).deleteAllSavedArticles();
         //addThingsToDatabase();
 
         viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {

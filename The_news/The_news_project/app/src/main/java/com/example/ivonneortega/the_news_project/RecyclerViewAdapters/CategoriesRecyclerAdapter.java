@@ -7,7 +7,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import com.example.ivonneortega.the_news_project.Category;
+import com.example.ivonneortega.the_news_project.data.Category;
 import com.example.ivonneortega.the_news_project.R;
 
 import java.util.List;

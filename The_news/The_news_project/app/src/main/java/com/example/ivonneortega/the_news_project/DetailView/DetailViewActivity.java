@@ -16,12 +16,10 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.ivonneortega.the_news_project.Article;
+import com.example.ivonneortega.the_news_project.data.Article;
 import com.example.ivonneortega.the_news_project.CategoryView.CategoryViewActivity;
 import com.example.ivonneortega.the_news_project.DatabaseHelper;
 import com.example.ivonneortega.the_news_project.R;
-
-import java.util.ArrayList;
 
 public class DetailViewActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener, View.OnClickListener, DetailViewFragment.OnFragmentInteractionListener {

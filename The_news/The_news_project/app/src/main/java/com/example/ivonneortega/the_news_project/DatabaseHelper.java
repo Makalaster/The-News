@@ -3,9 +3,10 @@ package com.example.ivonneortega.the_news_project;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
-import android.database.DatabaseErrorHandler;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+
+import com.example.ivonneortega.the_news_project.data.Article;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -166,7 +167,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
 
         long idToReturn = db.insert(TABLE_ARTICLES,null,values);
-        db.close();
+        //db.close();
         return  idToReturn;
 //        db.update(TABLE_ARTICLES,
 //                values,
@@ -244,7 +245,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             }
         }
 
-        db.close();
+        cursor.close();
+        //db.close();
     }
 
 
@@ -298,7 +300,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         SQLiteDatabase db = this.getReadableDatabase();
         Cursor cursor = db.query(TABLE_ARTICLES, // a. table
                 null, // b. column names
-                COL_IS_TOP_STORY + " == ?", // c. selections
+                COL_IS_TOP_STORY + " = ?", // c. selections
                 new String[]{String.valueOf(Article.TRUE)}, // d. selections args
                 null, // e. group by
                 null, // f. having
@@ -335,7 +337,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         SQLiteDatabase db = this.getReadableDatabase();
         Cursor cursor = db.query(TABLE_ARTICLES, // a. table
                 null, // b. column names
-                COL_IS_SAVED + " == ?", // c. selections
+                COL_IS_SAVED + " = ?", // c. selections
                 new String[]{String.valueOf(Article.TRUE)}, // d. selections args
                 null, // e. group by
                 null, // f. having

@@ -9,38 +9,24 @@ import android.os.AsyncTask;
 import android.util.Log;
 import android.widget.Toast;
 
-import com.android.volley.DefaultRetryPolicy;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
-import com.android.volley.RetryPolicy;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
+import com.example.ivonneortega.the_news_project.data.Article;
 import com.example.ivonneortega.the_news_project.DatabaseHelper;
-import com.example.ivonneortega.the_news_project.data.Doc;
-import com.example.ivonneortega.the_news_project.data.Headline;
 import com.example.ivonneortega.the_news_project.data.NYTApiData;
-import com.example.ivonneortega.the_news_project.data.NYTSearchQuery;
-import com.example.ivonneortega.the_news_project.data.SearchResponse;
 import com.google.gson.Gson;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-import okhttp3.OkHttpClient;
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
-import retrofit2.Retrofit;
-import retrofit2.converter.gson.GsonConverterFactory;
-
 public class ArticleRefreshService extends JobService {
-    private Call<SearchResponse> mCall;
     private List<String> mNewsWireList = new ArrayList<>();
     private List<String> mTopStoriesList = new ArrayList<>();
     private static final String TAG = "ArticleRefreshService";
@@ -115,7 +101,8 @@ public class ArticleRefreshService extends JobService {
         RequestQueue queue = Volley.newRequestQueue(this);
 
         JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.GET,
-                NYTApiData.URL_TOP_STORY + query + JSON+"?api-key=" + NYTApiData.API_KEY, null,
+                //NYTApiData.URL_TOP_STORY + query + JSON+"?api-key=" + NYTApiData.API_KEY, null,
+                NYTApiData.URL_TOP_STORY + query + JSON+"?api-key=" + NYTApiData.API_KEY2, null,
                 new com.android.volley.Response.Listener<JSONObject>() {
                     @Override
                     public void onResponse(JSONObject response) {
@@ -125,7 +112,7 @@ public class ArticleRefreshService extends JobService {
                             for(int i = 0; i < results.length(); i++)
                             {
                                 JSONObject article = results.getJSONObject(i);
-                                addArticleToDatabase(article, 1);
+                                addArticleToDatabase(article, Article.TRUE);
                             }
 
                         } catch (JSONException e) {
@@ -159,7 +146,7 @@ public class ArticleRefreshService extends JobService {
                             for(int i = 0; i < results.length(); i++)
                             {
                                 JSONObject article = results.getJSONObject(i);
-                                addArticleToDatabase(article, 1);
+                                addArticleToDatabase(article, Article.FALSE);
                             }
 
                         } catch (JSONException e) {
@@ -177,35 +164,45 @@ public class ArticleRefreshService extends JobService {
         queue.add(jsonObjectRequest);
     }
 
-    public void addArticleToDatabase(JSONObject article, int fromTopStories) {
-        DatabaseHelper db = DatabaseHelper.getInstance(this);
+    public void addArticleToDatabase(JSONObject object, final int fromTopStories) {
+        final DatabaseHelper db = DatabaseHelper.getInstance(this);
 
-        String url = null;
-        String title = null;
-        String date = null;
-        String category = null;
-        String image = null;
-        try {
-            url = article.getString("url");
-            title = article.getString("title");
-            date = article.getString("published_date");
-            category = article.getString("section");
-            JSONArray multimedia = article.getJSONArray("multimedia");
-            for (int i = 0; i < multimedia.length(); i++) {
-                JSONObject pic = multimedia.getJSONObject(i);
-                if (pic.getString("format").equals("Normal") && pic.getString("type").equals("image")) {
-                    image = pic.getString("url");
+        AsyncTask<JSONObject, Void, Void> dbTask = new AsyncTask<JSONObject, Void, Void>() {
+            @Override
+            protected Void doInBackground(JSONObject... params) {
+                JSONObject object = params[0];
+
+                String url = null;
+                String title = null;
+                String date = null;
+                String category = null;
+                String image = null;
+                try {
+                    url = object.getString("url");
+                    title = object.getString("title");
+                    date = object.getString("published_date");
+                    category = object.getString("section");
+                    JSONArray multimedia = object.getJSONArray("multimedia");
+                    for (int i = 0; i < multimedia.length(); i++) {
+                        JSONObject pic = multimedia.getJSONObject(i);
+                        if (pic.getString("format").equals("Normal") && pic.getString("type").equals("image")) {
+                            image = pic.getString("url");
+                        }
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
                 }
-            }
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-        String source = "New York Times";
-        int isSaved = 0;
+                String source = "New York Times";
+                int isSaved = Article.FALSE;
 
-        if (db.getArticleByUrl(url) == null) {
-            db.insertArticleIntoDatabase(image, title, category, date, null, source, isSaved, fromTopStories, url);
-        }
+                if (db.getArticleByUrl(url) == null) {
+                    db.insertArticleIntoDatabase(image, title, category, date, null, source, isSaved, fromTopStories, url);
+                }
+
+                return null;
+            }
+        };
+        dbTask.execute(object);
     }
 
     public void searchArticles(String url, final int fromTopStories) {
@@ -217,8 +214,7 @@ public class ArticleRefreshService extends JobService {
                     @Override
                     public void onResponse(JSONObject response) {
                         Gson gson = new Gson();
-                        SearchResponse searchResponse = gson.fromJson(response.toString(), SearchResponse.class);
-                        //addArticleToDatabase(searchResponse, fromTopStories);
+
                     }
                 }, new com.android.volley.Response.ErrorListener() {
             @Override
@@ -234,8 +230,6 @@ public class ArticleRefreshService extends JobService {
 
     @Override
     public boolean onStopJob(JobParameters params) {
-        mCall.cancel();
-
         Log.d(TAG, "onStopJob: JOB STOPPED");
         return false;
     }
