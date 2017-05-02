@@ -13,7 +13,6 @@ import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageButton;
-import android.widget.Toast;
 
 import com.example.ivonneortega.the_news_project.Article;
 import com.example.ivonneortega.the_news_project.CategoryView.CategoryViewActivity;
@@ -22,6 +21,7 @@ import com.example.ivonneortega.the_news_project.MainActivity.Fragments.Fragment
 import com.example.ivonneortega.the_news_project.R;
 import com.example.ivonneortega.the_news_project.RecyclerViewAdapters.ArticlesVerticalRecyclerAdapter;
 import com.example.ivonneortega.the_news_project.Search.SearchActivity;
+import com.example.ivonneortega.the_news_project.Settings.SettingsActivity;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener, View.OnClickListener, ArticlesVerticalRecyclerAdapter.SaveAndShare{
@@ -133,7 +133,7 @@ public class MainActivity extends AppCompatActivity
         switch (v.getId())
         {
             case R.id.options_toolbar:
-                Toast.makeText(this, "Click on options button", Toast.LENGTH_SHORT).show();
+                moveToSettingsActivity();
                 break;
             case R.id.search_toolbar:
                 moveToSearchActivity();
@@ -151,6 +151,12 @@ public class MainActivity extends AppCompatActivity
     public void moveToCategoryViewActivity()
     {
         Intent intent = new Intent(this, CategoryViewActivity.class);
+        startActivity(intent);
+    }
+
+    public void moveToSettingsActivity()
+    {
+        Intent intent = new Intent(this, SettingsActivity.class);
         startActivity(intent);
     }
 
