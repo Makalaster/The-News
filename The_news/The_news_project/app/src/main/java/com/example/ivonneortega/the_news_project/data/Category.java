@@ -1,4 +1,6 @@
-package com.example.ivonneortega.the_news_project;
+package com.example.ivonneortega.the_news_project.data;
+
+import com.example.ivonneortega.the_news_project.data.Article;
 
 import java.util.List;
 

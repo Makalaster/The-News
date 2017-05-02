@@ -20,7 +20,7 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.Toast;
 
-import com.example.ivonneortega.the_news_project.Article;
+import com.example.ivonneortega.the_news_project.data.Article;
 import com.example.ivonneortega.the_news_project.CategoryView.CategoryViewActivity;
 import com.example.ivonneortega.the_news_project.DatabaseHelper;
 import com.example.ivonneortega.the_news_project.MainActivity.Fragments.FragmentAdapterMainActivity;
@@ -68,16 +68,17 @@ public class MainActivity extends AppCompatActivity
         optionsToolbar.setOnClickListener(this);
         searchToolbar.setOnClickListener(this);
 
-//        JobScheduler jobScheduler = (JobScheduler) getSystemService(JOB_SCHEDULER_SERVICE);
-//        ComponentName componentName = new ComponentName(this, ArticleRefreshService.class);
-//
-//        JobInfo refreshJob = new JobInfo.Builder(ARTICLE_REFRESH_JOB, componentName)
-//                .setRequiredNetworkType(JobInfo.NETWORK_TYPE_ANY)
-//                .build();
-//
-//        jobScheduler.schedule(refreshJob);
+        JobScheduler jobScheduler = (JobScheduler) getSystemService(JOB_SCHEDULER_SERVICE);
+        ComponentName componentName = new ComponentName(this, ArticleRefreshService.class);
 
-//        DatabaseHelper.getInstance(this).deleteAllSavedArticles();
+        JobInfo refreshJob = new JobInfo.Builder(ARTICLE_REFRESH_JOB, componentName)
+                .setRequiredNetworkType(JobInfo.NETWORK_TYPE_ANY)
+                .setRequiresCharging(true)
+                .build();
+
+        jobScheduler.schedule(refreshJob);
+
+        //DatabaseHelper.getInstance(this).deleteAllSavedArticles();
         //addThingsToDatabase();
 
         viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {

@@ -9,9 +9,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.example.ivonneortega.the_news_project.Category;
-import com.example.ivonneortega.the_news_project.Article;
-import com.example.ivonneortega.the_news_project.DBAssetHelper;
+import com.example.ivonneortega.the_news_project.data.Category;
+import com.example.ivonneortega.the_news_project.data.Article;
 import com.example.ivonneortega.the_news_project.DatabaseHelper;
 import com.example.ivonneortega.the_news_project.RecyclerViewAdapters.CategoriesRecyclerAdapter;
 import com.example.ivonneortega.the_news_project.R;
@@ -81,20 +80,33 @@ public class FragmentAllStories extends Fragment {
 //        allStories.add(new Category("Category 2",categoryIndividualItems));
 //        allStories.add(new Category("Category 3",categoryIndividualItems));
 
-
-        categoryIndividualItems = DatabaseHelper.getInstance(view.getContext()).getArticlesByCategory("Business");
+        DatabaseHelper db = DatabaseHelper.getInstance(view.getContext());
+        categoryIndividualItems = db.getArticlesByCategory("Business");
         allStories.add(new Category("Business",categoryIndividualItems));
-        categoryIndividualItems = DatabaseHelper.getInstance(view.getContext()).getArticlesByCategory("Tech");
+        categoryIndividualItems = db.getArticlesByCategory("Tech");
         allStories.add(new Category("Tech",categoryIndividualItems));
-        categoryIndividualItems = DatabaseHelper.getInstance(view.getContext()).getArticlesByCategory("World");
+        categoryIndividualItems = db.getArticlesByCategory("World");
         allStories.add(new Category("World",categoryIndividualItems));
+        categoryIndividualItems = db.getArticlesByCategory("Health");
+        allStories.add(new Category("Health", categoryIndividualItems));
+        categoryIndividualItems = db.getArticlesByCategory("u.s.");
+        allStories.add(new Category("National", categoryIndividualItems));
+        categoryIndividualItems = db.getArticlesByCategory("science");
+        allStories.add(new Category("Science", categoryIndividualItems));
+        categoryIndividualItems = db.getArticlesByCategory("sports");
+        allStories.add(new Category("Sports", categoryIndividualItems));
+        categoryIndividualItems = db.getArticlesByCategory("movies");
+        allStories.add(new Category("Movies", categoryIndividualItems));
+        categoryIndividualItems = db.getArticlesByCategory("fashion");
+        allStories.add(new Category("Fashion", categoryIndividualItems));
+        categoryIndividualItems = db.getArticlesByCategory("food");
+        allStories.add(new Category("Food", categoryIndividualItems));
 
         //Setting Adapter With lists
         CategoriesRecyclerAdapter adapter = new CategoriesRecyclerAdapter(allStories);
         recyclerView.setAdapter(adapter);
 
         return view;
-
     }
 
     // TODO: Rename method, update argument and hook method into UI event

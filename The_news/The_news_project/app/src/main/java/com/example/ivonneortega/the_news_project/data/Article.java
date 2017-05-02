@@ -1,4 +1,4 @@
-package com.example.ivonneortega.the_news_project;
+package com.example.ivonneortega.the_news_project.data;
 
 import android.util.Log;
 
