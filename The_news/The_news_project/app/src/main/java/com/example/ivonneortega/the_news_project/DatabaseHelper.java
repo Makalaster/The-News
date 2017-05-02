@@ -49,16 +49,17 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public static final String COL_BODY = "body";
     public static final String COL_DATE = "date";
     public static final String COL_SOURCE = "source";
-    public static final String COL_IS_SAVED = "saved";
+    public static final String COL_IS_SAVED = "isSaved";
     public static final String COL_CATEGORY = "category";
     public static final String COL_IMAGE = "image";
-    public static final String COL_IS_TOP_STORY = "top";
+    public static final String COL_IS_TOP_STORY = "isTopStory";
     public static final String COL_URL = "url";
 
 
 
-    private static final String CREATE_TABLE_ARTICLES = "CREATE TABLE " + TABLE_ARTICLES + "(" +
-            COL_ID + " INTEGER NOT NULL PRIMARY KEY, " +
+
+    private static final String CREATE_TABLE_ARTICLES = "CREATE TABLE " + TABLE_ARTICLES + " (" +
+            COL_ID + " INTEGER PRIMARY KEY, " +
             COL_TITLE + " TEXT, " +
             COL_BODY + " TEXT, " +
             COL_DATE + " TEXT, " +
@@ -67,9 +68,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             COL_CATEGORY + " TEXT, " +
             COL_IMAGE + " TEXT, " +
             COL_IS_TOP_STORY + " INTEGER, " +
-            COL_URL + " TEXT" +
-
-            " ) ";
+            COL_URL + " TEXT" + ")";
 
 
     @Override
@@ -150,7 +149,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     //TODO NEED TO ADD MORE STUFF DEPENDING ON OUR DATABASE
     public long insertArticleIntoDatabase(String image, String title, String category, String date,
-                                          String body, String source, int isSaved, int isTopStory, String url) {
+                                          String body, String source, int isSaved, int isTopStory,String url) {
         SQLiteDatabase db = getWritableDatabase();
 
         ContentValues values = new ContentValues();
@@ -200,7 +199,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public void saveArticle(long id){
         SQLiteDatabase db = getWritableDatabase();
             ContentValues values = new ContentValues();
-            values.put(COL_IS_SAVED,true);
+            values.put(COL_IS_SAVED,Article.TRUE);
             db.update(TABLE_ARTICLES,
                     values,
                     COL_ID + " = ?",
@@ -218,7 +217,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public void unSaveArticle(long id){
         SQLiteDatabase db = getWritableDatabase();
         ContentValues values = new ContentValues();
-        values.put(COL_IS_SAVED,false);
+        values.put(COL_IS_SAVED,Article.FALSE);
         db.update(TABLE_ARTICLES,
                 values,
                 COL_ID + " = ?",
@@ -230,7 +229,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
 
     ////////////////////
-    //DELETE ALL
+    //DELETE ALL SAVED ARTICLES
     ////////////////////
 
     public void deleteAllSavedArticles(){
@@ -263,6 +262,120 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 null, // b. column names
                 COL_TITLE +" LIKE ? OR " + COL_CATEGORY + " LIKE ?", // c. selections
                 new String[]{"%" + query +"%", "%" + query +"%"}, // d. selections args
+                null, // e. group by
+                null, // f. having
+                null, // g. order by
+                null); // h. limit
+
+        List<Article> articles = new ArrayList<>();
+
+        if(cursor.moveToFirst()){
+            while (!cursor.isAfterLast()){
+                articles.add( new Article(
+                        cursor.getLong(cursor.getColumnIndex(COL_ID)),
+                        cursor.getString(cursor.getColumnIndex(COL_IMAGE)),
+                        cursor.getString(cursor.getColumnIndex(COL_TITLE)),
+                        cursor.getString(cursor.getColumnIndex(COL_CATEGORY)),
+                        cursor.getString(cursor.getColumnIndex(COL_DATE)),
+                        cursor.getString(cursor.getColumnIndex(COL_BODY)),
+                        cursor.getString(cursor.getColumnIndex(COL_SOURCE)),
+                        cursor.getInt(cursor.getColumnIndex(COL_IS_SAVED)),
+                        cursor.getInt(cursor.getColumnIndex(COL_IS_TOP_STORY)),
+                        cursor.getString(cursor.getColumnIndex(COL_URL)))
+
+                );
+
+                cursor.moveToNext();
+            }
+        }
+        cursor.close();
+        return articles;
+    }
+
+
+    public List<Article> getTopStoryArticles()
+    {
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.query(TABLE_ARTICLES, // a. table
+                null, // b. column names
+                COL_IS_TOP_STORY + " == ?", // c. selections
+                new String[]{String.valueOf(Article.TRUE)}, // d. selections args
+                null, // e. group by
+                null, // f. having
+                null, // g. order by
+                null); // h. limit
+
+        List<Article> articles = new ArrayList<>();
+
+        if(cursor.moveToFirst()){
+            while (!cursor.isAfterLast()){
+                articles.add( new Article(
+                        cursor.getLong(cursor.getColumnIndex(COL_ID)),
+                        cursor.getString(cursor.getColumnIndex(COL_IMAGE)),
+                        cursor.getString(cursor.getColumnIndex(COL_TITLE)),
+                        cursor.getString(cursor.getColumnIndex(COL_CATEGORY)),
+                        cursor.getString(cursor.getColumnIndex(COL_DATE)),
+                        cursor.getString(cursor.getColumnIndex(COL_BODY)),
+                        cursor.getString(cursor.getColumnIndex(COL_SOURCE)),
+                        cursor.getInt(cursor.getColumnIndex(COL_IS_SAVED)),
+                        cursor.getInt(cursor.getColumnIndex(COL_IS_TOP_STORY)),
+                        cursor.getString(cursor.getColumnIndex(COL_URL)))
+
+                );
+
+                cursor.moveToNext();
+            }
+        }
+        cursor.close();
+        return articles;
+    }
+
+    public List<Article> getSavedArticles()
+    {
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.query(TABLE_ARTICLES, // a. table
+                null, // b. column names
+                COL_IS_SAVED + " == ?", // c. selections
+                new String[]{String.valueOf(Article.TRUE)}, // d. selections args
+                null, // e. group by
+                null, // f. having
+                null, // g. order by
+                null); // h. limit
+
+        List<Article> articles = new ArrayList<>();
+
+        if(cursor.moveToFirst()){
+            while (!cursor.isAfterLast()){
+                articles.add( new Article(
+                        cursor.getLong(cursor.getColumnIndex(COL_ID)),
+                        cursor.getString(cursor.getColumnIndex(COL_IMAGE)),
+                        cursor.getString(cursor.getColumnIndex(COL_TITLE)),
+                        cursor.getString(cursor.getColumnIndex(COL_CATEGORY)),
+                        cursor.getString(cursor.getColumnIndex(COL_DATE)),
+                        cursor.getString(cursor.getColumnIndex(COL_BODY)),
+                        cursor.getString(cursor.getColumnIndex(COL_SOURCE)),
+                        cursor.getInt(cursor.getColumnIndex(COL_IS_SAVED)),
+                        cursor.getInt(cursor.getColumnIndex(COL_IS_TOP_STORY)),
+                        cursor.getString(cursor.getColumnIndex(COL_URL)))
+
+                );
+
+                cursor.moveToNext();
+            }
+        }
+        cursor.close();
+        return articles;
+    }
+
+
+    public List<Article> getArticlesByCategory(String query){
+        SQLiteDatabase db = this.getReadableDatabase();
+
+
+        Cursor cursor = db.query(TABLE_ARTICLES, // a. table
+                null, // b. column names
+                COL_CATEGORY + " == ?", // c. selections
+                new String[]{query}, // d. selections args
                 null, // e. group by
                 null, // f. having
                 null, // g. order by

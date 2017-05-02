@@ -1,5 +1,7 @@
 package com.example.ivonneortega.the_news_project;
 
+import java.util.List;
+
 /**
  * Created by ivonneortega on 4/29/17.
  */
@@ -12,7 +14,25 @@ public class Article {
     private String mImage;
     private String mTitle,mCategory,mDate, mBody, mSource, mUrl;
     private long mId;
-    private boolean mIsSaved, mIsTopStory;
+    private boolean mIsSaved;
+
+    public String getUrl() {
+        return mUrl;
+    }
+
+    public void setUrl(String url) {
+        mUrl = url;
+    }
+
+    public boolean isTopStory() {
+        return mIsTopStory;
+    }
+
+    public void setTopStory(boolean topStory) {
+        mIsTopStory = topStory;
+    }
+
+    private boolean mIsTopStory;
     //private boolean mIsTopStory;
 
 
@@ -99,6 +119,23 @@ public class Article {
 
     public void setSaved(boolean saved) {
         mIsSaved = saved;
+    }
+
+    public static int getArticlePosition(long id, List<Article> list)
+    {
+        boolean exit=true;
+        int i=0;
+        while (exit)
+        {
+            if(list.get(i).getId()==id)
+            {
+                exit=false;
+            }
+            else
+                i++;
+            return i;
+        }
+        return -1;
     }
 
 //    public boolean isTopStory() {

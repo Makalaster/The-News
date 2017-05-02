@@ -7,17 +7,30 @@ import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.ShareActionProvider;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageButton;
+import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.ivonneortega.the_news_project.Article;
 import com.example.ivonneortega.the_news_project.CategoryView.CategoryViewActivity;
+import com.example.ivonneortega.the_news_project.DatabaseHelper;
 import com.example.ivonneortega.the_news_project.R;
 
+import java.util.ArrayList;
+
 public class DetailViewActivity extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener, View.OnClickListener {
+        implements NavigationView.OnNavigationItemSelectedListener, View.OnClickListener, DetailViewFragment.OnFragmentInteractionListener {
+
+    private long mId;
+    private ImageView mImage;
+    private TextView mTitle, mDate, mContent;
+
+    private ShareActionProvider mShareActionProvider;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -25,7 +38,6 @@ public class DetailViewActivity extends AppCompatActivity
         setContentView(R.layout.activity_detail_view);
         Toolbar toolbar = (Toolbar) findViewById(R.id.root_toolbar);
         setSupportActionBar(toolbar);
-
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
@@ -45,6 +57,17 @@ public class DetailViewActivity extends AppCompatActivity
         ImageButton heartToolbar = (ImageButton) findViewById(R.id.heart_toolbar);
         heartToolbar.setClickable(true);
         heartToolbar.setOnClickListener(this);
+
+        Intent intent = getIntent();
+        mId = intent.getLongExtra(DatabaseHelper.COL_ID,-1);
+        Article article = DatabaseHelper.getInstance(this).getArticlesById(mId);
+
+//        DetailViewFragment detailFragment = DetailViewFragment.newInstance(article);
+//        getSupportFragmentManager().beginTransaction()
+//                .replace(R.id.fragment_container,detailFragment)
+//                .commit();
+        //creatingViews();
+
     }
 
     @Override
@@ -106,5 +129,54 @@ public class DetailViewActivity extends AppCompatActivity
                 Toast.makeText(this, "Click on heart button", Toast.LENGTH_SHORT).show();
                 break;
         }
+    }
+    private void setShareIntent(Intent shareIntent) {
+        if (mShareActionProvider != null) {
+            mShareActionProvider.setShareIntent(shareIntent);
+        }
+
+    }
+
+    public void creatingViews()
+    {
+        Toolbar toolbar = (Toolbar) findViewById(R.id.root_toolbar);
+        setSupportActionBar(toolbar);
+
+
+        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
+                this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+        drawer.setDrawerListener(toggle);
+        toggle.syncState();
+
+        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
+        navigationView.setNavigationItemSelectedListener(this);
+
+        ImageButton optionsToolbar = (ImageButton) findViewById(R.id.options_toolbar);
+        optionsToolbar.setClickable(true);
+        ImageButton shareToolbar = (ImageButton) findViewById(R.id.share_toolbar);
+        shareToolbar.setClickable(true);
+        optionsToolbar.setOnClickListener(this);
+        shareToolbar.setOnClickListener(this);
+        ImageButton heartToolbar = (ImageButton) findViewById(R.id.heart_toolbar);
+        heartToolbar.setClickable(true);
+        heartToolbar.setOnClickListener(this);
+
+        mImage = (ImageView) findViewById(R.id.detail_image);
+        mTitle = (TextView) findViewById(R.id.detail_title);
+        mDate = (TextView) findViewById(R.id.detail_date);
+        mContent = (TextView) findViewById(R.id.detail_content);
+    }
+
+    public void settingUpViews()
+    {
+        Intent intent = getIntent();
+        mId = intent.getLongExtra(DatabaseHelper.COL_ID,-1);
+        Article article = DatabaseHelper.getInstance(this).getArticlesById(mId);
+    }
+
+    @Override
+    public void onFragmentInteraction() {
+
     }
 }
