@@ -81,8 +81,6 @@ implements NavigationView.OnNavigationItemSelectedListener, View.OnClickListener
         Article article = DatabaseHelper.getInstance(this).getArticlesById(mId);
         articleList = DatabaseHelper.getInstance(this).getArticlesByCategory(article.getCategory());
         mPosition = Article.getArticlePosition(mId,articleList);
-//        Log.d(TAG, "onCreate POSITION: "+mPosition);
-//        Log.d(TAG, "onCreate ID: "+mId);
         creatingViews();
 
 
@@ -275,7 +273,6 @@ implements NavigationView.OnNavigationItemSelectedListener, View.OnClickListener
 
         @Override
         public Fragment getItem(int i) {
-            Log.d(TAG, "getItem: "+i);
             Fragment fragment = new DemoObjectFragment();
             Bundle args = new Bundle();
             args.putString(TITLE,mList.get(i).getTitle());
