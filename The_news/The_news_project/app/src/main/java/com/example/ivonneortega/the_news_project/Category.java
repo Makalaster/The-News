@@ -31,4 +31,6 @@ public class Category {
     public void setList(List<Article> list) {
         mList = list;
     }
+
+
 }

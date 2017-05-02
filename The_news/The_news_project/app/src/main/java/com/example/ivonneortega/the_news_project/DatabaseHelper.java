@@ -295,4 +295,45 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
 
 
+    public List<Article> getArticlesByCategory(String query){
+        SQLiteDatabase db = this.getReadableDatabase();
+
+
+        Cursor cursor = db.query(TABLE_ARTICLES, // a. table
+                null, // b. column names
+                COL_CATEGORY + " LIKE ?", // c. selections
+                new String[]{"%" + query +"%"}, // d. selections args
+                null, // e. group by
+                null, // f. having
+                null, // g. order by
+                null); // h. limit
+
+        List<Article> articles = new ArrayList<>();
+
+        if(cursor.moveToFirst()){
+            while (!cursor.isAfterLast()){
+                articles.add( new Article(
+                        cursor.getLong(cursor.getColumnIndex(COL_ID)),
+                        cursor.getString(cursor.getColumnIndex(COL_IMAGE)),
+                        cursor.getString(cursor.getColumnIndex(COL_TITLE)),
+                        cursor.getString(cursor.getColumnIndex(COL_CATEGORY)),
+                        cursor.getString(cursor.getColumnIndex(COL_DATE)),
+                        cursor.getString(cursor.getColumnIndex(COL_BODY)),
+                        cursor.getString(cursor.getColumnIndex(COL_SOURCE)),
+                        cursor.getInt(cursor.getColumnIndex(COL_IS_SAVED)),
+                        cursor.getInt(cursor.getColumnIndex(COL_IS_TOP_STORY)),
+                        cursor.getString(cursor.getColumnIndex(COL_URL)))
+
+                );
+
+                cursor.moveToNext();
+            }
+        }
+        cursor.close();
+        return articles;
+    }
+
+
+
+
 }

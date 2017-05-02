@@ -34,6 +34,10 @@
             android:label="@string/title_activity_search"
             android:theme="@style/AppTheme">
         </activity>
+        <activity android:name=".DetailView.CollectionDemoActivity"
+                  android:label="CollectionDemoActivity"
+                  android:theme="@style/AppTheme">
+        </activity>
     </application>
 
 </manifest>

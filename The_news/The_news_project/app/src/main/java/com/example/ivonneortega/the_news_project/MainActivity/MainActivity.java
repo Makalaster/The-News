@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
+import android.support.design.widget.Snackbar;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.view.ViewPager;
@@ -18,13 +19,16 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.Toast;
 
+import com.example.ivonneortega.the_news_project.Article;
 import com.example.ivonneortega.the_news_project.CategoryView.CategoryViewActivity;
+import com.example.ivonneortega.the_news_project.DatabaseHelper;
 import com.example.ivonneortega.the_news_project.MainActivity.Fragments.FragmentAdapterMainActivity;
 import com.example.ivonneortega.the_news_project.R;
+import com.example.ivonneortega.the_news_project.RecyclerViewAdapters.ArticlesVerticalRecyclerAdapter;
 import com.example.ivonneortega.the_news_project.Search.SearchActivity;
 
 public class MainActivity extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener, View.OnClickListener{
+        implements NavigationView.OnNavigationItemSelectedListener, View.OnClickListener, ArticlesVerticalRecyclerAdapter.SaveAndShare{
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -124,6 +128,41 @@ public class MainActivity extends AppCompatActivity
     {
         Intent intent = new Intent(this, CategoryViewActivity.class);
         startActivity(intent);
+    }
+
+
+    @Override
+    public void saveAndUnsave(Article article) {
+//        if(mList.get(holder.getAdapterPosition()).isSaved())
+//        {
+//            holder.mHeart.setImageResource(R.mipmap.ic_favorite_border_black_24dp);
+//            DatabaseHelper.getInstance(v.getContext()).unSaveArticle(mList.get(holder.getAdapterPosition()).getId());
+//            Snackbar.make(holder.mHeart.getContext().findViewById(android.R.id.content), "Article unsaved", Snackbar.LENGTH_LONG)
+//                    .setAction("UNDO", new View.OnClickListener() {
+//                        @Override
+//                        public void onClick(View v) {
+//                            holder.mHeart.setImageResource(R.mipmap.ic_favorite_black_24dp);
+//                            DatabaseHelper.getInstance(v.getContext()).saveArticle(mList.get(holder.getAdapterPosition()).getId());
+//                        }
+//                    })
+//                    .setActionTextColor(v.getResources().getColor(R.color.colorPrimaryDark))
+//                    .show();
+//        }
+//        else
+//        {
+//            holder.mHeart.setImageResource(R.mipmap.ic_favorite_black_24dp);
+//            DatabaseHelper.getInstance(v.getContext()).saveArticle(mList.get(holder.getAdapterPosition()).getId());
+//            Snackbar.make(v.findViewById(android.R.id.content), "Article saved", Snackbar.LENGTH_LONG)
+//                    .setAction("UNDO", new View.OnClickListener() {
+//                        @Override
+//                        public void onClick(View v) {
+//                            holder.mHeart.setImageResource(R.mipmap.ic_favorite_border_black_24dp);
+//                            DatabaseHelper.getInstance(v.getContext()).unSaveArticle(mList.get(holder.getAdapterPosition()).getId());
+//                        }
+//                    })
+//                    .setActionTextColor(v.getResources().getColor(R.color.colorPrimaryDark))
+//                    .show();
+//        }
     }
 
 
