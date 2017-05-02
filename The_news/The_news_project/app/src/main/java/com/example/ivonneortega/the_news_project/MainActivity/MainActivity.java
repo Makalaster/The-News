@@ -77,7 +77,7 @@ public class MainActivity extends AppCompatActivity
         jobScheduler.schedule(refreshJob);
 
         DatabaseHelper.getInstance(this).deleteAllSavedArticles();
-        addThingsToDatabase();
+        //addThingsToDatabase();
 
         viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override

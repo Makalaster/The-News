@@ -374,8 +374,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
         Cursor cursor = db.query(TABLE_ARTICLES, // a. table
                 null, // b. column names
-                COL_CATEGORY + " == ?", // c. selections
-                new String[]{query}, // d. selections args
+                COL_CATEGORY + " LIKE ?", // c. selections
+                new String[]{"%" + query + "%"}, // d. selections args
                 null, // e. group by
                 null, // f. having
                 null, // g. order by
