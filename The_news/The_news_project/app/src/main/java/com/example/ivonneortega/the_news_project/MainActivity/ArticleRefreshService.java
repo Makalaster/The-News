@@ -5,11 +5,14 @@ import android.app.job.JobService;
 import android.content.Context;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.os.AsyncTask;
 import android.util.Log;
 import android.widget.Toast;
 
+import com.android.volley.DefaultRetryPolicy;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
+import com.android.volley.RetryPolicy;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
@@ -25,9 +28,11 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+import okhttp3.OkHttpClient;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -80,19 +85,63 @@ public class ArticleRefreshService extends JobService {
         ConnectivityManager connMgr = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo networkInfo = connMgr.getActiveNetworkInfo();
         if (networkInfo != null) {
+            for (String topic : mTopStoriesList) {
+                AsyncTask<String, Void, Void> topTask = new AsyncTask<String, Void, Void>() {
+                    @Override
+                    protected Void doInBackground(String... params) {
+                        queryTopStories(params[0]);
+                        try {
+                            Thread.sleep(250);
+                        } catch (InterruptedException e) {
+                            e.printStackTrace();
+                        }
+                        return null;
+                    }
+                };
+                topTask.execute(topic);
+            }
 
             for (String topic : mNewsWireList) {
                 queryNewsWire(topic);
-            }
-
-            for (String topic : mTopStoriesList) {
-                queryTopStories(topic);
             }
 
             jobFinished(params, true);
         }
 
         return true;
+    }
+
+    private void queryTopStories(String query) {
+        RequestQueue queue = Volley.newRequestQueue(this);
+
+        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.GET,
+                NYTApiData.URL_TOP_STORY + query + JSON+"?api-key=" + NYTApiData.API_KEY, null,
+                new com.android.volley.Response.Listener<JSONObject>() {
+                    @Override
+                    public void onResponse(JSONObject response) {
+                        try
+                        {
+                            JSONArray results = response.getJSONArray("results");
+                            for(int i=0;i<results.length();i++)
+                            {
+                                JSONObject article = results.getJSONObject(i);
+                                addArticleToDatabase(article, 1);
+                            }
+
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+
+                    }
+                }, new com.android.volley.Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Toast.makeText(getApplicationContext(), "Error", Toast.LENGTH_SHORT).show();
+                Log.d(TAG, "onErrorResponse: " + error);
+            }
+        });
+
+        queue.add(jsonObjectRequest);
     }
 
     private void queryNewsWire(String query) {
@@ -113,7 +162,7 @@ public class ArticleRefreshService extends JobService {
                                 String url = aux.getString("url");
                                 Log.d(TAG, "onResponse: newsWire url - " + url);
                                 //searchArticlesRetrofit(url, 0);
-                                searchArticles(url, 0);
+                                //searchArticles(url, 0);
                             }
 
                         } catch (JSONException e) {
@@ -131,38 +180,34 @@ public class ArticleRefreshService extends JobService {
         queue.add(jsonObjectRequest);
     }
 
-    private void queryTopStories(String query) {
-        RequestQueue queue = Volley.newRequestQueue(this);
+    public void addArticleToDatabase(JSONObject article, int fromTopStories) {
+        DatabaseHelper db = DatabaseHelper.getInstance(this);
 
-        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.GET,
-                NYTApiData.URL_TOP_STORY + query + JSON+"?api-key=" + NYTApiData.API_KEY, null,
-                new com.android.volley.Response.Listener<JSONObject>() {
-                    @Override
-                    public void onResponse(JSONObject response) {
-                        try
-                        {
-                            JSONArray items = response.getJSONArray("results");
-                            for(int i=0;i<items.length();i++)
-                            {
-                                JSONObject aux = items.getJSONObject(i);
-                                String url = aux.getString("url");
-                                //searchArticlesRetrofit(url, 1);
-                            }
-
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                        }
-
-                    }
-                }, new com.android.volley.Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                Toast.makeText(getApplicationContext(), "Error", Toast.LENGTH_SHORT).show();
-                Log.d(TAG, "onErrorResponse: " + error);
+        String url = null;
+        String title = null;
+        String date = null;
+        String category = null;
+        String image = null;
+        try {
+            url = article.getString("url");
+            title = article.getString("title");
+            date = article.getString("published_date");
+            category = article.getString("section");
+            JSONArray multimedia = article.getJSONArray("multimedia");
+            for (int i = 0; i < multimedia.length(); i++) {
+                JSONObject pic = multimedia.getJSONObject(i);
+                if (pic.getString("format").equals("Normal") && pic.getString("type").equals("image")) {
+                    image = pic.getString("url");
+                }
             }
-        });
-        queue.add(jsonObjectRequest);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
 
+        String source = "New York Times";
+        int isSaved = 0;
+
+        db.insertArticleIntoDatabase(image, title, category, date, null, source, isSaved, fromTopStories, url);
     }
 
     public void searchArticles(String url, final int fromTopStories) {
@@ -175,7 +220,7 @@ public class ArticleRefreshService extends JobService {
                     public void onResponse(JSONObject response) {
                         Gson gson = new Gson();
                         SearchResponse searchResponse = gson.fromJson(response.toString(), SearchResponse.class);
-                        addArticleToDatabase(searchResponse, fromTopStories);
+                        //addArticleToDatabase(searchResponse, fromTopStories);
                     }
                 }, new com.android.volley.Response.ErrorListener() {
             @Override
@@ -187,23 +232,7 @@ public class ArticleRefreshService extends JobService {
         queue.add(jsonObjectRequest);
     }
 
-    public void addArticleToDatabase(SearchResponse searchResponse, int fromTopStories) {
-        DatabaseHelper db = DatabaseHelper.getInstance(this);
 
-        com.example.ivonneortega.the_news_project.data.Response response = searchResponse.getResponse();
-        Doc doc = response.getDocs().get(0);
-        String url = doc.getWebUrl();
-        Headline headline = doc.getHeadline();
-        String mainHeadline = headline.getMain();
-        String date = doc.getPubDate();
-        String category = doc.getSectionName();
-        String body = doc.getLeadParagraph();
-        String source = "New York Times";
-        int isSaved = 0;
-
-        Log.d(TAG, "addArticleToDatabase: " + url);
-        db.insertArticleIntoDatabase(null, mainHeadline, category, date, body, source, isSaved, fromTopStories, url);
-    }
 
     @Override
     public boolean onStopJob(JobParameters params) {
