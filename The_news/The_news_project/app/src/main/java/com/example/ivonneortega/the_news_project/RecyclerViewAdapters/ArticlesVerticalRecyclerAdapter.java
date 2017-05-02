@@ -1,6 +1,8 @@
 package com.example.ivonneortega.the_news_project.RecyclerViewAdapters;
 
+import android.content.Context;
 import android.content.Intent;
+import android.support.design.widget.Snackbar;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -10,6 +12,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.ivonneortega.the_news_project.Article;
+import com.example.ivonneortega.the_news_project.DatabaseHelper;
 import com.example.ivonneortega.the_news_project.DetailView.DetailViewActivity;
 import com.example.ivonneortega.the_news_project.R;
 
@@ -24,8 +27,9 @@ import static android.content.ContentValues.TAG;
 public class ArticlesVerticalRecyclerAdapter extends RecyclerView.Adapter<ArticlesVerticalRecyclerAdapter.ArticlesViewHolder>
 implements View.OnClickListener{
 
-    List<Article> mList;
-    boolean mIsSaveFragment;
+    private List<Article> mList;
+    private boolean mIsSaveFragment;
+    private int mPosition;
 
 
     public ArticlesVerticalRecyclerAdapter(List<Article> list, boolean isSaveFragment) {
@@ -40,7 +44,10 @@ implements View.OnClickListener{
     }
 
     @Override
-    public void onBindViewHolder(ArticlesViewHolder holder, int position) {
+    public void onBindViewHolder(final ArticlesViewHolder holder, final int position) {
+
+        mPosition = position;
+
         holder.mTitle.setText(mList.get(position).getTitle());
         holder.mCategory.setText(mList.get(position).getCategory());
         holder.mDate.setText(mList.get(position).getDate());
@@ -48,9 +55,73 @@ implements View.OnClickListener{
             if (mList.get(position).isSaved())
                 holder.mHeart.setImageResource(R.mipmap.ic_favorite_black_24dp);
             else
+            {
                 holder.mHeart.setImageResource(R.mipmap.ic_favorite_border_black_24dp);
-                holder.mHeart.setOnClickListener(this);
 
+            }
+            holder.mHeart.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if(mList.get(holder.getAdapterPosition()).isSaved())
+                    {
+                        holder.mHeart.setImageResource(R.mipmap.ic_favorite_border_black_24dp);
+                        DatabaseHelper.getInstance(v.getContext()).unSaveArticle(mList.get(holder.getAdapterPosition()).getId());
+                        mList.get(holder.getAdapterPosition()).setSaved(false);
+                        Snackbar.make(holder.mRoot, "Article unsaved", Snackbar.LENGTH_LONG)
+                                .setAction("UNDO", new View.OnClickListener() {
+                                    @Override
+                                    public void onClick(View v) {
+                                        holder.mHeart.setImageResource(R.mipmap.ic_favorite_black_24dp);
+                                        mList.get(holder.getAdapterPosition()).setSaved(true);
+                                        DatabaseHelper.getInstance(v.getContext()).saveArticle(mList.get(holder.getAdapterPosition()).getId());
+                                    }
+                                })
+                                .setActionTextColor(v.getResources().getColor(R.color.colorPrimaryDark))
+                                .show();
+                    }
+                    else
+                    {
+                        holder.mHeart.setImageResource(R.mipmap.ic_favorite_black_24dp);
+                        mList.get(holder.getAdapterPosition()).setSaved(true);
+                        DatabaseHelper.getInstance(v.getContext()).saveArticle(mList.get(holder.getAdapterPosition()).getId());
+                        Snackbar.make(holder.mRoot, "Article saved", Snackbar.LENGTH_LONG)
+                                .setAction("UNDO", new View.OnClickListener() {
+                                    @Override
+                                    public void onClick(View v) {
+                                        holder.mHeart.setImageResource(R.mipmap.ic_favorite_border_black_24dp);
+                                        mList.get(holder.getAdapterPosition()).setSaved(false);
+                                        DatabaseHelper.getInstance(v.getContext()).unSaveArticle(mList.get(holder.getAdapterPosition()).getId());
+                                    }
+                                })
+                                .setActionTextColor(v.getResources().getColor(R.color.colorPrimaryDark))
+                                .show();
+                    }
+                }
+
+            });
+
+            //TODO HANDLE WHEN USER CLICKS SHARE ON SPECIFIC ARTICLE
+            holder.mShare.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+
+                    mList.get(holder.getAdapterPosition()).getUrl();
+
+                   // Intent intent  = v.getContext().getPackageManager().getLaunchIntentForPackage(application);
+
+
+
+                    Intent sendIntent = new Intent();
+                    sendIntent.setAction(Intent.ACTION_SEND);
+                    sendIntent.putExtra(Intent.EXTRA_TEXT, mList.get(holder.getAdapterPosition()).getUrl());
+
+                    sendIntent.setType("text/plain");
+                    //startActivity(Intent.createChooser(sendIntent, getResources().getText(R.string.send_to)));
+                    v.getContext().startActivity(Intent.createChooser(sendIntent, "Share using.."));
+
+
+                }
+            });
         }
         else
         {
@@ -64,7 +135,7 @@ implements View.OnClickListener{
                 clickOnProduct(v);
             }
         });
-        holder.mShare.setOnClickListener(this);
+        //holder.mShare.setOnClickListener(this);
 
 
 
@@ -86,12 +157,13 @@ implements View.OnClickListener{
         switch (v.getId())
         {
             case R.id.top_stories_heart:
-                //TODO DO SOMETHING WHEN USER CLICKS ON HEART
-                Log.d(TAG, "onClick: Clicked on heart");
+
                 break;
             case R.id.top_stories_share:
                 //TODO DO SOMETHING WHEN USER CLICKS ON SHARE
                 Log.d(TAG, "onClick: Clicked on share");
+
+
 
                 break;
         }
@@ -116,4 +188,11 @@ implements View.OnClickListener{
 
         }
     }
+
+    public interface SaveAndShare
+    {
+        public void saveAndUnsave(Article article);
+    }
+
+
 }

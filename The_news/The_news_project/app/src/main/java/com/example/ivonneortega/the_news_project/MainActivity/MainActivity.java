@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
+import android.support.design.widget.Snackbar;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.view.ViewPager;
@@ -18,13 +19,16 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.Toast;
 
+import com.example.ivonneortega.the_news_project.Article;
 import com.example.ivonneortega.the_news_project.CategoryView.CategoryViewActivity;
+import com.example.ivonneortega.the_news_project.DatabaseHelper;
 import com.example.ivonneortega.the_news_project.MainActivity.Fragments.FragmentAdapterMainActivity;
 import com.example.ivonneortega.the_news_project.R;
+import com.example.ivonneortega.the_news_project.RecyclerViewAdapters.ArticlesVerticalRecyclerAdapter;
 import com.example.ivonneortega.the_news_project.Search.SearchActivity;
 
 public class MainActivity extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener, View.OnClickListener{
+        implements NavigationView.OnNavigationItemSelectedListener, View.OnClickListener, ArticlesVerticalRecyclerAdapter.SaveAndShare{
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -86,12 +90,6 @@ public class MainActivity extends AppCompatActivity
         } else if (id == R.id.nav_manage) {
             moveToCategoryViewActivity();
 
-//        } else if (id == R.id.nav_share) {
-//            Toast.makeText(this, "Category 5", Toast.LENGTH_SHORT).show();
-//
-//        } else if (id == R.id.nav_send) {
-//            Toast.makeText(this, "Category 6", Toast.LENGTH_SHORT).show();
-//
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -126,25 +124,20 @@ public class MainActivity extends AppCompatActivity
     }
 
 
-//    @Override
-//    public boolean onCreateOptionsMenu(Menu menu) {
-//        // Inflate the menu; this adds items to the action bar if it is present.
-//        getMenuInflater().inflate(R.menu.menu_main, menu);
-//        return true;
-//    }
-//
-//    @Override
-//    public boolean onOptionsItemSelected(MenuItem item) {
-//        // Handle action bar item clicks here. The action bar will
-//        // automatically handle clicks on the Home/Up button, so long
-//        // as you specify a parent activity in AndroidManifest.xml.
-//        int id = item.getItemId();
-//
-//        //noinspection SimplifiableIfStatement
-//        if (id == R.id.action_settings) {
-//            return true;
-//        }
-//
-//        return super.onOptionsItemSelected(item);
-//    }
+    @Override
+    public void saveAndUnsave(Article article) {
+
+    }
+
+    public void addThingsToDatabase()
+    {
+        DatabaseHelper databaseHelper = DatabaseHelper.getInstance(this);
+        databaseHelper.insertArticleIntoDatabase("https://www.transit.dot.gov/sites/fta.dot.gov/files/635847974891062780-425303270_news.jpg","News 1","Business","Today","This is the body",
+                "New York Times",1,1,"https://www.transit.dot.gov/sites/fta.dot.gov/files/635847974891062780-425303270_news.jpg");
+
+        databaseHelper.insertArticleIntoDatabase("https://www.transit.dot.gov/sites/fta.dot.gov/files/635847974891062780-425303270_news.jpg","News 1","Business","Today","This is the body",
+                "New York Times",1,1,"https://www.transit.dot.gov/sites/fta.dot.gov/files/635847974891062780-425303270_news.jpg");
+    }
+
+
 }

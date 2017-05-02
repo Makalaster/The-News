@@ -49,27 +49,26 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public static final String COL_BODY = "body";
     public static final String COL_DATE = "date";
     public static final String COL_SOURCE = "source";
-    public static final String COL_IS_SAVED = "saved";
+    public static final String COL_IS_SAVED = "isSaved";
     public static final String COL_CATEGORY = "category";
     public static final String COL_IMAGE = "image";
-    public static final String COL_IS_TOP_STORY = "saved";
+    public static final String COL_IS_TOP_STORY = "isTopStory";
     public static final String COL_URL = "url";
 
 
 
-    private static final String CREATE_TABLE_ARTICLES = "CREATE TABLE " + TABLE_ARTICLES + "(" +
-            COL_ID + " INTEGER NOT NULL PRIMARY KEY " +
-            COL_TITLE + " TEXT " +
-            COL_BODY + " TEXT " +
-            COL_DATE + " TEXT " +
-            COL_SOURCE + " TEXT " +
-            COL_IS_SAVED + " INTEGER " +
-            COL_CATEGORY + " TEXT " +
-            COL_IMAGE + " TEXT " +
-            COL_IS_TOP_STORY + " INTEGER " +
-            COL_URL + " TEXT " +
 
-            " ) ";
+    private static final String CREATE_TABLE_ARTICLES = "CREATE TABLE " + TABLE_ARTICLES + " (" +
+            COL_ID + " INTEGER PRIMARY KEY, " +
+            COL_TITLE + " TEXT, " +
+            COL_BODY + " TEXT, " +
+            COL_DATE + " TEXT, " +
+            COL_SOURCE + " TEXT, " +
+            COL_IS_SAVED + " INTEGER, " +
+            COL_CATEGORY + " TEXT, " +
+            COL_IMAGE + " TEXT, " +
+            COL_IS_TOP_STORY + " INTEGER, " +
+            COL_URL + " TEXT" + ")";
 
 
     @Override
@@ -149,12 +148,11 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
 
     //TODO NEED TO ADD MORE STUFF DEPENDING ON OUR DATABASE
-    public long insertArticleIntoDatabase(long id,String image, String title, String category, String date,
+    public long insertArticleIntoDatabase(String image, String title, String category, String date,
                                           String body, String source, int isSaved, int isTopStory,String url) {
         SQLiteDatabase db = getWritableDatabase();
 
         ContentValues values = new ContentValues();
-        values.put(COL_ID, id);
         //ADD IMAGE TO DATABASE
         values.put(COL_TITLE,title);
         values.put(COL_CATEGORY,category);
@@ -264,6 +262,47 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 null, // b. column names
                 COL_TITLE +" LIKE ? OR " + COL_CATEGORY + " LIKE ?", // c. selections
                 new String[]{"%" + query +"%", "%" + query +"%"}, // d. selections args
+                null, // e. group by
+                null, // f. having
+                null, // g. order by
+                null); // h. limit
+
+        List<Article> articles = new ArrayList<>();
+
+        if(cursor.moveToFirst()){
+            while (!cursor.isAfterLast()){
+                articles.add( new Article(
+                        cursor.getLong(cursor.getColumnIndex(COL_ID)),
+                        cursor.getString(cursor.getColumnIndex(COL_IMAGE)),
+                        cursor.getString(cursor.getColumnIndex(COL_TITLE)),
+                        cursor.getString(cursor.getColumnIndex(COL_CATEGORY)),
+                        cursor.getString(cursor.getColumnIndex(COL_DATE)),
+                        cursor.getString(cursor.getColumnIndex(COL_BODY)),
+                        cursor.getString(cursor.getColumnIndex(COL_SOURCE)),
+                        cursor.getInt(cursor.getColumnIndex(COL_IS_SAVED)),
+                        cursor.getInt(cursor.getColumnIndex(COL_IS_TOP_STORY)),
+                        cursor.getString(cursor.getColumnIndex(COL_URL)))
+
+                );
+
+                cursor.moveToNext();
+            }
+        }
+        cursor.close();
+        return articles;
+    }
+
+
+
+
+    public List<Article> getArticlesByCategory(String query){
+        SQLiteDatabase db = this.getReadableDatabase();
+
+
+        Cursor cursor = db.query(TABLE_ARTICLES, // a. table
+                null, // b. column names
+                COL_CATEGORY + " LIKE ?", // c. selections
+                new String[]{"%" + query +"%"}, // d. selections args
                 null, // e. group by
                 null, // f. having
                 null, // g. order by

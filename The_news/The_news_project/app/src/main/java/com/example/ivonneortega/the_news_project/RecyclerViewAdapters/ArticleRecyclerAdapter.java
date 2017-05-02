@@ -3,6 +3,7 @@ package com.example.ivonneortega.the_news_project.RecyclerViewAdapters;
 import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
@@ -10,6 +11,7 @@ import android.widget.TextView;
 
 import com.example.ivonneortega.the_news_project.Article;
 import com.example.ivonneortega.the_news_project.CategoryView.CategoryViewActivity;
+import com.example.ivonneortega.the_news_project.DetailView.CollectionDemoActivity;
 import com.example.ivonneortega.the_news_project.DetailView.DetailViewActivity;
 import com.example.ivonneortega.the_news_project.R;
 
@@ -79,12 +81,13 @@ public class ArticleRecyclerAdapter extends RecyclerView.Adapter<ArticleRecycler
                 }
             });
 
+
         }
     }
 
     private void clickOnProduct(View v)
     {
-        Intent intent = new Intent(v.getContext().getApplicationContext(), DetailViewActivity.class);
+        Intent intent = new Intent(v.getContext().getApplicationContext(), CollectionDemoActivity.class);
         v.getContext().startActivity(intent);
     }
 
