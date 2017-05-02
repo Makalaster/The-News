@@ -117,7 +117,7 @@ implements View.OnClickListener{
 
                     sendIntent.setType("text/plain");
                     //startActivity(Intent.createChooser(sendIntent, getResources().getText(R.string.send_to)));
-                    v.getContext().startActivity(Intent.createChooser(sendIntent, "Share using.."));
+                    v.getContext().startActivity(Intent.createChooser(sendIntent, "Share this article using.."));
 
 
                 }
