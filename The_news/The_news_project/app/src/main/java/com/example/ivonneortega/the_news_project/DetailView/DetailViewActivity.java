@@ -7,6 +7,7 @@ import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.ShareActionProvider;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.view.View;
@@ -20,12 +21,16 @@ import com.example.ivonneortega.the_news_project.CategoryView.CategoryViewActivi
 import com.example.ivonneortega.the_news_project.DatabaseHelper;
 import com.example.ivonneortega.the_news_project.R;
 
+import java.util.ArrayList;
+
 public class DetailViewActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener, View.OnClickListener, DetailViewFragment.OnFragmentInteractionListener {
 
     private long mId;
     private ImageView mImage;
     private TextView mTitle, mDate, mContent;
+
+    private ShareActionProvider mShareActionProvider;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -124,6 +129,12 @@ public class DetailViewActivity extends AppCompatActivity
                 Toast.makeText(this, "Click on heart button", Toast.LENGTH_SHORT).show();
                 break;
         }
+    }
+    private void setShareIntent(Intent shareIntent) {
+        if (mShareActionProvider != null) {
+            mShareActionProvider.setShareIntent(shareIntent);
+        }
+
     }
 
     public void creatingViews()

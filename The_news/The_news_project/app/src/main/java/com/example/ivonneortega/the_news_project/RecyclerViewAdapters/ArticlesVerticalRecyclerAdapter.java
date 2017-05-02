@@ -116,7 +116,22 @@ implements View.OnClickListener{
             holder.mShare.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
+
                     mList.get(holder.getAdapterPosition()).getUrl();
+
+                   // Intent intent  = v.getContext().getPackageManager().getLaunchIntentForPackage(application);
+
+
+
+                    Intent sendIntent = new Intent();
+                    sendIntent.setAction(Intent.ACTION_SEND);
+                    sendIntent.putExtra(Intent.EXTRA_TEXT, mList.get(holder.getAdapterPosition()).getUrl());
+
+                    sendIntent.setType("text/plain");
+                    //startActivity(Intent.createChooser(sendIntent, getResources().getText(R.string.send_to)));
+                    v.getContext().startActivity(Intent.createChooser(sendIntent, "Share this article using.."));
+
+
                 }
             });
         }
@@ -132,7 +147,7 @@ implements View.OnClickListener{
                 clickOnProduct(v,mList.get(holder.getAdapterPosition()).getId());
             }
         });
-        holder.mShare.setOnClickListener(this);
+        //holder.mShare.setOnClickListener(this);
 
 
 
@@ -160,6 +175,8 @@ implements View.OnClickListener{
             case R.id.top_stories_share:
                 //TODO DO SOMETHING WHEN USER CLICKS ON SHARE
                 Log.d(TAG, "onClick: Clicked on share");
+
+
 
                 break;
         }

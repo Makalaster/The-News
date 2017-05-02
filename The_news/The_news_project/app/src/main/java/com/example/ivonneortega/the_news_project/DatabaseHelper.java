@@ -57,6 +57,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
 
 
+
     private static final String CREATE_TABLE_ARTICLES = "CREATE TABLE " + TABLE_ARTICLES + " (" +
             COL_ID + " INTEGER PRIMARY KEY, " +
             COL_TITLE + " TEXT, " +
@@ -228,7 +229,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
 
     ////////////////////
-    //DELETE ALL
+    //DELETE ALL SAVED ARTICLES
     ////////////////////
 
     public void deleteAllSavedArticles(){
