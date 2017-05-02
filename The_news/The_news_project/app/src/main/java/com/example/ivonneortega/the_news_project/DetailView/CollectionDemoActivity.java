@@ -20,6 +20,7 @@ import android.app.ActionBar;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
@@ -29,6 +30,7 @@ import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -42,6 +44,7 @@ import com.example.ivonneortega.the_news_project.Article;
 import com.example.ivonneortega.the_news_project.CategoryView.CategoryViewActivity;
 import com.example.ivonneortega.the_news_project.DatabaseHelper;
 import com.example.ivonneortega.the_news_project.R;
+import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -59,29 +62,26 @@ implements NavigationView.OnNavigationItemSelectedListener, View.OnClickListener
     DemoCollectionPagerAdapter mDemoCollectionPagerAdapter;
     ViewPager mViewPager;
     private long mId;
+    private int mPosition;
     private ImageView mImage;
     private TextView mTitle, mDate, mContent;
+    private List<Article> articleList;
+    private ImageButton mHeart;
 
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_detail_view);
 
-        creatingViews();
+
 
         Intent intent = getIntent();
         mId = intent.getLongExtra(DatabaseHelper.COL_ID,-1);
         Article article = DatabaseHelper.getInstance(this).getArticlesById(mId);
-        List<Article> articleList = DatabaseHelper.getInstance(this).getArticlesByCategory(article.getCategory());
+        articleList = DatabaseHelper.getInstance(this).getArticlesByCategory(article.getCategory());
+        mPosition = Article.getArticlePosition(mId,articleList);
+        creatingViews();
 
-        int position = Article.getArticlePosition(mId,articleList);
 
-        mDemoCollectionPagerAdapter = new DemoCollectionPagerAdapter(getSupportFragmentManager(),articleList);
-//
-//        final ActionBar actionBar = getActionBar();
-//        actionBar.setDisplayHomeAsUpEnabled(true);
-        mViewPager = (ViewPager) findViewById(R.id.pager);
-        mViewPager.setAdapter(mDemoCollectionPagerAdapter);
-        mViewPager.setCurrentItem(position);
 
     }
 
@@ -149,12 +149,51 @@ implements NavigationView.OnNavigationItemSelectedListener, View.OnClickListener
     public void saveArticle()
     {
 
+
+        if(articleList.get(mPosition).isSaved())
+        {
+            mHeart.setImageResource(R.mipmap.ic_favorite_border_black_24dp);
+            DatabaseHelper.getInstance(this).unSaveArticle(articleList.get(mPosition).getId());
+            articleList.get(mPosition).setSaved(false);
+            Snackbar.make(mHeart, "Article unsaved", Snackbar.LENGTH_LONG)
+                    .setAction("UNDO", new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            mHeart.setImageResource(R.mipmap.ic_favorite_black_24dp);
+                            articleList.get(mPosition).setSaved(true);
+                            DatabaseHelper.getInstance(v.getContext()).saveArticle(articleList.get(mPosition).getId());
+                        }
+                    })
+                    .setActionTextColor(getResources().getColor(R.color.colorPrimaryDark))
+                    .show();
+        }
+        else
+        {
+            mHeart.setImageResource(R.mipmap.ic_favorite_black_24dp);
+            articleList.get(mPosition).setSaved(true);
+            DatabaseHelper.getInstance(this).saveArticle(articleList.get(mPosition).getId());
+
+            Snackbar.make(mHeart, "Article saved", Snackbar.LENGTH_LONG)
+                    .setAction("UNDO", new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            mHeart.setImageResource(R.mipmap.ic_favorite_border_black_24dp);
+                            articleList.get(mPosition).setSaved(false);
+                            DatabaseHelper.getInstance(v.getContext()).unSaveArticle(articleList.get(mPosition).getId());
+                        }
+                    })
+                    .setActionTextColor(getResources().getColor(R.color.colorPrimaryDark))
+                    .show();
+        }
     }
+
 
     public void creatingViews()
     {
         Toolbar toolbar = (Toolbar) findViewById(R.id.root_toolbar);
         //setSupportActionBar(toolbar);
+
+
 
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -180,6 +219,27 @@ implements NavigationView.OnNavigationItemSelectedListener, View.OnClickListener
         mTitle = (TextView) findViewById(R.id.detail_title);
         mDate = (TextView) findViewById(R.id.detail_date);
         mContent = (TextView) findViewById(R.id.detail_content);
+
+
+        mHeart = (ImageButton) findViewById(R.id.heart_toolbar);
+        if(articleList.get(mPosition).isSaved())
+            mHeart.setImageResource(R.mipmap.ic_favorite_black_24dp);
+        else
+            mHeart.setImageResource(R.mipmap.ic_favorite_border_black_24dp);
+
+
+        //Setting on click listeners
+        findViewById(R.id.heart_toolbar).setOnClickListener(this);
+        findViewById(R.id.share_toolbar).setOnClickListener(this);
+
+        mDemoCollectionPagerAdapter = new DemoCollectionPagerAdapter(getSupportFragmentManager(),articleList);
+//
+//        final ActionBar actionBar = getActionBar();
+//        actionBar.setDisplayHomeAsUpEnabled(true);
+        mViewPager = (ViewPager) findViewById(R.id.pager);
+        mViewPager.setAdapter(mDemoCollectionPagerAdapter);
+        mViewPager.setCurrentItem(mPosition);
+
     }
 
     public void settingUpViews()
@@ -234,9 +294,9 @@ implements NavigationView.OnNavigationItemSelectedListener, View.OnClickListener
         }
     }
 
-    /**
-     * A dummy fragment representing a section of the app, but that simply displays dummy text.
-     */
+
+
+    //THIS IS WHERE ALL THE VIEWS ARE INFLATED
     public static class DemoObjectFragment extends Fragment {
 
         public static final String ARG_OBJECT = "object";
@@ -249,10 +309,17 @@ implements NavigationView.OnNavigationItemSelectedListener, View.OnClickListener
             ((TextView) rootView.findViewById(R.id.detail_title)).setText((args.getString(TITLE)));
             ((TextView) rootView.findViewById(R.id.detail_content)).setText((args.getString(CONTENT)));
             ((TextView) rootView.findViewById(R.id.detail_date)).setText((args.getString(DATE)));
-            ((TextView) rootView.findViewById(R.id.detail_image)).setText((args.getString(IMAGE)));
+            ImageView image = (ImageView) rootView.findViewById(R.id.detail_image);
+//            ((ImageView) rootView.findViewById(R.id.detail_image)).setText((args.getString(IMAGE)));
+
+            Picasso.with(image.getContext())
+                    .load(args.getString(IMAGE))
+                    .resize(555, 350)
+                    .into(image);
 
 
             return rootView;
         }
     }
 }
+

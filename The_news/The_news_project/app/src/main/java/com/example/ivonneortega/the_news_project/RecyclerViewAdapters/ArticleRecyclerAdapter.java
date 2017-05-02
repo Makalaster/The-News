@@ -1,6 +1,7 @@
 package com.example.ivonneortega.the_news_project.RecyclerViewAdapters;
 
 import android.content.Intent;
+import android.provider.ContactsContract;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
@@ -11,9 +12,11 @@ import android.widget.TextView;
 
 import com.example.ivonneortega.the_news_project.Article;
 import com.example.ivonneortega.the_news_project.CategoryView.CategoryViewActivity;
+import com.example.ivonneortega.the_news_project.DatabaseHelper;
 import com.example.ivonneortega.the_news_project.DetailView.CollectionDemoActivity;
 import com.example.ivonneortega.the_news_project.DetailView.DetailViewActivity;
 import com.example.ivonneortega.the_news_project.R;
+import com.squareup.picasso.Picasso;
 
 import java.util.List;
 
@@ -53,7 +56,7 @@ public class ArticleRecyclerAdapter extends RecyclerView.Adapter<ArticleRecycler
     }
 
     @Override
-    public void onBindViewHolder(ArticleRecyclerAdapter.CategoryIndividualItemViewHolder holder, int position) {
+    public void onBindViewHolder(final ArticleRecyclerAdapter.CategoryIndividualItemViewHolder holder, int position) {
         //This is the recycler view that scrolls horizontally
 
         //If we are not at the last position
@@ -62,22 +65,25 @@ public class ArticleRecyclerAdapter extends RecyclerView.Adapter<ArticleRecycler
             holder.mSeeMore.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    goToCategoryView("THIS IS WHERE THE CATEGORY GOES",v);
+                    goToCategoryView(mList.get(holder.getAdapterPosition()).getCategory(),v);
                 }
             });
         }
         //If we are at the last position of the list then show the "SEE MORE" TEXTVIEW
         else
         {
-            //TODO SET IMAGES FROM ARTICLES USING PICASSO
-            //holder.mTitleOfCategory =
+            Picasso.with(holder.mArticleImage.getContext())
+                    .load(mList.get(holder.getAdapterPosition()).getImage())
+                    .resize(240, 180)
+                    .into(holder.mArticleImage);
+
 
             //This is the title of each article
             holder.mTitleOfArticle.setText(mList.get(position).getTitle());
             holder.mRoot.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                 clickOnProduct(v);
+                 clickOnProduct(v,mList.get(holder.getAdapterPosition()).getId());
                 }
             });
 
@@ -85,15 +91,17 @@ public class ArticleRecyclerAdapter extends RecyclerView.Adapter<ArticleRecycler
         }
     }
 
-    private void clickOnProduct(View v)
+    private void clickOnProduct(View v,long id)
     {
         Intent intent = new Intent(v.getContext().getApplicationContext(), CollectionDemoActivity.class);
+        intent.putExtra(DatabaseHelper.COL_ID,id);
         v.getContext().startActivity(intent);
     }
 
     private void goToCategoryView(String category,View v)
     {
         Intent intent = new Intent(v.getContext().getApplicationContext(), CategoryViewActivity.class);
+        intent.putExtra(DatabaseHelper.COL_CATEGORY,category);
         v.getContext().startActivity(intent);
     }
 

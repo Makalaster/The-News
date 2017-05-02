@@ -16,6 +16,7 @@ import android.widget.ImageButton;
 import android.widget.Toast;
 
 import com.example.ivonneortega.the_news_project.Article;
+import com.example.ivonneortega.the_news_project.DatabaseHelper;
 import com.example.ivonneortega.the_news_project.RecyclerViewAdapters.ArticlesVerticalRecyclerAdapter;
 import com.example.ivonneortega.the_news_project.R;
 import com.example.ivonneortega.the_news_project.Search.SearchActivity;
@@ -29,6 +30,7 @@ public class CategoryViewActivity extends AppCompatActivity
     ImageButton mSearch, mOptions;
     RecyclerView mRecyclerView;
     ArticlesVerticalRecyclerAdapter mAdapter;
+    String mCategory;
 
 
     @Override
@@ -114,6 +116,11 @@ public class CategoryViewActivity extends AppCompatActivity
         Toolbar toolbar = (Toolbar) findViewById(R.id.root_toolbar);
         setSupportActionBar(toolbar);
 
+
+        Intent intent = getIntent();
+        mCategory = intent.getStringExtra(DatabaseHelper.COL_CATEGORY);
+        getSupportActionBar().setTitle(mCategory);
+
         //NAVIGATION DRAWER SET UP
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
@@ -139,13 +146,9 @@ public class CategoryViewActivity extends AppCompatActivity
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this,LinearLayoutManager.VERTICAL,false);
         mRecyclerView.setLayoutManager(linearLayoutManager);
 
-        //TODO GET LIST FROM DATABASE
         List<Article> categoryIndividualItems = new ArrayList<>();
-        categoryIndividualItems.add(new Article(1,"image","This is the text for the article. Testing Text. What happens if I add more?","Business","today","this is the body","source",0,0,"url"));
-        categoryIndividualItems.add(new Article(1,"image","This is the text for the article. Testing Text. What happens if I add more?","Business","today","this is the body","source",0,0,"url"));
-        categoryIndividualItems.add(new Article(1,"image","This is the text for the article. Testing Text. What happens if I add more?","Business","today","this is the body","source",0,0,"url"));
-        categoryIndividualItems.add(new Article(1,"image","This is the text for the article. Testing Text. What happens if I add more?","Business","today","this is the body","source",0,0,"url"));
-        categoryIndividualItems.add(new Article(1,"image","This is the text for the article. Testing Text. What happens if I add more?","Business","today","this is the body","source",0,0,"url"));
+        categoryIndividualItems = DatabaseHelper.getInstance(this).getArticlesByCategory(mCategory);
+
         mAdapter = new ArticlesVerticalRecyclerAdapter(categoryIndividualItems,false);
         mRecyclerView.setAdapter(mAdapter);
 

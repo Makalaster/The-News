@@ -15,7 +15,6 @@
         android:layout_width="150dp"
         android:layout_centerVertical="true"
         android:layout_height="140dp"
-        android:background="@color/colorPrimaryDark"
         android:id="@+id/top_stories_image"/>
 
     <TextView

@@ -11,6 +11,8 @@ import android.view.ViewGroup;
 
 import com.example.ivonneortega.the_news_project.Category;
 import com.example.ivonneortega.the_news_project.Article;
+import com.example.ivonneortega.the_news_project.DBAssetHelper;
+import com.example.ivonneortega.the_news_project.DatabaseHelper;
 import com.example.ivonneortega.the_news_project.RecyclerViewAdapters.CategoriesRecyclerAdapter;
 import com.example.ivonneortega.the_news_project.R;
 
@@ -64,20 +66,28 @@ public class FragmentAllStories extends Fragment {
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(view.getContext(),LinearLayoutManager.VERTICAL,false);
         recyclerView.setLayoutManager(linearLayoutManager);
 
-        //Creating a list to test recycler view
+//        //Creating a list to test recycler view
         List<Article> categoryIndividualItems = new ArrayList<>();
-        categoryIndividualItems.add(new Article(1,"image","This is the text for the article. Testing Text. What happens if I add more?","Business","today","this is the body","source",0,0,"url"));
-        categoryIndividualItems.add(new Article(1,"image","This is the text for the article. Testing Text. What happens if I add more?","Business","today","this is the body","source",0,0,"url"));
-        categoryIndividualItems.add(new Article(1,"image","This is the text for the article. Testing Text. What happens if I add more?","Business","today","this is the body","source",0,0,"url"));
-        categoryIndividualItems.add(new Article(1,"image","This is the text for the article. Testing Text. What happens if I add more?","Business","today","this is the body","source",0,0,"url"));
-        categoryIndividualItems.add(new Article(1,"image","This is the text for the article. Testing Text. What happens if I add more?","Business","today","this is the body","source",0,0,"url"));
-
-
-        //Secondary Test
+//        categoryIndividualItems.add(new Article(1,"image","This is the text for the article. Testing Text. What happens if I add more?","Business","today","this is the body","source",0,0,"url"));
+//        categoryIndividualItems.add(new Article(1,"image","This is the text for the article. Testing Text. What happens if I add more?","Business","today","this is the body","source",0,0,"url"));
+//        categoryIndividualItems.add(new Article(1,"image","This is the text for the article. Testing Text. What happens if I add more?","Business","today","this is the body","source",0,0,"url"));
+//        categoryIndividualItems.add(new Article(1,"image","This is the text for the article. Testing Text. What happens if I add more?","Business","today","this is the body","source",0,0,"url"));
+//        categoryIndividualItems.add(new Article(1,"image","This is the text for the article. Testing Text. What happens if I add more?","Business","today","this is the body","source",0,0,"url"));
+//
+//
+//        //Secondary Test
         List<Category> allStories = new ArrayList<>();
-        allStories.add(new Category("Category 1",categoryIndividualItems));
-        allStories.add(new Category("Category 2",categoryIndividualItems));
-        allStories.add(new Category("Category 3",categoryIndividualItems));
+//        allStories.add(new Category("Category 1",categoryIndividualItems));
+//        allStories.add(new Category("Category 2",categoryIndividualItems));
+//        allStories.add(new Category("Category 3",categoryIndividualItems));
+
+
+        categoryIndividualItems = DatabaseHelper.getInstance(view.getContext()).getArticlesByCategory("Business");
+        allStories.add(new Category("Business",categoryIndividualItems));
+        categoryIndividualItems = DatabaseHelper.getInstance(view.getContext()).getArticlesByCategory("Tech");
+        allStories.add(new Category("Tech",categoryIndividualItems));
+        categoryIndividualItems = DatabaseHelper.getInstance(view.getContext()).getArticlesByCategory("World");
+        allStories.add(new Category("World",categoryIndividualItems));
 
         //Setting Adapter With lists
         CategoriesRecyclerAdapter adapter = new CategoriesRecyclerAdapter(allStories);
