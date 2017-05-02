@@ -1,11 +1,13 @@
 package com.example.ivonneortega.the_news_project.MainActivity;
 
+import android.app.NotificationManager;
 import android.app.job.JobParameters;
 import android.app.job.JobService;
 import android.content.Context;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.AsyncTask;
+import android.support.v7.app.NotificationCompat;
 import android.util.Log;
 import android.widget.Toast;
 
@@ -27,6 +29,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ArticleRefreshService extends JobService {
+    private static final int NOTIFICATION_ID = 1;
     private List<String> mNewsWireList = new ArrayList<>();
     private List<String> mTopStoriesList = new ArrayList<>();
     private static final String TAG = "ArticleRefreshService";
@@ -196,6 +199,8 @@ public class ArticleRefreshService extends JobService {
                 int isSaved = Article.FALSE;
 
                 if (db.getArticleByUrl(url) == null) {
+                    generateNotification(title);
+
                     db.insertArticleIntoDatabase(image, title, category, date, null, source, isSaved, fromTopStories, url);
                 }
 
@@ -203,6 +208,19 @@ public class ArticleRefreshService extends JobService {
             }
         };
         dbTask.execute(object);
+    }
+
+    public void generateNotification(String title) {
+        NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(getApplicationContext());
+        notificationBuilder.setSmallIcon(android.R.drawable.ic_dialog_alert)
+                .setAutoCancel(true)
+                .setContentTitle("New top news:")
+                .setContentText(title)
+                .setOngoing(false);
+
+        NotificationManager notificationManager =
+                (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+        notificationManager.notify(NOTIFICATION_ID, notificationBuilder.build());
     }
 
     public void searchArticles(String url, final int fromTopStories) {
@@ -213,7 +231,13 @@ public class ArticleRefreshService extends JobService {
                 new com.android.volley.Response.Listener<JSONObject>() {
                     @Override
                     public void onResponse(JSONObject response) {
-                        Gson gson = new Gson();
+                        try {
+                            JSONArray docs = response.getJSONArray("docs");
+                            JSONObject article = docs.getJSONObject(0);
+                            String paragraph = article.getString("lead_paragraph");
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
 
                     }
                 }, new com.android.volley.Response.ErrorListener() {

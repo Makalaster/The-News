@@ -78,9 +78,6 @@ public class MainActivity extends AppCompatActivity
 
         jobScheduler.schedule(refreshJob);
 
-        //DatabaseHelper.getInstance(this).deleteAllSavedArticles();
-        //addThingsToDatabase();
-
         viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
             public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
@@ -182,48 +179,4 @@ public class MainActivity extends AppCompatActivity
     public void saveAndUnsave(Article article) {
 
     }
-
-    public void addThingsToDatabase()
-    {
-        DatabaseHelper databaseHelper = DatabaseHelper.getInstance(this);
-        databaseHelper.insertArticleIntoDatabase("https://www.transit.dot.gov/sites/fta.dot.gov/files/635847974891062780-425303270_news.jpg","Business 1","Business","Today","This is the body",
-                "New York Times",Article.FALSE,1,"https://www.transit.dot.gov/sites/fta.dot.gov/files/635847974891062780-425303270_news.jpg");
-
-        databaseHelper.insertArticleIntoDatabase("https://www.transit.dot.gov/sites/fta.dot.gov/files/635847974891062780-425303270_news.jpg","Business 2","Business","Today","This is the body",
-                "New York Times",Article.FALSE,1,"https://www.transit.dot.gov/sites/fta.dot.gov/files/635847974891062780-425303270_news.jpg");
-        databaseHelper.insertArticleIntoDatabase("https://www.transit.dot.gov/sites/fta.dot.gov/files/635847974891062780-425303270_news.jpg","Business 3","Business","Today","This is the body",
-                "New York Times",Article.FALSE,0,"https://www.transit.dot.gov/sites/fta.dot.gov/files/635847974891062780-425303270_news.jpg");
-
-        databaseHelper.insertArticleIntoDatabase("https://www.transit.dot.gov/sites/fta.dot.gov/files/635847974891062780-425303270_news.jpg","Business 4","Business","Today","This is the body",
-                "New York Times",Article.FALSE,0,"https://www.transit.dot.gov/sites/fta.dot.gov/files/635847974891062780-425303270_news.jpg");
-
-
-
-        databaseHelper.insertArticleIntoDatabase("https://www.transit.dot.gov/sites/fta.dot.gov/files/635847974891062780-425303270_news.jpg","Tech 1","Tech","Today","This is the body",
-                "New York Times",Article.FALSE,1,"https://www.transit.dot.gov/sites/fta.dot.gov/files/635847974891062780-425303270_news.jpg");
-
-        databaseHelper.insertArticleIntoDatabase("https://www.transit.dot.gov/sites/fta.dot.gov/files/635847974891062780-425303270_news.jpg","Tech 2","Tech","Today","This is the body",
-                "New York Times",Article.FALSE,1,"https://www.transit.dot.gov/sites/fta.dot.gov/files/635847974891062780-425303270_news.jpg");
-        databaseHelper.insertArticleIntoDatabase("https://www.transit.dot.gov/sites/fta.dot.gov/files/635847974891062780-425303270_news.jpg","Tech 3","Tech","Today","This is the body",
-                "New York Times",Article.FALSE,0,"https://www.transit.dot.gov/sites/fta.dot.gov/files/635847974891062780-425303270_news.jpg");
-
-        databaseHelper.insertArticleIntoDatabase("https://www.transit.dot.gov/sites/fta.dot.gov/files/635847974891062780-425303270_news.jpg","Tech 4","Tech","Today","This is the body",
-                "New York Times",Article.FALSE,0,"https://www.transit.dot.gov/sites/fta.dot.gov/files/635847974891062780-425303270_news.jpg");
-
-
-
-
-        databaseHelper.insertArticleIntoDatabase("https://www.transit.dot.gov/sites/fta.dot.gov/files/635847974891062780-425303270_news.jpg","World 1","World","Today","This is the body",
-                "New York Times",Article.FALSE,1,"https://www.transit.dot.gov/sites/fta.dot.gov/files/635847974891062780-425303270_news.jpg");
-
-        databaseHelper.insertArticleIntoDatabase("https://www.transit.dot.gov/sites/fta.dot.gov/files/635847974891062780-425303270_news.jpg","World 2","World","Today","This is the body",
-                "New York Times",Article.FALSE,1,"https://www.transit.dot.gov/sites/fta.dot.gov/files/635847974891062780-425303270_news.jpg");
-        databaseHelper.insertArticleIntoDatabase("https://www.transit.dot.gov/sites/fta.dot.gov/files/635847974891062780-425303270_news.jpg","World 3","World","Today","This is the body",
-                "New York Times",Article.FALSE,0,"https://www.transit.dot.gov/sites/fta.dot.gov/files/635847974891062780-425303270_news.jpg");
-
-        databaseHelper.insertArticleIntoDatabase("https://www.transit.dot.gov/sites/fta.dot.gov/files/635847974891062780-425303270_news.jpg","World 4","World","Today","This is the body",
-                "New York Times",Article.FALSE,0,"https://www.transit.dot.gov/sites/fta.dot.gov/files/635847974891062780-425303270_news.jpg");
-    }
-
-
 }
