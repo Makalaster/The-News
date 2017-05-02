@@ -3,7 +3,6 @@ package com.example.ivonneortega.the_news_project.MainActivity;
 import android.app.job.JobParameters;
 import android.app.job.JobService;
 import android.content.Context;
-import android.content.Intent;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.util.Log;
@@ -14,13 +13,13 @@ import com.android.volley.RequestQueue;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
-import com.example.ivonneortega.the_news_project.Article;
 import com.example.ivonneortega.the_news_project.DatabaseHelper;
 import com.example.ivonneortega.the_news_project.data.Doc;
 import com.example.ivonneortega.the_news_project.data.Headline;
 import com.example.ivonneortega.the_news_project.data.NYTApiData;
 import com.example.ivonneortega.the_news_project.data.NYTSearchQuery;
 import com.example.ivonneortega.the_news_project.data.SearchResponse;
+import com.google.gson.Gson;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -54,7 +53,7 @@ public class ArticleRefreshService extends JobService {
             mNewsWireList.add("science");
             mNewsWireList.add("Sports");
             mNewsWireList.add("Movies");
-            mNewsWireList.add("fashion & style");
+            mNewsWireList.add("fashion+&+style");
             mNewsWireList.add("Food");
             mNewsWireList.add("Health");
         }
@@ -82,20 +81,12 @@ public class ArticleRefreshService extends JobService {
         NetworkInfo networkInfo = connMgr.getActiveNetworkInfo();
         if (networkInfo != null) {
 
-            List<String> newsWireUrls = new ArrayList<>();
             for (String topic : mNewsWireList) {
-                newsWireUrls.addAll(queryNewsWire(topic));
-            }
-            for (String url : newsWireUrls) {
-                searchArticles(url, 0);
+                queryNewsWire(topic);
             }
 
-            List<String> topUrls = new ArrayList<>();
             for (String topic : mTopStoriesList) {
-                topUrls.addAll(queryTopStories(topic));
-            }
-            for (String url : topUrls) {
-                searchArticles(url, 1);
+                queryTopStories(topic);
             }
 
             jobFinished(params, true);
@@ -104,9 +95,8 @@ public class ArticleRefreshService extends JobService {
         return true;
     }
 
-    private List<String> queryNewsWire(String query) {
+    private void queryNewsWire(String query) {
         RequestQueue queue = Volley.newRequestQueue(this);
-        final List<String> list = new ArrayList<>();
 
         JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.GET,
                 NYTApiData.URL_NEWS_WIRE + query + JSON + "?api-key=" + NYTApiData.API_KEY, null,
@@ -121,7 +111,9 @@ public class ArticleRefreshService extends JobService {
                             {
                                 JSONObject aux = items.getJSONObject(i);
                                 String url = aux.getString("url");
-                                list.add(url);
+                                Log.d(TAG, "onResponse: newsWire url - " + url);
+                                //searchArticlesRetrofit(url, 0);
+                                searchArticles(url, 0);
                             }
 
                         } catch (JSONException e) {
@@ -137,12 +129,10 @@ public class ArticleRefreshService extends JobService {
             }
         });
         queue.add(jsonObjectRequest);
-        return list;
     }
 
-    private List<String> queryTopStories(String query) {
+    private void queryTopStories(String query) {
         RequestQueue queue = Volley.newRequestQueue(this);
-        final List<String> list = new ArrayList<>();
 
         JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.GET,
                 NYTApiData.URL_TOP_STORY + query + JSON+"?api-key=" + NYTApiData.API_KEY, null,
@@ -156,7 +146,7 @@ public class ArticleRefreshService extends JobService {
                             {
                                 JSONObject aux = items.getJSONObject(i);
                                 String url = aux.getString("url");
-                                list.add(url);
+                                //searchArticlesRetrofit(url, 1);
                             }
 
                         } catch (JSONException e) {
@@ -172,38 +162,29 @@ public class ArticleRefreshService extends JobService {
             }
         });
         queue.add(jsonObjectRequest);
-        return list;
+
     }
 
     public void searchArticles(String url, final int fromTopStories) {
-        Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl(NYTApiData.BASE_URL)
-                .addConverterFactory(GsonConverterFactory.create())
-                .build();
+        RequestQueue queue = Volley.newRequestQueue(this);
 
-        NYTSearchQuery searchQuery = retrofit.create(NYTSearchQuery.class);
-        mCall = searchQuery.getArticles(NYTApiData.API_KEY, url);
-
-        mCall.enqueue(new Callback<SearchResponse>() {
+        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.GET,
+                NYTApiData.URL_SEARCH + "?api-key=" + NYTApiData.API_KEY + "&fq=web_url(\"" + url + "\")", null,
+                new com.android.volley.Response.Listener<JSONObject>() {
+                    @Override
+                    public void onResponse(JSONObject response) {
+                        Gson gson = new Gson();
+                        SearchResponse searchResponse = gson.fromJson(response.toString(), SearchResponse.class);
+                        addArticleToDatabase(searchResponse, fromTopStories);
+                    }
+                }, new com.android.volley.Response.ErrorListener() {
             @Override
-            public void onResponse(Call<SearchResponse> call, Response<SearchResponse> response) {
-                SearchResponse nytResponse = response.body();
-                addArticleToDatabase(nytResponse, fromTopStories);
-            }
+            public void onErrorResponse(VolleyError error) {
 
-            @Override
-            public void onFailure(Call<SearchResponse> call, Throwable t) {
-                t.printStackTrace();
             }
         });
-    }
 
-    @Override
-    public boolean onStopJob(JobParameters params) {
-        mCall.cancel();
-
-        Log.d(TAG, "onStopJob: JOB STOPPED");
-        return false;
+        queue.add(jsonObjectRequest);
     }
 
     public void addArticleToDatabase(SearchResponse searchResponse, int fromTopStories) {
@@ -222,5 +203,13 @@ public class ArticleRefreshService extends JobService {
 
         Log.d(TAG, "addArticleToDatabase: " + url);
         db.insertArticleIntoDatabase(null, mainHeadline, category, date, body, source, isSaved, fromTopStories, url);
+    }
+
+    @Override
+    public boolean onStopJob(JobParameters params) {
+        mCall.cancel();
+
+        Log.d(TAG, "onStopJob: JOB STOPPED");
+        return false;
     }
 }
