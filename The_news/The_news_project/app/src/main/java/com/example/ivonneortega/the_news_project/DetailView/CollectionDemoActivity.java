@@ -57,6 +57,7 @@ implements NavigationView.OnNavigationItemSelectedListener, View.OnClickListener
     public static final String CONTENT = "content";
     public static final String DATE = "date";
     public static final String IMAGE = "image";
+    public static final String TAG = "this";
 
     List<String> list;
     DemoCollectionPagerAdapter mDemoCollectionPagerAdapter;
@@ -76,9 +77,12 @@ implements NavigationView.OnNavigationItemSelectedListener, View.OnClickListener
 
         Intent intent = getIntent();
         mId = intent.getLongExtra(DatabaseHelper.COL_ID,-1);
+
         Article article = DatabaseHelper.getInstance(this).getArticlesById(mId);
         articleList = DatabaseHelper.getInstance(this).getArticlesByCategory(article.getCategory());
         mPosition = Article.getArticlePosition(mId,articleList);
+//        Log.d(TAG, "onCreate POSITION: "+mPosition);
+//        Log.d(TAG, "onCreate ID: "+mId);
         creatingViews();
 
 
@@ -233,12 +237,11 @@ implements NavigationView.OnNavigationItemSelectedListener, View.OnClickListener
         findViewById(R.id.share_toolbar).setOnClickListener(this);
 
         mDemoCollectionPagerAdapter = new DemoCollectionPagerAdapter(getSupportFragmentManager(),articleList);
-//
-//        final ActionBar actionBar = getActionBar();
-//        actionBar.setDisplayHomeAsUpEnabled(true);
+
         mViewPager = (ViewPager) findViewById(R.id.pager);
         mViewPager.setAdapter(mDemoCollectionPagerAdapter);
         mViewPager.setCurrentItem(mPosition);
+
 
     }
 
@@ -269,22 +272,22 @@ implements NavigationView.OnNavigationItemSelectedListener, View.OnClickListener
             super.setPrimaryItem(container, position, object);
         }
 
+
         @Override
         public Fragment getItem(int i) {
+            Log.d(TAG, "getItem: "+i);
             Fragment fragment = new DemoObjectFragment();
             Bundle args = new Bundle();
             args.putString(TITLE,mList.get(i).getTitle());
             args.putString(CONTENT,mList.get(i).getBody());
             args.putString(DATE,mList.get(i).getDate());
             args.putString(IMAGE,mList.get(i).getImage());
-           // args.putString(DemoObjectFragment.ARG_OBJECT, mList.get(i)); // Our object is just an integer :-P
             fragment.setArguments(args);
             return fragment;
         }
 
         @Override
         public int getCount() {
-            // For this contrived example, we have a 100-object collection.
             return mList.size();
         }
 
@@ -310,7 +313,6 @@ implements NavigationView.OnNavigationItemSelectedListener, View.OnClickListener
             ((TextView) rootView.findViewById(R.id.detail_content)).setText((args.getString(CONTENT)));
             ((TextView) rootView.findViewById(R.id.detail_date)).setText((args.getString(DATE)));
             ImageView image = (ImageView) rootView.findViewById(R.id.detail_image);
-//            ((ImageView) rootView.findViewById(R.id.detail_image)).setText((args.getString(IMAGE)));
 
             Picasso.with(image.getContext())
                     .load(args.getString(IMAGE))

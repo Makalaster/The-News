@@ -1,6 +1,10 @@
 package com.example.ivonneortega.the_news_project;
 
+import android.util.Log;
+
 import java.util.List;
+
+import static android.content.ContentValues.TAG;
 
 /**
  * Created by ivonneortega on 4/29/17.
@@ -124,16 +128,18 @@ public class Article {
     public static int getArticlePosition(long id, List<Article> list)
     {
         boolean exit=true;
+        Log.d(TAG, "getArticlePosition: id "+id);
         int i=0;
-        while (exit)
+        while (i<list.size())
         {
             if(list.get(i).getId()==id)
             {
-                exit=false;
+                Log.d(TAG, "getArticlePosition: getID "+list.get(i).getId());
+                return i;
             }
             else
                 i++;
-            return i;
+
         }
         return -1;
     }

@@ -1,7 +1,11 @@
 package com.example.ivonneortega.the_news_project.MainActivity;
 
+import android.app.job.JobInfo;
+import android.app.job.JobScheduler;
+import android.content.ComponentName;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.GravityCompat;
@@ -13,6 +17,8 @@ import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageButton;
+import android.widget.ImageView;
+import android.widget.Toast;
 
 import com.example.ivonneortega.the_news_project.Article;
 import com.example.ivonneortega.the_news_project.CategoryView.CategoryViewActivity;
@@ -27,6 +33,8 @@ public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener, View.OnClickListener, ArticlesVerticalRecyclerAdapter.SaveAndShare{
 
     FragmentAdapterMainActivity mAdapter;
+
+    public static final int ARTICLE_REFRESH_JOB = 1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -60,9 +68,17 @@ public class MainActivity extends AppCompatActivity
         optionsToolbar.setOnClickListener(this);
         searchToolbar.setOnClickListener(this);
 
+//        JobScheduler jobScheduler = (JobScheduler) getSystemService(JOB_SCHEDULER_SERVICE);
+//        ComponentName componentName = new ComponentName(this, ArticleRefreshService.class);
+//
+//        JobInfo refreshJob = new JobInfo.Builder(ARTICLE_REFRESH_JOB, componentName)
+//                .setRequiredNetworkType(JobInfo.NETWORK_TYPE_ANY)
+//                .build();
+//
+//        jobScheduler.schedule(refreshJob);
 
-        DatabaseHelper.getInstance(this).deleteAllSavedArticles();
-        addThingsToDatabase();
+//        DatabaseHelper.getInstance(this).deleteAllSavedArticles();
+        //addThingsToDatabase();
 
         viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override

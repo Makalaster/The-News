@@ -3,6 +3,7 @@ package com.example.ivonneortega.the_news_project.RecyclerViewAdapters;
 import android.content.Intent;
 import android.provider.ContactsContract;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -19,6 +20,8 @@ import com.example.ivonneortega.the_news_project.R;
 import com.squareup.picasso.Picasso;
 
 import java.util.List;
+
+import static android.content.ContentValues.TAG;
 
 /**
  * Created by ivonneortega on 4/29/17.
