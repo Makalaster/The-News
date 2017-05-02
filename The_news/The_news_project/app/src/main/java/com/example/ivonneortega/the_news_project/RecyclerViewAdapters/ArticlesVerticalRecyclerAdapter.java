@@ -99,6 +99,14 @@ implements View.OnClickListener{
                 }
 
             });
+
+            //TODO HANDLE WHEN USER CLICKS SHARE ON SPECIFIC ARTICLE
+            holder.mShare.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    mList.get(holder.getAdapterPosition()).getUrl();
+                }
+            });
         }
         else
         {

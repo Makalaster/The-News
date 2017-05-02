@@ -147,12 +147,11 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
 
     //TODO NEED TO ADD MORE STUFF DEPENDING ON OUR DATABASE
-    public long insertArticleIntoDatabase(long id,String image, String title, String category, String date,
+    public long insertArticleIntoDatabase(String image, String title, String category, String date,
                                           String body, String source, int isSaved, int isTopStory,String url) {
         SQLiteDatabase db = getWritableDatabase();
 
         ContentValues values = new ContentValues();
-        values.put(COL_ID, id);
         //ADD IMAGE TO DATABASE
         values.put(COL_TITLE,title);
         values.put(COL_CATEGORY,category);

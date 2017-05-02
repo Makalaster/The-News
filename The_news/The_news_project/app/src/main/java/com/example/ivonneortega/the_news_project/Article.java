@@ -14,7 +14,25 @@ public class Article {
     private String mImage;
     private String mTitle,mCategory,mDate, mBody, mSource, mUrl;
     private long mId;
-    private boolean mIsSaved, mIsTopStory;
+    private boolean mIsSaved;
+
+    public String getUrl() {
+        return mUrl;
+    }
+
+    public void setUrl(String url) {
+        mUrl = url;
+    }
+
+    public boolean isTopStory() {
+        return mIsTopStory;
+    }
+
+    public void setTopStory(boolean topStory) {
+        mIsTopStory = topStory;
+    }
+
+    private boolean mIsTopStory;
     //private boolean mIsTopStory;
 
 

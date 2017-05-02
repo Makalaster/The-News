@@ -91,12 +91,6 @@ public class MainActivity extends AppCompatActivity
         } else if (id == R.id.nav_manage) {
             moveToCategoryViewActivity();
 
-//        } else if (id == R.id.nav_share) {
-//            Toast.makeText(this, "Category 5", Toast.LENGTH_SHORT).show();
-//
-//        } else if (id == R.id.nav_send) {
-//            Toast.makeText(this, "Category 6", Toast.LENGTH_SHORT).show();
-//
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -133,58 +127,18 @@ public class MainActivity extends AppCompatActivity
 
     @Override
     public void saveAndUnsave(Article article) {
-//        if(mList.get(holder.getAdapterPosition()).isSaved())
-//        {
-//            holder.mHeart.setImageResource(R.mipmap.ic_favorite_border_black_24dp);
-//            DatabaseHelper.getInstance(v.getContext()).unSaveArticle(mList.get(holder.getAdapterPosition()).getId());
-//            Snackbar.make(holder.mHeart.getContext().findViewById(android.R.id.content), "Article unsaved", Snackbar.LENGTH_LONG)
-//                    .setAction("UNDO", new View.OnClickListener() {
-//                        @Override
-//                        public void onClick(View v) {
-//                            holder.mHeart.setImageResource(R.mipmap.ic_favorite_black_24dp);
-//                            DatabaseHelper.getInstance(v.getContext()).saveArticle(mList.get(holder.getAdapterPosition()).getId());
-//                        }
-//                    })
-//                    .setActionTextColor(v.getResources().getColor(R.color.colorPrimaryDark))
-//                    .show();
-//        }
-//        else
-//        {
-//            holder.mHeart.setImageResource(R.mipmap.ic_favorite_black_24dp);
-//            DatabaseHelper.getInstance(v.getContext()).saveArticle(mList.get(holder.getAdapterPosition()).getId());
-//            Snackbar.make(v.findViewById(android.R.id.content), "Article saved", Snackbar.LENGTH_LONG)
-//                    .setAction("UNDO", new View.OnClickListener() {
-//                        @Override
-//                        public void onClick(View v) {
-//                            holder.mHeart.setImageResource(R.mipmap.ic_favorite_border_black_24dp);
-//                            DatabaseHelper.getInstance(v.getContext()).unSaveArticle(mList.get(holder.getAdapterPosition()).getId());
-//                        }
-//                    })
-//                    .setActionTextColor(v.getResources().getColor(R.color.colorPrimaryDark))
-//                    .show();
-//        }
+
+    }
+
+    public void addThingsToDatabase()
+    {
+        DatabaseHelper databaseHelper = DatabaseHelper.getInstance(this);
+        databaseHelper.insertArticleIntoDatabase("https://www.transit.dot.gov/sites/fta.dot.gov/files/635847974891062780-425303270_news.jpg","News 1","Business","Today","This is the body",
+                "New York Times",1,1,"https://www.transit.dot.gov/sites/fta.dot.gov/files/635847974891062780-425303270_news.jpg");
+
+        databaseHelper.insertArticleIntoDatabase("https://www.transit.dot.gov/sites/fta.dot.gov/files/635847974891062780-425303270_news.jpg","News 1","Business","Today","This is the body",
+                "New York Times",1,1,"https://www.transit.dot.gov/sites/fta.dot.gov/files/635847974891062780-425303270_news.jpg");
     }
 
 
-//    @Override
-//    public boolean onCreateOptionsMenu(Menu menu) {
-//        // Inflate the menu; this adds items to the action bar if it is present.
-//        getMenuInflater().inflate(R.menu.menu_main, menu);
-//        return true;
-//    }
-//
-//    @Override
-//    public boolean onOptionsItemSelected(MenuItem item) {
-//        // Handle action bar item clicks here. The action bar will
-//        // automatically handle clicks on the Home/Up button, so long
-//        // as you specify a parent activity in AndroidManifest.xml.
-//        int id = item.getItemId();
-//
-//        //noinspection SimplifiableIfStatement
-//        if (id == R.id.action_settings) {
-//            return true;
-//        }
-//
-//        return super.onOptionsItemSelected(item);
-//    }
 }
