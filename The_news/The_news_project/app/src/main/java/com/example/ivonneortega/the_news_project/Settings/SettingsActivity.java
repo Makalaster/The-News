@@ -5,7 +5,10 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.view.View;
 import android.widget.CompoundButton;
+import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.Switch;
 
 import com.example.ivonneortega.the_news_project.R;
@@ -17,6 +20,7 @@ public class SettingsActivity extends AppCompatActivity implements CompoundButto
     public static final String NOTIFICATION = "notification";
     public static final int TRUE = 0;
     public static final int FALSE = 1;
+    public ImageView mBack;
     private boolean mStartActivity;
 
     @Override
@@ -29,6 +33,14 @@ public class SettingsActivity extends AppCompatActivity implements CompoundButto
         mSwitch_notification = (Switch) findViewById(R.id.switch_notification);
         mSwitch_theme.setOnCheckedChangeListener(this);
         mSwitch_notification.setOnCheckedChangeListener(this);
+        mBack = (ImageView) findViewById(R.id.back_toolbar);
+
+        mBack.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
 
         SharedPreferences sharedPreferences = getSharedPreferences("com.example.ivonneortega.the_news_project.Settings", Context.MODE_PRIVATE);
         String str = sharedPreferences.getString(SettingsActivity.THEME,"DEFAULT");
@@ -50,10 +62,8 @@ public class SettingsActivity extends AppCompatActivity implements CompoundButto
     {
         SharedPreferences sharedPreferences = getSharedPreferences("com.example.ivonneortega.the_news_project.Settings", Context.MODE_PRIVATE);
         String str = sharedPreferences.getString(SettingsActivity.THEME,"DEFAULT"); //Initial value of the String is "Hello"
-        Log.d("weqweqweqwe", "setTheme: "+str);
         if(str.equals("dark"))
         {
-            Log.d("sdsdfsdfsdfsdf", "setTheme: qweqwdqqwdqwdqwdwd");
             setTheme(R.style.DarkTheme);
             setContentView(R.layout.activity_settings);
             findViewById(R.id.root_toolbar).setBackgroundColor(getResources().getColor(R.color.colorPrimaryDarkTheme));

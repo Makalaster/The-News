@@ -230,7 +230,7 @@ public class CategoryViewActivity extends AppCompatActivity
                 moveToSearchActivity();
                 break;
             case R.id.options_toolbar:
-                Toast.makeText(this, "Clicked on options button", Toast.LENGTH_SHORT).show();
+                moveToSettingsActivity();
                 break;
         }
 
@@ -239,6 +239,12 @@ public class CategoryViewActivity extends AppCompatActivity
     public void moveToSearchActivity()
     {
         Intent intent = new Intent(this, SearchActivity.class);
+        startActivity(intent);
+    }
+
+    public void moveToSettingsActivity()
+    {
+        Intent intent = new Intent(this, SettingsActivity.class);
         startActivity(intent);
     }
 

@@ -46,6 +46,7 @@ import com.android.volley.RequestQueue;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
+import com.example.ivonneortega.the_news_project.Search.SearchActivity;
 import com.example.ivonneortega.the_news_project.Settings.SettingsActivity;
 import com.example.ivonneortega.the_news_project.data.Article;
 import com.example.ivonneortega.the_news_project.CategoryView.CategoryViewActivity;
@@ -73,6 +74,7 @@ implements NavigationView.OnNavigationItemSelectedListener, View.OnClickListener
     public static final String URL = "url";
     public static final String TAG = "this";
     public static final String ID = "id";
+    Article article;
 
     List<String> list;
     DemoCollectionPagerAdapter mDemoCollectionPagerAdapter;
@@ -95,7 +97,7 @@ implements NavigationView.OnNavigationItemSelectedListener, View.OnClickListener
         Intent intent = getIntent();
         mId = intent.getLongExtra(DatabaseHelper.COL_ID,-1);
 
-        Article article = DatabaseHelper.getInstance(this).getArticlesById(mId);
+        article = DatabaseHelper.getInstance(this).getArticlesById(mId);
         articleList = DatabaseHelper.getInstance(this).getArticlesByCategory(article.getCategory());
         mPosition = Article.getArticlePosition(mId,articleList);
         creatingViews();
@@ -204,16 +206,35 @@ implements NavigationView.OnNavigationItemSelectedListener, View.OnClickListener
         switch (v.getId())
         {
             case R.id.options_toolbar:
-                Toast.makeText(this, "Click on options button", Toast.LENGTH_SHORT).show();
+                moveToSettingsActivity();
                 break;
             case R.id.share_toolbar:
-                Toast.makeText(this, "Click on share button", Toast.LENGTH_SHORT).show();
+                share();
                 break;
             case R.id.heart_toolbar:
                 saveArticle();
                 break;
         }
     }
+
+    public void share()
+    {
+
+        Intent sendIntent = new Intent();
+        sendIntent.setAction(Intent.ACTION_SEND);
+        sendIntent.putExtra(Intent.EXTRA_TEXT,article.getUrl());
+
+        sendIntent.setType("text/plain");
+        //startActivity(Intent.createChooser(sendIntent, getResources().getText(R.string.send_to)));
+        startActivity(Intent.createChooser(sendIntent, "Share this article using.."));
+    }
+
+    public void moveToSettingsActivity()
+    {
+        Intent intent = new Intent(this, SettingsActivity.class);
+        startActivity(intent);
+    }
+
 
     public void saveArticle()
     {
