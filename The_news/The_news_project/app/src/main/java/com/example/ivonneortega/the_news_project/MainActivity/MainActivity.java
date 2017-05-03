@@ -51,7 +51,9 @@ public class MainActivity extends AppCompatActivity
 
     FragmentAdapterMainActivity mAdapter;
     public static final String URL = "https://newsapi.org/v1/articles?source=";
-    public static final String API_KEY = "b9742f05aeab45e097c3c57a30ccb224";
+    //public static final String API_KEY = "b9742f05aeab45e097c3c57a30ccb224";
+    public static final String API_KEY = "8c686febe98446aeaf2f3170b3a5d200";
+
     List<String> mSourcesByTop, mSourcesByLatest;
     boolean mStartActivity;
     List<Category> categories_by_top;
@@ -84,13 +86,13 @@ public class MainActivity extends AppCompatActivity
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
-
-        View hView =  navigationView.getHeaderView(0);
-        ImageView nav_user = (ImageView) hView.findViewById(R.id.navigation_image);
-        Picasso.with(this)
-                .load(DatabaseHelper.getInstance(this).getArticlesById(0).getImage())
-                .fit()
-                .into(nav_user);
+//
+//        View hView =  navigationView.getHeaderView(0);
+//        ImageView nav_user = (ImageView) hView.findViewById(R.id.navigation_image);
+//        Picasso.with(this)
+//                .load(DatabaseHelper.getInstance(this).getArticlesById(0).getImage())
+//                .fit()
+//                .into(nav_user);
 
 
         ImageButton optionsToolbar = (ImageButton) findViewById(R.id.options_toolbar);
@@ -100,18 +102,18 @@ public class MainActivity extends AppCompatActivity
         optionsToolbar.setOnClickListener(this);
         searchToolbar.setOnClickListener(this);
 
-//        JobScheduler jobScheduler = (JobScheduler) getSystemService(JOB_SCHEDULER_SERVICE);
-//        ComponentName componentName = new ComponentName(this, ArticleRefreshService.class);
-//
-//        JobInfo refreshJob = new JobInfo.Builder(ARTICLE_REFRESH_JOB, componentName)
-//                .setRequiredNetworkType(JobInfo.NETWORK_TYPE_ANY)
-//                .setRequiresCharging(true)
-//                .build();
-//
-//        jobScheduler.schedule(refreshJob);
+        JobScheduler jobScheduler = (JobScheduler) getSystemService(JOB_SCHEDULER_SERVICE);
+        ComponentName componentName = new ComponentName(this, ArticleRefreshService.class);
 
-        //DatabaseHelper.getInstance(this).deleteAllSavedArticles();
-        //addThingsToDatabase();
+        JobInfo refreshJob = new JobInfo.Builder(ARTICLE_REFRESH_JOB, componentName)
+                .setRequiredNetworkType(JobInfo.NETWORK_TYPE_ANY)
+                .setRequiresCharging(true)
+                .build();
+
+        jobScheduler.schedule(refreshJob);
+
+//        DatabaseHelper.getInstance(this).deleteAllSavedArticles();
+//        addThingsToDatabase();
 
 //        for(int i = 0; i< mSourcesByTop.size(); i++)
 //        {
