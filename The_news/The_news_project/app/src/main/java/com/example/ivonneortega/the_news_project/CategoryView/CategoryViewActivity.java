@@ -17,6 +17,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.example.ivonneortega.the_news_project.Settings.SettingsActivity;
@@ -25,6 +26,7 @@ import com.example.ivonneortega.the_news_project.DatabaseHelper;
 import com.example.ivonneortega.the_news_project.RecyclerViewAdapters.ArticlesVerticalRecyclerAdapter;
 import com.example.ivonneortega.the_news_project.R;
 import com.example.ivonneortega.the_news_project.Search.SearchActivity;
+import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -199,6 +201,13 @@ public class CategoryViewActivity extends AppCompatActivity
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
+
+        View hView =  navigationView.getHeaderView(0);
+        ImageView nav_user = (ImageView) hView.findViewById(R.id.navigation_image);
+        Picasso.with(this)
+                .load(mList.get(mList.size()/2).getImage())
+                .fit()
+                .into(nav_user);
 
         //Setting up views and click listener
         mSearch = (ImageButton) findViewById(R.id.search_toolbar);

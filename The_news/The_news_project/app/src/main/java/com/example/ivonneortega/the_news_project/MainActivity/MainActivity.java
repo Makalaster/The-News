@@ -88,7 +88,7 @@ public class MainActivity extends AppCompatActivity
         View hView =  navigationView.getHeaderView(0);
         ImageView nav_user = (ImageView) hView.findViewById(R.id.navigation_image);
         Picasso.with(this)
-                .load(DatabaseHelper.getInstance(this).getArticlesById(0).getImage())
+                .load(DatabaseHelper.getInstance(this).getArticlesById(1).getImage())
                 .fit()
                 .into(nav_user);
 
