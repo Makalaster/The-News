@@ -311,6 +311,7 @@ public class CategoryViewActivity extends AppCompatActivity
 
     public void getListWithArticlesByCategory(List<String> categories)
     {
+        //TODO MOVE THIS TO THREAD
         DatabaseHelper db = DatabaseHelper.getInstance(this);
         List<Article> articles = new ArrayList<>();
         List<Article> aux = new ArrayList<>();

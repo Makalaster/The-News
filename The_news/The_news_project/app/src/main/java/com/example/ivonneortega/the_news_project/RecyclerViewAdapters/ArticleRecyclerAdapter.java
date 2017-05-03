@@ -60,7 +60,7 @@ public class ArticleRecyclerAdapter extends RecyclerView.Adapter<ArticleRecycler
         //This is the recycler view that scrolls horizontally
 
         //If we are not at the last position
-        if(position == mList.size()-1)
+        if(position == 5)
         {
             holder.mSeeMore.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -108,7 +108,7 @@ public class ArticleRecyclerAdapter extends RecyclerView.Adapter<ArticleRecycler
 
     @Override
     public int getItemCount() {
-        return mList.size();
+        return 6;
     }
 
     public class CategoryIndividualItemViewHolder extends RecyclerView.ViewHolder {
@@ -132,6 +132,6 @@ public class ArticleRecyclerAdapter extends RecyclerView.Adapter<ArticleRecycler
 
     @Override
     public int getItemViewType(int position) {
-        return (position == mList.size()-1) ? VIEW_TYPE_MORE : VIEW_TYPE_ARTICLE;
+        return (position == 5) ? VIEW_TYPE_MORE : VIEW_TYPE_ARTICLE;
     }
 }

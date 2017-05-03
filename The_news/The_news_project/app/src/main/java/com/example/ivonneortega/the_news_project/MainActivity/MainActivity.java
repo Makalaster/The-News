@@ -85,12 +85,18 @@ public class MainActivity extends AppCompatActivity
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
-        View hView =  navigationView.getHeaderView(0);
-        ImageView nav_user = (ImageView) hView.findViewById(R.id.navigation_image);
-        Picasso.with(this)
-                .load(DatabaseHelper.getInstance(this).getArticlesById(1).getImage())
-                .fit()
-                .into(nav_user);
+
+        Article article = DatabaseHelper.getInstance(this).getArticlesById(1);
+        if(article!=null)
+        {
+            View hView =  navigationView.getHeaderView(0);
+            ImageView nav_user = (ImageView) hView.findViewById(R.id.navigation_image);
+            Picasso.with(this)
+                    .load(article.getImage())
+                    .fit()
+                    .into(nav_user);
+        }
+
 
 
         ImageButton optionsToolbar = (ImageButton) findViewById(R.id.options_toolbar);
