@@ -487,7 +487,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         Cursor cursor = db.query(TABLE_ARTICLES, null, null, null, null, null, COL_DATE + " ASC");
         boolean oldestRemoved = false;
 
-        if (cursor.moveToFirst() && cursor.getCount() > 300) {
+        if (cursor.moveToFirst() && cursor.getCount() > 1000) {
             while (!oldestRemoved && !cursor.isAfterLast()) {
                 if (cursor.getInt(cursor.getColumnIndex(COL_IS_SAVED)) == Article.FALSE) {
                     db.delete(TABLE_ARTICLES,
