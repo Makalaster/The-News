@@ -1,4 +1,4 @@
-package com.example.ivonneortega.the_news_project.Swipe;
+package com.example.ivonneortega.the_news_project.swipe;
 
 /**
  * Created by ivonneortega on 5/3/17.

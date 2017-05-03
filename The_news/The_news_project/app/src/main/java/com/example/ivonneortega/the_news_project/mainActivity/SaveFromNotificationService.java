@@ -1,4 +1,4 @@
-package com.example.ivonneortega.the_news_project.MainActivity;
+package com.example.ivonneortega.the_news_project.mainActivity;
 
 import android.app.IntentService;
 import android.content.Intent;

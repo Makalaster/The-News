@@ -1,4 +1,4 @@
-package com.example.ivonneortega.the_news_project.Settings;
+package com.example.ivonneortega.the_news_project.settings;
 
 import android.content.Context;
 import android.content.SharedPreferences;

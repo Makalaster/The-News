@@ -1,4 +1,4 @@
-package com.example.ivonneortega.the_news_project.MainActivity;
+package com.example.ivonneortega.the_news_project.mainActivity;
 
 import android.content.Context;
 import android.content.Intent;
@@ -18,11 +18,11 @@ import android.view.View;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 
-import com.example.ivonneortega.the_news_project.CategoryView.CategoryViewActivity;
-import com.example.ivonneortega.the_news_project.MainActivity.Fragments.FragmentAdapterMainActivity;
+import com.example.ivonneortega.the_news_project.categoryView.CategoryViewActivity;
+import com.example.ivonneortega.the_news_project.mainActivity.fragments.FragmentAdapterMainActivity;
 import com.example.ivonneortega.the_news_project.R;
-import com.example.ivonneortega.the_news_project.Search.SearchActivity;
-import com.example.ivonneortega.the_news_project.Settings.SettingsActivity;
+import com.example.ivonneortega.the_news_project.search.SearchActivity;
+import com.example.ivonneortega.the_news_project.settings.SettingsActivity;
 import com.example.ivonneortega.the_news_project.data.Article;
 import com.example.ivonneortega.the_news_project.data.Category;
 import com.example.ivonneortega.the_news_project.database.DatabaseHelper;

@@ -1,4 +1,4 @@
-package com.example.ivonneortega.the_news_project.DetailView;
+package com.example.ivonneortega.the_news_project.detailView;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -16,7 +16,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.ivonneortega.the_news_project.CategoryView.CategoryViewActivity;
+import com.example.ivonneortega.the_news_project.categoryView.CategoryViewActivity;
 import com.example.ivonneortega.the_news_project.R;
 import com.example.ivonneortega.the_news_project.data.Article;
 import com.example.ivonneortega.the_news_project.database.DatabaseHelper;

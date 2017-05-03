@@ -1,4 +1,4 @@
-package com.example.ivonneortega.the_news_project.Search;
+package com.example.ivonneortega.the_news_project.search;
 
 import android.content.Context;
 import android.content.SharedPreferences;
@@ -13,8 +13,8 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.ImageButton;
 
 import com.example.ivonneortega.the_news_project.R;
-import com.example.ivonneortega.the_news_project.RecyclerViewAdapters.ArticlesVerticalRecyclerAdapter;
-import com.example.ivonneortega.the_news_project.Settings.SettingsActivity;
+import com.example.ivonneortega.the_news_project.recyclerViewAdapters.ArticlesVerticalRecyclerAdapter;
+import com.example.ivonneortega.the_news_project.settings.SettingsActivity;
 import com.example.ivonneortega.the_news_project.data.Article;
 import com.example.ivonneortega.the_news_project.database.DatabaseHelper;
 

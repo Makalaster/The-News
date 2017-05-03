@@ -1,4 +1,4 @@
-package com.example.ivonneortega.the_news_project.MainActivity;
+package com.example.ivonneortega.the_news_project.mainActivity;
 
 import android.app.NotificationManager;
 import android.app.PendingIntent;
@@ -19,8 +19,8 @@ import com.android.volley.RequestQueue;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
-import com.example.ivonneortega.the_news_project.DetailView.CollectionDemoActivity;
-import com.example.ivonneortega.the_news_project.Settings.SettingsActivity;
+import com.example.ivonneortega.the_news_project.detailView.CollectionDemoActivity;
+import com.example.ivonneortega.the_news_project.settings.SettingsActivity;
 import com.example.ivonneortega.the_news_project.data.Article;
 import com.example.ivonneortega.the_news_project.data.NYTApiData;
 import com.example.ivonneortega.the_news_project.database.DatabaseHelper;

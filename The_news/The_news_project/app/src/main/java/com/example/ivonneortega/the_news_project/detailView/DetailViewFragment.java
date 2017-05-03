@@ -1,4 +1,4 @@
-package com.example.ivonneortega.the_news_project.DetailView;
+package com.example.ivonneortega.the_news_project.detailView;
 
 import android.content.Context;
 import android.net.Uri;

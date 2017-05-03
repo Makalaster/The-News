@@ -1,4 +1,4 @@
-package com.example.ivonneortega.the_news_project.CategoryView;
+package com.example.ivonneortega.the_news_project.categoryView;
 
 import android.content.Context;
 import android.content.Intent;
@@ -19,9 +19,9 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 
 import com.example.ivonneortega.the_news_project.R;
-import com.example.ivonneortega.the_news_project.RecyclerViewAdapters.ArticlesVerticalRecyclerAdapter;
-import com.example.ivonneortega.the_news_project.Search.SearchActivity;
-import com.example.ivonneortega.the_news_project.Settings.SettingsActivity;
+import com.example.ivonneortega.the_news_project.recyclerViewAdapters.ArticlesVerticalRecyclerAdapter;
+import com.example.ivonneortega.the_news_project.search.SearchActivity;
+import com.example.ivonneortega.the_news_project.settings.SettingsActivity;
 import com.example.ivonneortega.the_news_project.data.Article;
 import com.example.ivonneortega.the_news_project.database.DatabaseHelper;
 import com.squareup.picasso.Picasso;
@@ -43,13 +43,11 @@ public class CategoryViewActivity extends AppCompatActivity
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         setTheme();
-//        setContentView(R.layout.activity_category_view);
         settingUpTheViews();
         mList = new ArrayList<>();
-
     }
-
 
     @Override
     protected void onResume() {
@@ -60,7 +58,7 @@ public class CategoryViewActivity extends AppCompatActivity
             mAdapter.notifyDataSetChanged();
         }
 
-        if(mStartActivity == true){
+        if(mStartActivity){
             mStartActivity = false;
 
         } else {
@@ -87,7 +85,6 @@ public class CategoryViewActivity extends AppCompatActivity
         mStartActivity=true;
     }
 
-
     //NAVIGATION DRAWER METHOD
     @Override
     public void onBackPressed() {
@@ -106,48 +103,56 @@ public class CategoryViewActivity extends AppCompatActivity
     public boolean onNavigationItemSelected(MenuItem item) {
         // Handle navigation view item clicks here.
         int id = item.getItemId();
-        List<String> categories = new ArrayList<>();
 
-        if (id == R.id.nav_world) {
-            moveToCategoryViewActivity("World");
-        } else if (id == R.id.nav_politics) {
-            moveToCategoryViewActivity("Politics");
-        } else if (id == R.id.nav_business) {
-            moveToCategoryViewActivity("Business");
-        } else if (id == R.id.nav_technology) {
-            moveToCategoryViewActivity("Technology");
-        }
-        else if (id == R.id.nav_science) {
-            moveToCategoryViewActivity("Science");
-        }
-        else if (id == R.id.nav_sports) {
-            moveToCategoryViewActivity("Sports");
-        }
-        else if (id == R.id.nav_movies) {
-            moveToCategoryViewActivity("Movies");
-        }
-        else if (id == R.id.nav_fashion) {
-            moveToCategoryViewActivity("Fashion");
-        }
-        else if (id == R.id.nav_food) {
-            moveToCategoryViewActivity("Food");
-        }
-        else if (id == R.id.nav_health) {
-            moveToCategoryViewActivity("Health");
-        }
-        else if (id == R.id.nav_miscellaneous) {
-            moveToCategoryViewActivity("Miscellaneous");
-        }
+        String category = null;
+        switch (id) {
+            case R.id.nav_world:
+                category = "World";
+                break;
+            case R.id.nav_politics:
+                category = "Politics";
+                break;
+            case R.id.nav_business:
+                category = "Business";
+                break;
+            case R.id.nav_technology:
+                category = "Technology";
+                break;
+            case R.id.nav_science:
+                category = "Science";
+                break;
+            case R.id.nav_sports:
+                category = "Sports";
+                break;
+            case R.id.nav_movies:
+                category = "Movies";
+                break;
+            case R.id.nav_fashion:
+                category = "Fashion";
+                break;
+            case R.id.nav_food:
+                category = "Food";
+                break;
+            case R.id.nav_health:
+                category = "Health";
+                break;
+            case R.id.nav_miscellaneous:
+                category = "Miscellaneous";
+                break;
+            }
+
+        moveToCategoryViewActivity(category);
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
     }
 
+    //TODO check if both finishes are correct
     public void moveToCategoryViewActivity(String category)
     {
         finish();
-        Intent intent = new Intent(this,CategoryViewActivity.class);
+        Intent intent = new Intent(this, CategoryViewActivity.class);
         intent.putExtra(DatabaseHelper.COL_CATEGORY,category);
         startActivity(intent);
         finish();

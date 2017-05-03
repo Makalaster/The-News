@@ -1,4 +1,4 @@
-package com.example.ivonneortega.the_news_project.MainActivity.Fragments;
+package com.example.ivonneortega.the_news_project.mainActivity.fragments;
 
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;

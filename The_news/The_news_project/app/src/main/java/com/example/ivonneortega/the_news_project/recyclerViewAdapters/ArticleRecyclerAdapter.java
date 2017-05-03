@@ -1,4 +1,4 @@
-package com.example.ivonneortega.the_news_project.RecyclerViewAdapters;
+package com.example.ivonneortega.the_news_project.recyclerViewAdapters;
 
 import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
@@ -8,8 +8,8 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.example.ivonneortega.the_news_project.CategoryView.CategoryViewActivity;
-import com.example.ivonneortega.the_news_project.DetailView.CollectionDemoActivity;
+import com.example.ivonneortega.the_news_project.categoryView.CategoryViewActivity;
+import com.example.ivonneortega.the_news_project.detailView.CollectionDemoActivity;
 import com.example.ivonneortega.the_news_project.R;
 import com.example.ivonneortega.the_news_project.data.Article;
 import com.example.ivonneortega.the_news_project.database.DatabaseHelper;

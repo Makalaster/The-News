@@ -1,4 +1,4 @@
-package com.example.ivonneortega.the_news_project.Swipe;
+package com.example.ivonneortega.the_news_project.swipe;
 
 /**
  * Created by ivonneortega on 4/10/17.
@@ -16,7 +16,7 @@ import android.support.v7.widget.helper.ItemTouchHelper;
 import android.view.View;
 
 import com.example.ivonneortega.the_news_project.R;
-import com.example.ivonneortega.the_news_project.RecyclerViewAdapters.ArticlesVerticalRecyclerAdapter;
+import com.example.ivonneortega.the_news_project.recyclerViewAdapters.ArticlesVerticalRecyclerAdapter;
 
 
 public class SimpleItemTouchHelperCallback extends ItemTouchHelper.Callback {

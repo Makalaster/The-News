@@ -1,4 +1,4 @@
-package com.example.ivonneortega.the_news_project.RecyclerViewAdapters;
+package com.example.ivonneortega.the_news_project.recyclerViewAdapters;
 
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;

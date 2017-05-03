@@ -1,4 +1,4 @@
-package com.example.ivonneortega.the_news_project.MainActivity.Fragments;
+package com.example.ivonneortega.the_news_project.mainActivity.fragments;
 
 import android.net.Uri;
 import android.os.Bundle;
@@ -11,8 +11,8 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.example.ivonneortega.the_news_project.R;
-import com.example.ivonneortega.the_news_project.RecyclerViewAdapters.ArticlesVerticalRecyclerAdapter;
-import com.example.ivonneortega.the_news_project.Swipe.SimpleItemTouchHelperCallback;
+import com.example.ivonneortega.the_news_project.recyclerViewAdapters.ArticlesVerticalRecyclerAdapter;
+import com.example.ivonneortega.the_news_project.swipe.SimpleItemTouchHelperCallback;
 import com.example.ivonneortega.the_news_project.data.Article;
 import com.example.ivonneortega.the_news_project.database.DatabaseHelper;
 
