@@ -1,9 +1,11 @@
 package com.example.ivonneortega.the_news_project.MainActivity;
 
 import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.app.job.JobParameters;
 import android.app.job.JobService;
 import android.content.Context;
+import android.content.Intent;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.AsyncTask;
@@ -16,8 +18,9 @@ import com.android.volley.RequestQueue;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
-import com.example.ivonneortega.the_news_project.data.Article;
 import com.example.ivonneortega.the_news_project.DatabaseHelper;
+import com.example.ivonneortega.the_news_project.DetailView.CollectionDemoActivity;
+import com.example.ivonneortega.the_news_project.DetailView.DetailViewActivity;
 import com.example.ivonneortega.the_news_project.data.Article;
 import com.example.ivonneortega.the_news_project.data.NYTApiData;
 import com.google.gson.Gson;
@@ -35,10 +38,12 @@ public class ArticleRefreshService extends JobService {
     private List<String> mTopStoriesList = new ArrayList<>();
     private static final String TAG = "ArticleRefreshService";
     public static final String JSON = ".json";
+    private DatabaseHelper mDb;
 
     @Override
     public void onCreate() {
         super.onCreate();
+        mDb = DatabaseHelper.getInstance(this);
 
         if (mNewsWireList.isEmpty()) {
             mNewsWireList.add("World");
@@ -169,8 +174,6 @@ public class ArticleRefreshService extends JobService {
     }
 
     public void addArticleToDatabase(JSONObject object, final int fromTopStories) {
-        final DatabaseHelper db = DatabaseHelper.getInstance(this);
-
         AsyncTask<JSONObject, Void, Void> dbTask = new AsyncTask<JSONObject, Void, Void>() {
             @Override
             protected Void doInBackground(JSONObject... params) {
@@ -187,12 +190,14 @@ public class ArticleRefreshService extends JobService {
                     title = object.getString("title");
                     date = object.getString("published_date");
                     category = object.getString("section");
-                    JSONArray multimedia = object.getJSONArray("multimedia");
-                    for (int i = 0; i < multimedia.length(); i++) {
-                        JSONObject pic = multimedia.getJSONObject(i);
-                        if (pic.getString("format").equals("Normal") && pic.getString("type").equals("image")) {
-                            image = pic.getString("url");
-                            hasImage = true;
+                    if (!object.getString("multimedia").equals("")) {
+                        JSONArray multimedia = object.getJSONArray("multimedia");
+                        for (int i = 0; i < multimedia.length(); i++) {
+                            JSONObject pic = multimedia.getJSONObject(i);
+                            if (pic.getString("format").equals("Normal") && pic.getString("type").equals("image")) {
+                                image = pic.getString("url");
+                                hasImage = true;
+                            }
                         }
                     }
                 } catch (JSONException e) {
@@ -202,12 +207,12 @@ public class ArticleRefreshService extends JobService {
                 String source = "New York Times";
                 int isSaved = Article.FALSE;
 
-                if (db.getArticleByUrl(url) == null && hasImage) {
+                if (mDb.getArticleByUrl(url) == null && hasImage) {
                     Log.d(TAG, "doInBackground: " + title);
-                    db.insertArticleIntoDatabase(image, title, category, date.substring(0, date.indexOf('T')), null, source, isSaved, fromTopStories, url);
+                    long id = mDb.insertArticleIntoDatabase(image, title, category, date.substring(0, date.indexOf('T')), null, source, isSaved, fromTopStories, url);
 
-                    db.checkSizeAndRemoveOldest();
-                    generateNotification(title);
+                    mDb.checkSizeAndRemoveOldest();
+                    generateNotification(title, id);
                 }
 
                 return null;
@@ -216,47 +221,54 @@ public class ArticleRefreshService extends JobService {
         dbTask.execute(object);
     }
 
-    private void generateNotification(String title) {
+    private void generateNotification(String title, long id) {
         NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(getApplicationContext());
+
+        Intent openArticleIntent = new Intent(this, CollectionDemoActivity.class);
+        openArticleIntent.putExtra(DatabaseHelper.COL_ID, id);
+        PendingIntent openDetails = PendingIntent.getActivity(this, (int) System.currentTimeMillis(), openArticleIntent, 0);
+
+        Intent saveArticleIntent = new Intent(this, SaveFromNotificationService.class);
+        saveArticleIntent.putExtra(DatabaseHelper.COL_ID, id);
+        PendingIntent saveArticle = PendingIntent.getService(this, (int) System.currentTimeMillis(), saveArticleIntent, 0);
+
         notificationBuilder.setSmallIcon(android.R.drawable.ic_dialog_alert)
                 .setAutoCancel(true)
                 .setContentTitle("New top news:")
                 .setContentText(title)
-                .setOngoing(false);
+                .setContentIntent(openDetails)
+                .setOngoing(false)
+                .addAction(android.R.drawable.ic_input_add, "Save", saveArticle);
 
         NotificationManager notificationManager =
                 (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
         notificationManager.notify(NOTIFICATION_ID, notificationBuilder.build());
     }
 
+//    JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.GET,
+//            NYTApiData.URL_SEARCH + "?api-key=" + NYTApiData.API_KEY + "&fq=web_url(\"" + url + "\")", null,
+//            new com.android.volley.Response.Listener<JSONObject>() {
+//                @Override
+//                public void onResponse(JSONObject response) {
+//                    try {
+//                        JSONArray docs = response.getJSONArray("docs");
+//                        JSONObject article = docs.getJSONObject(0);
+//                        String paragraph = article.getString("lead_paragraph");
+//                    } catch (JSONException e) {
+//                        e.printStackTrace();
+//                    }
+//
+//                }
+//            }, new com.android.volley.Response.ErrorListener() {
+//        @Override
+//        public void onErrorResponse(VolleyError error) {
+//
+//        }
+//    });
 
 
-    public void searchArticles(String url, final int fromTopStories) {
-        RequestQueue queue = Volley.newRequestQueue(this);
 
-        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.GET,
-                NYTApiData.URL_SEARCH + "?api-key=" + NYTApiData.API_KEY + "&fq=web_url(\"" + url + "\")", null,
-                new com.android.volley.Response.Listener<JSONObject>() {
-                    @Override
-                    public void onResponse(JSONObject response) {
-                        try {
-                            JSONArray docs = response.getJSONArray("docs");
-                            JSONObject article = docs.getJSONObject(0);
-                            String paragraph = article.getString("lead_paragraph");
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                        }
 
-                    }
-                }, new com.android.volley.Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-
-            }
-        });
-
-        queue.add(jsonObjectRequest);
-    }
 
 
 
@@ -266,3 +278,4 @@ public class ArticleRefreshService extends JobService {
         return false;
     }
 }
+

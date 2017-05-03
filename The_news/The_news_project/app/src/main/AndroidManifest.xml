@@ -47,6 +47,10 @@
             android:name=".MainActivity.ArticleRefreshService"
             android:permission="android.permission.BIND_JOB_SERVICE"/>
 
+        <service android:name=".MainActivity.SaveFromNotificationService"
+                 android:enabled="true"
+                 android:exported="false"/>
+
         <activity
             android:name=".DetailView.CollectionDemoActivity"
             android:label="CollectionDemoActivity"

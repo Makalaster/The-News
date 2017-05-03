@@ -307,7 +307,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 new String[]{String.valueOf(Article.TRUE)}, // d. selections args
                 null, // e. group by
                 null, // f. having
-                null, // g. order by
+                COL_ID + " DESC", // g. order by
                 null); // h. limit
 
         List<Article> articles = new ArrayList<>();
@@ -491,7 +491,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             while (!oldestRemoved && !cursor.isAfterLast()) {
                 if (cursor.getInt(cursor.getColumnIndex(COL_IS_SAVED)) == Article.FALSE) {
                     db.delete(TABLE_ARTICLES,
-                            "WHERE " + COL_ID + " = ?",
+                            COL_ID + " = ?",
                             new String[]{String.valueOf(cursor.getInt(cursor.getColumnIndex(COL_ID)))});
 
                     oldestRemoved = true;
@@ -503,6 +503,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
         cursor.close();
     }
+
+
 
 
 }
