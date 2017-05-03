@@ -16,10 +16,9 @@ import com.android.volley.RequestQueue;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
-import com.example.ivonneortega.the_news_project.data.Article;
 import com.example.ivonneortega.the_news_project.DatabaseHelper;
+import com.example.ivonneortega.the_news_project.data.Article;
 import com.example.ivonneortega.the_news_project.data.NYTApiData;
-import com.google.gson.Gson;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -180,6 +179,7 @@ public class ArticleRefreshService extends JobService {
                 String date = null;
                 String category = null;
                 String image = null;
+                boolean hasImage = false;
                 try {
                     url = object.getString("url");
                     title = object.getString("title");
@@ -190,18 +190,22 @@ public class ArticleRefreshService extends JobService {
                         JSONObject pic = multimedia.getJSONObject(i);
                         if (pic.getString("format").equals("Normal") && pic.getString("type").equals("image")) {
                             image = pic.getString("url");
+                            hasImage = true;
                         }
                     }
                 } catch (JSONException e) {
+                    hasImage = false;
                     e.printStackTrace();
                 }
                 String source = "New York Times";
                 int isSaved = Article.FALSE;
 
-                if (db.getArticleByUrl(url) == null) {
-                    generateNotification(title);
-
+                if (db.getArticleByUrl(url) == null && hasImage) {
+                    Log.d(TAG, "doInBackground: " + title);
                     db.insertArticleIntoDatabase(image, title, category, date, null, source, isSaved, fromTopStories, url);
+
+                    db.checkSizeAndRemoveOldest();
+                    generateNotification(title);
                 }
 
                 return null;
@@ -210,7 +214,7 @@ public class ArticleRefreshService extends JobService {
         dbTask.execute(object);
     }
 
-    public void generateNotification(String title) {
+    private void generateNotification(String title) {
         NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(getApplicationContext());
         notificationBuilder.setSmallIcon(android.R.drawable.ic_dialog_alert)
                 .setAutoCancel(true)
@@ -222,35 +226,6 @@ public class ArticleRefreshService extends JobService {
                 (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
         notificationManager.notify(NOTIFICATION_ID, notificationBuilder.build());
     }
-
-    public void searchArticles(String url, final int fromTopStories) {
-        RequestQueue queue = Volley.newRequestQueue(this);
-
-        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.GET,
-                NYTApiData.URL_SEARCH + "?api-key=" + NYTApiData.API_KEY + "&fq=web_url(\"" + url + "\")", null,
-                new com.android.volley.Response.Listener<JSONObject>() {
-                    @Override
-                    public void onResponse(JSONObject response) {
-                        try {
-                            JSONArray docs = response.getJSONArray("docs");
-                            JSONObject article = docs.getJSONObject(0);
-                            String paragraph = article.getString("lead_paragraph");
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                        }
-
-                    }
-                }, new com.android.volley.Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-
-            }
-        });
-
-        queue.add(jsonObjectRequest);
-    }
-
-
 
     @Override
     public boolean onStopJob(JobParameters params) {
