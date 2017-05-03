@@ -37,6 +37,7 @@ public class ArticleRefreshService extends JobService {
     private List<String> mTopStoriesList = new ArrayList<>();
     private static final String TAG = "ArticleRefreshService";
     public static final String JSON = ".json";
+    private DatabaseHelper mDb = DatabaseHelper.getInstance(this);
 
     @Override
     public void onCreate() {
@@ -67,6 +68,8 @@ public class ArticleRefreshService extends JobService {
             mTopStoriesList.add("food");
             mTopStoriesList.add("health");
         }
+
+
     }
 
     @Override
@@ -170,8 +173,6 @@ public class ArticleRefreshService extends JobService {
     }
 
     public void addArticleToDatabase(JSONObject object, final int fromTopStories) {
-        final DatabaseHelper db = DatabaseHelper.getInstance(this);
-
         AsyncTask<JSONObject, Void, Void> dbTask = new AsyncTask<JSONObject, Void, Void>() {
             @Override
             protected Void doInBackground(JSONObject... params) {
@@ -205,11 +206,11 @@ public class ArticleRefreshService extends JobService {
                 String source = "New York Times";
                 int isSaved = Article.FALSE;
 
-                if (db.getArticleByUrl(url) == null && hasImage) {
+                if (mDb.getArticleByUrl(url) == null && hasImage) {
                     Log.d(TAG, "doInBackground: " + title);
-                    long id = db.insertArticleIntoDatabase(image, title, category, date.substring(0, date.indexOf('T')), null, source, isSaved, fromTopStories, url);
+                    long id = mDb.insertArticleIntoDatabase(image, title, category, date.substring(0, date.indexOf('T')), null, source, isSaved, fromTopStories, url);
 
-                    db.checkSizeAndRemoveOldest();
+                    mDb.checkSizeAndRemoveOldest();
                     generateNotification(title, id);
                 }
 
@@ -222,16 +223,21 @@ public class ArticleRefreshService extends JobService {
     private void generateNotification(String title, long id) {
         NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(getApplicationContext());
 
-        Intent intent = new Intent(this, CollectionDemoActivity.class);
-        intent.putExtra(DatabaseHelper.COL_ID, id);
-        PendingIntent openDetails = PendingIntent.getActivity(this, (int) System.currentTimeMillis(), intent, 0);
+        Intent openArticleIntent = new Intent(this, CollectionDemoActivity.class);
+        openArticleIntent.putExtra(DatabaseHelper.COL_ID, id);
+        PendingIntent openDetails = PendingIntent.getActivity(this, (int) System.currentTimeMillis(), openArticleIntent, 0);
+
+        Intent saveArticleIntent = new Intent(this, SaveFromNotificationService.class);
+        saveArticleIntent.putExtra(DatabaseHelper.COL_ID, id);
+        PendingIntent saveArticle = PendingIntent.getService(this, (int) System.currentTimeMillis(), saveArticleIntent, 0);
 
         notificationBuilder.setSmallIcon(android.R.drawable.ic_dialog_alert)
                 .setAutoCancel(true)
                 .setContentTitle("New top news:")
                 .setContentText(title)
                 .setContentIntent(openDetails)
-                .setOngoing(false);
+                .setOngoing(false)
+                .addAction(android.R.drawable.ic_input_add, "Save", saveArticle);
 
         NotificationManager notificationManager =
                 (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);

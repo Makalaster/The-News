@@ -447,7 +447,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             while (!oldestRemoved && !cursor.isAfterLast()) {
                 if (cursor.getInt(cursor.getColumnIndex(COL_IS_SAVED)) == Article.FALSE) {
                     db.delete(TABLE_ARTICLES,
-                            "WHERE " + COL_ID + " = ?",
+                            COL_ID + " = ?",
                             new String[]{String.valueOf(cursor.getInt(cursor.getColumnIndex(COL_ID)))});
 
                     oldestRemoved = true;
@@ -459,6 +459,4 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
         cursor.close();
     }
-
-
 }
