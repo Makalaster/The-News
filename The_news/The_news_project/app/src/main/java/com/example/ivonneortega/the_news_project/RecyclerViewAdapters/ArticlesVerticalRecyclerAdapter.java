@@ -177,6 +177,11 @@ implements View.OnClickListener{
         }
     }
 
+    public void swapData(List<Article> newList) {
+        mList = newList;
+        notifyDataSetChanged();
+    }
+
     public class ArticlesViewHolder extends RecyclerView.ViewHolder {
 
         //Setting Views including Recycler View

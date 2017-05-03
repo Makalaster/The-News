@@ -141,7 +141,8 @@ public class FragmentTopStories extends Fragment {
                 super.onPostExecute(dbChanged);
                 mTopRefresh.setRefreshing(false);
                 if (dbChanged) {
-                    mAdapter.notifyDataSetChanged();
+                    List<Article> newArticles = DatabaseHelper.getInstance(getContext()).getTopStoryArticles();
+                    mAdapter.swapData(newArticles);
                 }
             }
         };
@@ -202,7 +203,7 @@ public class FragmentTopStories extends Fragment {
 
                 if (db.getArticleByUrl(url) == null && hasImage) {
                     db.checkSizeAndRemoveOldest();
-                    Log.d(TAG, "doInBackground: " + title);
+                    //Log.d(TAG, "doInBackground: " + title);
                     added += db.insertArticleIntoDatabase(image, title, category, date.substring(0, date.indexOf('T')), null, source, isSaved, Article.TRUE, url);
                 }
             } catch (JSONException e) {
