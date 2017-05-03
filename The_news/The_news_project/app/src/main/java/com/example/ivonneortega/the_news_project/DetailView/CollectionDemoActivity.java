@@ -149,38 +149,39 @@ implements NavigationView.OnNavigationItemSelectedListener, View.OnClickListener
     @SuppressWarnings("StatementWithEmptyBody")
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
+        // Handle navigation view item clicks here.
         int id = item.getItemId();
         List<String> categories = new ArrayList<>();
 
         if (id == R.id.nav_world) {
-            moveToCategoryViewActivity("world");
+            moveToCategoryViewActivity("World");
         } else if (id == R.id.nav_politics) {
-            moveToCategoryViewActivity("u.s");
+            moveToCategoryViewActivity("Politics");
         } else if (id == R.id.nav_business) {
-            moveToCategoryViewActivity("business");
+            moveToCategoryViewActivity("Business");
         } else if (id == R.id.nav_technology) {
-            moveToCategoryViewActivity("tech");
+            moveToCategoryViewActivity("Technology");
         }
         else if (id == R.id.nav_science) {
-            moveToCategoryViewActivity("science");
+            moveToCategoryViewActivity("Science");
         }
         else if (id == R.id.nav_sports) {
-            moveToCategoryViewActivity("sports");
+            moveToCategoryViewActivity("Sports");
         }
         else if (id == R.id.nav_movies) {
-            moveToCategoryViewActivity("movies");
+            moveToCategoryViewActivity("Movies");
         }
         else if (id == R.id.nav_fashion) {
-            moveToCategoryViewActivity("fashion");
+            moveToCategoryViewActivity("Fashion");
         }
         else if (id == R.id.nav_food) {
-            moveToCategoryViewActivity("food");
+            moveToCategoryViewActivity("Food");
         }
         else if (id == R.id.nav_health) {
-            moveToCategoryViewActivity("health");
+            moveToCategoryViewActivity("Health");
         }
         else if (id == R.id.nav_miscellaneous) {
-            moveToCategoryViewActivity("misc");
+            moveToCategoryViewActivity("Miscellaneous");
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);

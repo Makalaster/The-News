@@ -87,38 +87,39 @@ public class CategoryViewActivity extends AppCompatActivity
     @SuppressWarnings("StatementWithEmptyBody")
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
+        // Handle navigation view item clicks here.
         int id = item.getItemId();
         List<String> categories = new ArrayList<>();
 
         if (id == R.id.nav_world) {
-            moveToCategoryViewActivity("world");
+            moveToCategoryViewActivity("World");
         } else if (id == R.id.nav_politics) {
-            moveToCategoryViewActivity("u.s");
+            moveToCategoryViewActivity("Politics");
         } else if (id == R.id.nav_business) {
-            moveToCategoryViewActivity("business");
+            moveToCategoryViewActivity("Business");
         } else if (id == R.id.nav_technology) {
-            moveToCategoryViewActivity("tech");
+            moveToCategoryViewActivity("Technology");
         }
         else if (id == R.id.nav_science) {
-            moveToCategoryViewActivity("science");
+            moveToCategoryViewActivity("Science");
         }
         else if (id == R.id.nav_sports) {
-            moveToCategoryViewActivity("sports");
+            moveToCategoryViewActivity("Sports");
         }
         else if (id == R.id.nav_movies) {
-            moveToCategoryViewActivity("movies");
+            moveToCategoryViewActivity("Movies");
         }
         else if (id == R.id.nav_fashion) {
-            moveToCategoryViewActivity("fashion");
+            moveToCategoryViewActivity("Fashion");
         }
         else if (id == R.id.nav_food) {
-            moveToCategoryViewActivity("food");
+            moveToCategoryViewActivity("Food");
         }
         else if (id == R.id.nav_health) {
-            moveToCategoryViewActivity("health");
+            moveToCategoryViewActivity("Health");
         }
         else if (id == R.id.nav_miscellaneous) {
-            moveToCategoryViewActivity("misc");
+            moveToCategoryViewActivity("Miscellaneous");
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -204,38 +205,38 @@ public class CategoryViewActivity extends AppCompatActivity
     public void getList(String category)
     {
         List<String> categories = new ArrayList<>();
-        if (category.equals("world")) {
+        if (category.equals("World")) {
             categories.add("World");
-        } else if (category.equals("u.s")) {
+        } else if (category.equals("Politics")) {
             categories.add("u.s");
             categories.add("Politics");
-        } else if (category.equals("business")) {
+        } else if (category.equals("Business")) {
             categories.add("Business Day");
-        } else if (category.equals("tech")) {
+        } else if (category.equals("Technology")) {
             categories.add("Technology");
         }
-        else if (category.equals("science")) {
+        else if (category.equals("Science")) {
             categories.add("Science");
         }
-        else if (category.equals("sports")) {
+        else if (category.equals("Sports")) {
             categories.add("Sports");
         }
-        else if (category.equals("movies")) {
+        else if (category.equals("Movies")) {
             categories.add("Movies");
             categories.add("Teather");
         }
-        else if (category.equals("fashion")) {
+        else if (category.equals("Fashion")) {
             categories.add("Fashion");
             categories.add("Style");
         }
-        else if (category.equals("food")) {
+        else if (category.equals("Food")) {
             categories.add("food");
         }
-        else if (category.equals("health")) {
+        else if (category.equals("Health")) {
             categories.add("Health");
             categories.add("Well");
         }
-        else if (category.equals("misc")) {
+        else if (category.equals("Miscellaneous")) {
             categories.add("Climate");
             categories.add("Real");
             categories.add("Arts");
