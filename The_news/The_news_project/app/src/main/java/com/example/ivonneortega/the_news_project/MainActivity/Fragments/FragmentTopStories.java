@@ -1,23 +1,36 @@
 package com.example.ivonneortega.the_news_project.MainActivity.Fragments;
 
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.example.ivonneortega.the_news_project.MainActivity.ArticleRefreshService;
 import com.example.ivonneortega.the_news_project.data.Article;
 import com.example.ivonneortega.the_news_project.DatabaseHelper;
 import com.example.ivonneortega.the_news_project.RecyclerViewAdapters.ArticlesVerticalRecyclerAdapter;
 import com.example.ivonneortega.the_news_project.R;
+import com.example.ivonneortega.the_news_project.data.NYTApiData;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.Response;
 
 
 /**
@@ -33,12 +46,15 @@ public class FragmentTopStories extends Fragment {
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
+    ArticlesVerticalRecyclerAdapter mAdapter;
 
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
 
     private SwipeRefreshLayout mTopRefresh;
+    private static final String TAG = "FragmentTopStories";
+    private AsyncTask<String, Void, Boolean> mTask;
 
     private OnFragmentInteractionListener mListener;
 
@@ -82,8 +98,8 @@ public class FragmentTopStories extends Fragment {
 //        categoryIndividualItems.add(new Article(1,"image","This is the text for the article. Testing Text. What happens if I add more?","Business","today","this is the body","source",0,0,"url"));
         categoryIndividualItems = DatabaseHelper.getInstance(view.getContext()).getTopStoryArticles();
 
-        ArticlesVerticalRecyclerAdapter adapter = new ArticlesVerticalRecyclerAdapter(categoryIndividualItems,false);
-        recyclerView.setAdapter(adapter);
+        mAdapter = new ArticlesVerticalRecyclerAdapter(categoryIndividualItems,false);
+        recyclerView.setAdapter(mAdapter);
 
         return view;
     }
@@ -102,7 +118,99 @@ public class FragmentTopStories extends Fragment {
     }
 
     private void refreshTopStories() {
+        mTask = new AsyncTask<String, Void, Boolean>() {
+            @Override
+            protected Boolean doInBackground(String... params) {
+                boolean updated = false;
+                long sum = 0;
 
+                for (String topic : params) {
+                    JSONArray articles = getArticles(topic);
+                    sum += addArticlesToDatabase(articles);
+                }
+
+                if (sum > 0) {
+                    updated = true;
+                }
+
+                return updated;
+            }
+
+            @Override
+            protected void onPostExecute(Boolean dbChanged) {
+                super.onPostExecute(dbChanged);
+                mTopRefresh.setRefreshing(false);
+                if (dbChanged) {
+                    mAdapter.notifyDataSetChanged();
+                }
+            }
+        };
+        mTask.execute("World", "politics", "Business", "technology", "science", "Sports", "Movies", "fashion", "Food", "Health");
+    }
+
+    private JSONArray getArticles(String topic) {
+        OkHttpClient client = new OkHttpClient();
+
+        Request request = new Request.Builder()
+                .url(NYTApiData.URL_NEWS_WIRE + topic + ArticleRefreshService.JSON + "?api-key=" + NYTApiData.API_KEY)
+                .build();
+
+        JSONArray articles = null;
+
+        try {
+            Response response = client.newCall(request).execute();
+            JSONObject jsonReply = new JSONObject(response.body().string());
+            articles = jsonReply.getJSONArray("results");
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        return articles;
+    }
+
+    private long addArticlesToDatabase(JSONArray articles) {
+        DatabaseHelper db = DatabaseHelper.getInstance(getContext());
+        long added = 0;
+
+        for (int i = 0; i < articles.length(); i++) {
+            String url = null;
+            String title = null;
+            String date = null;
+            String category = null;
+            String image = null;
+            boolean hasImage = false;
+            try {
+                JSONObject article = articles.getJSONObject(i);
+                url = article.getString("url");
+                title = article.getString("title");
+                date = article.getString("published_date");
+                category = article.getString("section");
+                if (!article.getString("multimedia").equals("")) {
+                    JSONArray multimedia = article.getJSONArray("multimedia");
+                    for (int j = 0; j < multimedia.length(); j++) {
+                        JSONObject pic = multimedia.getJSONObject(j);
+                        if (pic.getString("format").equals("Normal") && pic.getString("type").equals("image")) {
+                            image = pic.getString("url");
+                            hasImage = true;
+                        }
+                    }
+                }
+                String source = "New York Times";
+                int isSaved = Article.FALSE;
+
+                if (db.getArticleByUrl(url) == null && hasImage) {
+                    db.checkSizeAndRemoveOldest();
+                    Log.d(TAG, "doInBackground: " + title);
+                    added += db.insertArticleIntoDatabase(image, title, category, date.substring(0, date.indexOf('T')), null, source, isSaved, Article.TRUE, url);
+                }
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        }
+
+        return added;
     }
 
     // TODO: Rename method, update argument and hook method into UI event
