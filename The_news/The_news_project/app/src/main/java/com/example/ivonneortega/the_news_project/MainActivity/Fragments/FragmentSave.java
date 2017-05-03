@@ -5,10 +5,12 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.helper.ItemTouchHelper;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.example.ivonneortega.the_news_project.Swipe.SimpleItemTouchHelperCallback;
 import com.example.ivonneortega.the_news_project.data.Article;
 import com.example.ivonneortega.the_news_project.DatabaseHelper;
 import com.example.ivonneortega.the_news_project.RecyclerViewAdapters.ArticlesVerticalRecyclerAdapter;
@@ -28,10 +30,30 @@ import java.util.List;
  */
 public class FragmentSave extends Fragment {
 
+    ArticlesVerticalRecyclerAdapter mAdapter;
+    RecyclerView mRecyclerView;
+
     private OnFragmentInteractionListener mListener;
 
     public FragmentSave() {
         // Required empty public constructor
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        //Creating a list to test recycler view
+        List<Article> categoryIndividualItems = new ArrayList<>();
+
+
+        categoryIndividualItems = DatabaseHelper.getInstance(mRecyclerView.getContext()).getSavedArticles();
+        mAdapter = new ArticlesVerticalRecyclerAdapter(categoryIndividualItems,true);
+        mRecyclerView.setAdapter(mAdapter);
+
+        ItemTouchHelper.Callback callback =
+                new SimpleItemTouchHelperCallback(mAdapter);
+        ItemTouchHelper touchHelper = new ItemTouchHelper(callback);
+        touchHelper.attachToRecyclerView(mRecyclerView);
     }
 
     /**
@@ -63,17 +85,11 @@ public class FragmentSave extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_fragment_save, container, false);
-        RecyclerView recyclerView = (RecyclerView) view.findViewById(R.id.save_recycler_view);
+        mRecyclerView = (RecyclerView) view.findViewById(R.id.save_recycler_view);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(view.getContext(),LinearLayoutManager.VERTICAL,false);
-        recyclerView.setLayoutManager(linearLayoutManager);
-
-        //Creating a list to test recycler view
-        List<Article> categoryIndividualItems = new ArrayList<>();
+        mRecyclerView.setLayoutManager(linearLayoutManager);
 
 
-        categoryIndividualItems = DatabaseHelper.getInstance(view.getContext()).getSavedArticles();
-        ArticlesVerticalRecyclerAdapter adapter = new ArticlesVerticalRecyclerAdapter(categoryIndividualItems,true);
-        recyclerView.setAdapter(adapter);
 
         return view;
     }

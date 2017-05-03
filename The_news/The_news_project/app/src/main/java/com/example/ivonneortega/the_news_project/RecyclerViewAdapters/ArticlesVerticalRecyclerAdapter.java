@@ -1,5 +1,6 @@
 package com.example.ivonneortega.the_news_project.RecyclerViewAdapters;
 
+import android.content.Context;
 import android.content.Intent;
 import android.support.design.widget.Snackbar;
 import android.support.v7.widget.RecyclerView;
@@ -10,6 +11,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.example.ivonneortega.the_news_project.Swipe.SaveSwipeLeft;
 import com.example.ivonneortega.the_news_project.data.Article;
 import com.example.ivonneortega.the_news_project.DatabaseHelper;
 import com.example.ivonneortega.the_news_project.DetailView.CollectionDemoActivity;
@@ -25,11 +27,13 @@ import static android.content.ContentValues.TAG;
  */
 
 public class ArticlesVerticalRecyclerAdapter extends RecyclerView.Adapter<ArticlesVerticalRecyclerAdapter.ArticlesViewHolder>
-implements View.OnClickListener{
+implements View.OnClickListener, SaveSwipeLeft{
 
     private List<Article> mList;
     private boolean mIsSaveFragment;
     private int mPosition;
+    Context mContext;
+    View view;
 
 
     public ArticlesVerticalRecyclerAdapter(List<Article> list, boolean isSaveFragment) {
@@ -47,7 +51,8 @@ implements View.OnClickListener{
     public void onBindViewHolder(final ArticlesViewHolder holder, final int position) {
 
         mPosition = position;
-
+        view = holder.mRoot;
+        mContext = holder.mCategory.getContext();
         holder.mTitle.setText(mList.get(position).getTitle());
         holder.mCategory.setText(mList.get(position).getCategory());
         holder.mDate.setText(mList.get(position).getDate());
@@ -178,6 +183,25 @@ implements View.OnClickListener{
 
                 break;
         }
+    }
+
+    @Override
+    public void onItemDismiss(final int position) {
+        DatabaseHelper.getInstance(mContext).unSaveArticle(mList.get(position).getId());
+        final Article article = mList.get(position);
+        mList.remove(position);
+        notifyItemRemoved(position);
+        Snackbar.make(view, "Article unsaved", Snackbar.LENGTH_LONG)
+                .setAction("UNDO", new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        DatabaseHelper.getInstance(mContext).saveArticle(article.getId());
+                        mList.add(position,article);
+                        notifyItemInserted(position);
+                    }
+                })
+                .setActionTextColor(view.getResources().getColor(R.color.colorPrimaryDark))
+                .show();
     }
 
     public class ArticlesViewHolder extends RecyclerView.ViewHolder {
