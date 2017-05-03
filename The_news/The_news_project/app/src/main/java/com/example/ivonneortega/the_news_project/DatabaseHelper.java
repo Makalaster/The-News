@@ -19,6 +19,7 @@ import static com.example.ivonneortega.the_news_project.DetailView.CollectionDem
  */
 
 public class DatabaseHelper extends SQLiteOpenHelper {
+    private static final String TAG = "DatabaseHelper";
 
 
     ////////////////////
@@ -484,20 +485,20 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public void checkSizeAndRemoveOldest() {
         SQLiteDatabase db = getWritableDatabase();
 
-        Cursor cursor = db.query(TABLE_ARTICLES, null, null, null, null, null, COL_DATE + " ASC");
+        Cursor cursor = db.query(TABLE_ARTICLES, null, null, null, null, null, COL_DATE + " DESC");
         boolean oldestRemoved = false;
 
         if (cursor.moveToFirst() && cursor.getCount() > 1000) {
-            while (!oldestRemoved && !cursor.isAfterLast()) {
+            while (!oldestRemoved && !cursor.isAfterLast() && cursor.getCount() > 1000) {
                 if (cursor.getInt(cursor.getColumnIndex(COL_IS_SAVED)) == Article.FALSE) {
-                    db.delete(TABLE_ARTICLES,
-                            COL_ID + " = ?",
-                            new String[]{String.valueOf(cursor.getInt(cursor.getColumnIndex(COL_ID)))});
+                    long id = cursor.getLong(cursor.getColumnIndex(COL_ID));
+                    Log.d(TAG, "checkSizeAndRemoveOldest: id - " + id);
+                    Log.d(TAG, "checkSizeAndRemoveOldest: count - " + cursor.getCount());
+                    deleteIndividualArticlesFromDatabase(id);
 
                     oldestRemoved = true;
-                } else {
-                    cursor.moveToNext();
                 }
+                cursor.moveToNext();
             }
         }
 

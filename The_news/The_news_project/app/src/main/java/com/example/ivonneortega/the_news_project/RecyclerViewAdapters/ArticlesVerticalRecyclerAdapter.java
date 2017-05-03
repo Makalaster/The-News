@@ -203,6 +203,11 @@ implements View.OnClickListener, SaveSwipeLeft{
                 .setActionTextColor(view.getResources().getColor(R.color.colorPrimaryDark))
                 .show();
     }
+    public void swapData(List<Article> newList) {
+        mList = newList;
+        notifyDataSetChanged();
+    }
+
 
     public class ArticlesViewHolder extends RecyclerView.ViewHolder {
 

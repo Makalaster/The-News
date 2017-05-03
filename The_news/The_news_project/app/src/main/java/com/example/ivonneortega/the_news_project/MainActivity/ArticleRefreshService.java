@@ -50,6 +50,8 @@ public class ArticleRefreshService extends JobService {
         super.onCreate();
         mDb = DatabaseHelper.getInstance(this);
 
+        mDb = DatabaseHelper.getInstance(this);
+
         if (mNewsWireList.isEmpty()) {
             mNewsWireList.add("World");
             mNewsWireList.add("u.s.");
@@ -116,7 +118,7 @@ public class ArticleRefreshService extends JobService {
 
         JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.GET,
                 //NYTApiData.URL_TOP_STORY + query + JSON+"?api-key=" + NYTApiData.API_KEY, null,
-                NYTApiData.URL_TOP_STORY + query + JSON+"?api-key=" + NYTApiData.API_KEY2, null,
+                NYTApiData.URL_TOP_STORY + query + JSON+"?api-key=" + NYTApiData.API_KEY, null,
                 new com.android.volley.Response.Listener<JSONObject>() {
                     @Override
                     public void onResponse(JSONObject response) {
@@ -213,10 +215,10 @@ public class ArticleRefreshService extends JobService {
                 int isSaved = Article.FALSE;
 
                 if (mDb.getArticleByUrl(url) == null && hasImage) {
+                    mDb.checkSizeAndRemoveOldest();
                     Log.d(TAG, "doInBackground: " + title);
                     long id = mDb.insertArticleIntoDatabase(image, title, category, date.substring(0, date.indexOf('T')), null, source, isSaved, fromTopStories, url);
 
-                    mDb.checkSizeAndRemoveOldest();
                     generateNotification(title, id);
                 }
 

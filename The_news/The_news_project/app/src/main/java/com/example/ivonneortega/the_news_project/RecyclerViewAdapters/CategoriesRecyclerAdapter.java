@@ -54,6 +54,8 @@ public class CategoriesRecyclerAdapter extends RecyclerView.Adapter<CategoriesRe
     }
 
 
+
+
     @Override
     public int getItemCount() {
         return mList.size();
