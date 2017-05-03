@@ -5,11 +5,14 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.util.Log;
 
 import com.example.ivonneortega.the_news_project.data.Article;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import static com.example.ivonneortega.the_news_project.DetailView.CollectionDemoActivity.TAG;
 
 /**
  * Created by WilliamAlford on 4/30/17.
@@ -406,6 +409,47 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         }
         cursor.close();
         return articles;
+    }
+
+
+    public String isThereAParagraph(long id)
+    {
+        SQLiteDatabase db = getReadableDatabase();
+        Cursor cursor = db.query(TABLE_ARTICLES, // a. table
+                null, // b. column names
+                COL_ID + " = ?", // c. selections
+                new String[]{String.valueOf(id)}, // d. selections args
+                null, // e. group by
+                null, // f. having
+                null, // g. order by
+                null); // h. limit
+
+        String aux = null;
+        if(cursor.moveToFirst())
+        {
+            if(cursor.getString(cursor.getColumnIndex(COL_BODY))==null)
+            {
+                return null;
+            }
+             aux = cursor.getString(cursor.getColumnIndex(COL_BODY));
+        }
+
+        Log.d(TAG, "isThereAParagraph: "+aux);
+        cursor.close();
+        return aux;
+
+    }
+
+    public void addParagraph(long id, String paragraph)
+    {
+        SQLiteDatabase db = getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put(COL_BODY,paragraph);
+        db.update(TABLE_ARTICLES,
+                values,
+                COL_ID + " = ?",
+                new String[]{String.valueOf(id)}
+        );
     }
 
     public Article getArticleByUrl(String url) {

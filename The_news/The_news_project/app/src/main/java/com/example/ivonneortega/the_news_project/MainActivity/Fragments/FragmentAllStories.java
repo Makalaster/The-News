@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,6 +18,8 @@ import com.example.ivonneortega.the_news_project.R;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import static com.example.ivonneortega.the_news_project.DetailView.CollectionDemoActivity.TAG;
 
 
 /**
@@ -31,6 +34,7 @@ public class FragmentAllStories extends Fragment {
     // TODO: Rename parameter arguments, choose names that match
 
     private OnFragmentInteractionListener mListener;
+    private List<String> mSources;
 
     public FragmentAllStories() {
         // Required empty public constructor
@@ -58,7 +62,7 @@ public class FragmentAllStories extends Fragment {
                              Bundle savedInstanceState) {
 
         View view = inflater.inflate(R.layout.fragment_fragment_all_stories,container,false);
-
+        setSources();
 
         //Setting Recycler View
         RecyclerView recyclerView = (RecyclerView) view.findViewById(R.id.recyclerView_all_stories);
@@ -81,8 +85,16 @@ public class FragmentAllStories extends Fragment {
 //        allStories.add(new Category("Category 3",categoryIndividualItems));
 
         DatabaseHelper db = DatabaseHelper.getInstance(view.getContext());
-        categoryIndividualItems = db.getArticlesByCategory("Business");
-        allStories.add(new Category("Business",categoryIndividualItems));
+//        for(int i=0;i<mSources.size();i++)
+//        {
+//
+//            categoryIndividualItems = db.getArticlesByCategory(mSources.get(i));
+//            Log.d(TAG, "onCreateView: "+categoryIndividualItems.size());
+//            allStories.add(new Category(mSources.get(i),categoryIndividualItems));
+//        }
+
+
+
         categoryIndividualItems = db.getArticlesByCategory("Tech");
         allStories.add(new Category("Tech",categoryIndividualItems));
         categoryIndividualItems = db.getArticlesByCategory("World");
@@ -107,6 +119,17 @@ public class FragmentAllStories extends Fragment {
         recyclerView.setAdapter(adapter);
 
         return view;
+    }
+
+    public void setSources()
+    {
+        mSources = new ArrayList<>();
+        mSources.add("associated-press");
+        mSources.add("bbc-news");
+        mSources.add("business-insider");
+        mSources.add("buzzfeed");
+        mSources.add("cnn");
+        mSources.add("espn");
     }
 
     // TODO: Rename method, update argument and hook method into UI event

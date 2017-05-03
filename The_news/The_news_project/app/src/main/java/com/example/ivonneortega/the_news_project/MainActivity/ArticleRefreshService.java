@@ -213,7 +213,13 @@ public class ArticleRefreshService extends JobService {
                 new com.android.volley.Response.Listener<JSONObject>() {
                     @Override
                     public void onResponse(JSONObject response) {
-                        Gson gson = new Gson();
+                        try {
+                            JSONArray docs = response.getJSONArray("docs");
+                            JSONObject article = docs.getJSONObject(0);
+                            String paragraph = article.getString("lead_paragraph");
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
 
                     }
                 }, new com.android.volley.Response.ErrorListener() {
