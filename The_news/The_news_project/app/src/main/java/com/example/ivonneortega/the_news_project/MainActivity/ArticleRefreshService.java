@@ -1,9 +1,11 @@
 package com.example.ivonneortega.the_news_project.MainActivity;
 
 import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.app.job.JobParameters;
 import android.app.job.JobService;
 import android.content.Context;
+import android.content.Intent;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.AsyncTask;
@@ -17,6 +19,8 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
 import com.example.ivonneortega.the_news_project.DatabaseHelper;
+import com.example.ivonneortega.the_news_project.DetailView.CollectionDemoActivity;
+import com.example.ivonneortega.the_news_project.DetailView.DetailViewActivity;
 import com.example.ivonneortega.the_news_project.data.Article;
 import com.example.ivonneortega.the_news_project.data.NYTApiData;
 
@@ -63,7 +67,6 @@ public class ArticleRefreshService extends JobService {
             mTopStoriesList.add("food");
             mTopStoriesList.add("health");
         }
-
     }
 
     @Override
@@ -185,12 +188,14 @@ public class ArticleRefreshService extends JobService {
                     title = object.getString("title");
                     date = object.getString("published_date");
                     category = object.getString("section");
-                    JSONArray multimedia = object.getJSONArray("multimedia");
-                    for (int i = 0; i < multimedia.length(); i++) {
-                        JSONObject pic = multimedia.getJSONObject(i);
-                        if (pic.getString("format").equals("Normal") && pic.getString("type").equals("image")) {
-                            image = pic.getString("url");
-                            hasImage = true;
+                    if (!object.getString("multimedia").equals("")) {
+                        JSONArray multimedia = object.getJSONArray("multimedia");
+                        for (int i = 0; i < multimedia.length(); i++) {
+                            JSONObject pic = multimedia.getJSONObject(i);
+                            if (pic.getString("format").equals("Normal") && pic.getString("type").equals("image")) {
+                                image = pic.getString("url");
+                                hasImage = true;
+                            }
                         }
                     }
                 } catch (JSONException e) {
@@ -202,10 +207,10 @@ public class ArticleRefreshService extends JobService {
 
                 if (db.getArticleByUrl(url) == null && hasImage) {
                     Log.d(TAG, "doInBackground: " + title);
-                    db.insertArticleIntoDatabase(image, title, category, date.substring(0, date.indexOf('T')), null, source, isSaved, fromTopStories, url);
+                    long id = db.insertArticleIntoDatabase(image, title, category, date.substring(0, date.indexOf('T')), null, source, isSaved, fromTopStories, url);
 
                     db.checkSizeAndRemoveOldest();
-                    generateNotification(title);
+                    generateNotification(title, id);
                 }
 
                 return null;
@@ -214,12 +219,18 @@ public class ArticleRefreshService extends JobService {
         dbTask.execute(object);
     }
 
-    private void generateNotification(String title) {
+    private void generateNotification(String title, long id) {
         NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(getApplicationContext());
+
+        Intent intent = new Intent(this, CollectionDemoActivity.class);
+        intent.putExtra(DatabaseHelper.COL_ID, id);
+        PendingIntent openDetails = PendingIntent.getActivity(this, (int) System.currentTimeMillis(), intent, 0);
+
         notificationBuilder.setSmallIcon(android.R.drawable.ic_dialog_alert)
                 .setAutoCancel(true)
                 .setContentTitle("New top news:")
                 .setContentText(title)
+                .setContentIntent(openDetails)
                 .setOngoing(false);
 
         NotificationManager notificationManager =

@@ -304,7 +304,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 new String[]{String.valueOf(Article.TRUE)}, // d. selections args
                 null, // e. group by
                 null, // f. having
-                null, // g. order by
+                COL_ID + " DESC", // g. order by
                 null); // h. limit
 
         List<Article> articles = new ArrayList<>();
