@@ -164,7 +164,6 @@ public class CategoryViewActivity extends AppCompatActivity
         Toolbar toolbar = (Toolbar) findViewById(R.id.root_toolbar);
         setSupportActionBar(toolbar);
 
-
         Intent intent = getIntent();
         mCategory = intent.getStringExtra(DatabaseHelper.COL_CATEGORY);
         getSupportActionBar().setTitle(mCategory);
@@ -240,48 +239,53 @@ public class CategoryViewActivity extends AppCompatActivity
     public void getList(String category)
     {
         List<String> categories = new ArrayList<>();
-        if (category.equals("World")) {
-            categories.add("World");
-        } else if (category.equals("Politics")) {
-            categories.add("u.s");
-            categories.add("Politics");
-        } else if (category.equals("Business")) {
-            categories.add("Business Day");
-        } else if (category.equals("Technology")) {
-            categories.add("Technology");
-        }
-        else if (category.equals("Science")) {
-            categories.add("Science");
-        }
-        else if (category.equals("Sports")) {
-            categories.add("Sports");
-        }
-        else if (category.equals("Movies")) {
-            categories.add("Movies");
-            categories.add("Teather");
-        }
-        else if (category.equals("Fashion")) {
-            categories.add("Fashion");
-            categories.add("Style");
-        }
-        else if (category.equals("Food")) {
-            categories.add("food");
-        }
-        else if (category.equals("Health")) {
-            categories.add("Health");
-            categories.add("Well");
-        }
-        else if (category.equals("Miscellaneous")) {
-            categories.add("Climate");
-            categories.add("Real");
-            categories.add("Arts");
-            categories.add("The Upshot");
-            categories.add("Opinion");
-            categories.add("Times");
-            categories.add("Technology");
-            categories.add("Magazine");
-            categories.add("N.Y./Region");
-            categories.add("T Magazine Travel");
+        switch (category) {
+            case "World":
+                categories.add("World");
+                break;
+            case "Politics":
+                categories.add("u.s");
+                categories.add("Politics");
+                break;
+            case "Business":
+                categories.add("Business Day");
+                break;
+            case "Technology":
+                categories.add("Technology");
+                break;
+            case "Science":
+                categories.add("Science");
+                break;
+            case "Sports":
+                categories.add("Sports");
+                break;
+            case "Movies":
+                categories.add("Movies");
+                categories.add("Teather");
+                break;
+            case "Fashion":
+                categories.add("Fashion");
+                categories.add("Style");
+                break;
+            case "Food":
+                categories.add("food");
+                break;
+            case "Health":
+                categories.add("Health");
+                categories.add("Well");
+                break;
+            case "Miscellaneous":
+                categories.add("Climate");
+                categories.add("Real");
+                categories.add("Arts");
+                categories.add("The Upshot");
+                categories.add("Opinion");
+                categories.add("Times");
+                categories.add("Technology");
+                categories.add("Magazine");
+                categories.add("N.Y./Region");
+                categories.add("T Magazine Travel");
+                break;
         }
         Log.d("THE CATEGORY IS", "getList: "+category);
         getListWithArticlesByCategory(categories);
@@ -294,7 +298,7 @@ public class CategoryViewActivity extends AppCompatActivity
         //TODO MOVE THIS TO THREAD
         DatabaseHelper db = DatabaseHelper.getInstance(this);
         List<Article> articles = new ArrayList<>();
-        List<Article> aux = new ArrayList<>();
+        List<Article> aux;
         for(int i=0;i<categories.size();i++)
         {
             aux = db.getArticlesByCategory(categories.get(i));
