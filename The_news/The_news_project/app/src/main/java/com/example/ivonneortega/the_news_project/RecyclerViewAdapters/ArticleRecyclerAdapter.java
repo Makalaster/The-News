@@ -77,7 +77,10 @@ public class ArticleRecyclerAdapter extends RecyclerView.Adapter<ArticleRecycler
                     .fit()
                     .centerCrop()
                     .into(holder.mArticleImage);
-
+            if(mList.get(holder.getAdapterPosition()).isSaved())
+                holder.mHeart.setVisibility(View.VISIBLE);
+            else
+                holder.mHeart.setVisibility(View.INVISIBLE);
 
             //This is the title of each article
             holder.mTitleOfArticle.setText(mList.get(position).getTitle());
@@ -117,6 +120,7 @@ public class ArticleRecyclerAdapter extends RecyclerView.Adapter<ArticleRecycler
         ImageView mArticleImage;
         View mSeeMore;
         View mRoot;
+        ImageView mHeart;
 
 
         public CategoryIndividualItemViewHolder(View itemView) {
@@ -125,6 +129,7 @@ public class ArticleRecyclerAdapter extends RecyclerView.Adapter<ArticleRecycler
             mArticleImage = (ImageView) itemView.findViewById(R.id.all_stories_article_images);
             mSeeMore = itemView.findViewById(R.id.see_more_layout);
             mRoot = itemView.findViewById(R.id.root_category_individual_item);
+            mHeart = (ImageView) itemView.findViewById(R.id.horizontal_heart);
 
 
         }
