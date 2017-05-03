@@ -13,11 +13,11 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.example.ivonneortega.the_news_project.MainActivity.ArticleRefreshService;
-import com.example.ivonneortega.the_news_project.data.Article;
-import com.example.ivonneortega.the_news_project.database.DatabaseHelper;
-import com.example.ivonneortega.the_news_project.RecyclerViewAdapters.ArticlesVerticalRecyclerAdapter;
 import com.example.ivonneortega.the_news_project.R;
+import com.example.ivonneortega.the_news_project.RecyclerViewAdapters.ArticlesVerticalRecyclerAdapter;
+import com.example.ivonneortega.the_news_project.data.Article;
 import com.example.ivonneortega.the_news_project.data.NYTApiData;
+import com.example.ivonneortega.the_news_project.database.DatabaseHelper;
 
 import org.json.JSONArray;
 import org.json.JSONException;

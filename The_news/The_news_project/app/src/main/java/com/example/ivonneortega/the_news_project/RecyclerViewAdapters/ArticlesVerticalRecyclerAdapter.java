@@ -11,11 +11,11 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.example.ivonneortega.the_news_project.DetailView.CollectionDemoActivity;
+import com.example.ivonneortega.the_news_project.R;
 import com.example.ivonneortega.the_news_project.Swipe.SaveSwipeLeft;
 import com.example.ivonneortega.the_news_project.data.Article;
 import com.example.ivonneortega.the_news_project.database.DatabaseHelper;
-import com.example.ivonneortega.the_news_project.DetailView.CollectionDemoActivity;
-import com.example.ivonneortega.the_news_project.R;
 import com.squareup.picasso.Picasso;
 
 import java.util.List;

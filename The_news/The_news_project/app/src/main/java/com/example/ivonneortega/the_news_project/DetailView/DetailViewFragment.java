@@ -11,8 +11,8 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.example.ivonneortega.the_news_project.data.Article;
 import com.example.ivonneortega.the_news_project.R;
+import com.example.ivonneortega.the_news_project.data.Article;
 
 public class DetailViewFragment extends Fragment {
 

@@ -14,12 +14,12 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.example.ivonneortega.the_news_project.MainActivity.ArticleRefreshService;
-import com.example.ivonneortega.the_news_project.data.Category;
-import com.example.ivonneortega.the_news_project.data.Article;
-import com.example.ivonneortega.the_news_project.database.DatabaseHelper;
-import com.example.ivonneortega.the_news_project.RecyclerViewAdapters.CategoriesRecyclerAdapter;
 import com.example.ivonneortega.the_news_project.R;
+import com.example.ivonneortega.the_news_project.RecyclerViewAdapters.CategoriesRecyclerAdapter;
+import com.example.ivonneortega.the_news_project.data.Article;
+import com.example.ivonneortega.the_news_project.data.Category;
 import com.example.ivonneortega.the_news_project.data.NYTApiData;
+import com.example.ivonneortega.the_news_project.database.DatabaseHelper;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -85,20 +85,11 @@ public class FragmentAllStories extends Fragment {
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(view.getContext(),LinearLayoutManager.VERTICAL,false);
         recyclerView.setLayoutManager(linearLayoutManager);
 
-//        //Creating a list to test recycler view
+        //Creating a list to test recycler view
         List<Article> categoryIndividualItems = new ArrayList<>();
-//        categoryIndividualItems.add(new Article(1,"image","This is the text for the article. Testing Text. What happens if I add more?","Business","today","this is the body","source",0,0,"url"));
-//        categoryIndividualItems.add(new Article(1,"image","This is the text for the article. Testing Text. What happens if I add more?","Business","today","this is the body","source",0,0,"url"));
-//        categoryIndividualItems.add(new Article(1,"image","This is the text for the article. Testing Text. What happens if I add more?","Business","today","this is the body","source",0,0,"url"));
-//        categoryIndividualItems.add(new Article(1,"image","This is the text for the article. Testing Text. What happens if I add more?","Business","today","this is the body","source",0,0,"url"));
-//        categoryIndividualItems.add(new Article(1,"image","This is the text for the article. Testing Text. What happens if I add more?","Business","today","this is the body","source",0,0,"url"));
-//
-//
-//        //Secondary Test
+
+        //Secondary Test
         List<Category> allStories = new ArrayList<>();
-//        allStories.add(new Category("Category 1",categoryIndividualItems));
-//        allStories.add(new Category("Category 2",categoryIndividualItems));
-//        allStories.add(new Category("Category 3",categoryIndividualItems));
 
         DatabaseHelper db = DatabaseHelper.getInstance(view.getContext());
         categoryIndividualItems = db.getArticlesByCategory("Business");

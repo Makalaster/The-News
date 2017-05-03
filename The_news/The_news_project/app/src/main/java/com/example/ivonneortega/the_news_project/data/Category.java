@@ -1,10 +1,9 @@
 package com.example.ivonneortega.the_news_project.data;
 
-import com.example.ivonneortega.the_news_project.data.Article;
-
 import java.util.List;
 
 /**
+ * Model of a Category object.
  * Created by ivonneortega on 4/29/17.
  */
 

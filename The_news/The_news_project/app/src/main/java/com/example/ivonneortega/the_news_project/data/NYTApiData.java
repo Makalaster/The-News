@@ -1,6 +1,7 @@
 package com.example.ivonneortega.the_news_project.data;
 
 /**
+ * Holds constants used by the New York Times API
  * Created by Makalaster on 5/1/17.
  */
 

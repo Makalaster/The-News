@@ -7,8 +7,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import com.example.ivonneortega.the_news_project.data.Category;
 import com.example.ivonneortega.the_news_project.R;
+import com.example.ivonneortega.the_news_project.data.Category;
 
 import java.util.List;
 
@@ -26,7 +26,6 @@ public class CategoriesRecyclerAdapter extends RecyclerView.Adapter<CategoriesRe
 
     }
 
-
     @Override
     public CategoriesViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         LayoutInflater inflater = LayoutInflater.from(parent.getContext());
@@ -39,9 +38,6 @@ public class CategoriesRecyclerAdapter extends RecyclerView.Adapter<CategoriesRe
         //Title of the Category
         holder.mTitleOfCategory.setText(mList.get(position).getCategoryName());
 
-
-
-
         //Setting Layout Manager for Recycler View
         //This is the main recycler view that scroll vertically and has all the categories
         // Or at least the important ones
@@ -52,9 +48,6 @@ public class CategoriesRecyclerAdapter extends RecyclerView.Adapter<CategoriesRe
         holder.mRecyclerView.setAdapter(adapter);
 
     }
-
-
-
 
     @Override
     public int getItemCount() {
@@ -71,8 +64,6 @@ public class CategoriesRecyclerAdapter extends RecyclerView.Adapter<CategoriesRe
             super(itemView);
             mTitleOfCategory = (TextView) itemView.findViewById(R.id.title_category_main_activity);
             mRecyclerView = (RecyclerView) itemView.findViewById(R.id.recyclerView_each_category);
-
-
         }
     }
 }

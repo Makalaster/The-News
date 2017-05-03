@@ -13,6 +13,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
+ * Database Helper class. Used to store articles locally on the device.
  * Created by WilliamAlford on 4/30/17.
  */
 

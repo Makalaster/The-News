@@ -4,10 +4,6 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 
-import com.example.ivonneortega.the_news_project.MainActivity.Fragments.FragmentAllStories;
-import com.example.ivonneortega.the_news_project.MainActivity.Fragments.FragmentSave;
-import com.example.ivonneortega.the_news_project.MainActivity.Fragments.FragmentTopStories;
-
 /**
  * Created by ivonneortega on 4/29/17.
  */

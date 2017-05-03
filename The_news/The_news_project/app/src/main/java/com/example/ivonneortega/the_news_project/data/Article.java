@@ -1,12 +1,9 @@
 package com.example.ivonneortega.the_news_project.data;
 
-import android.util.Log;
-
 import java.util.List;
 
-import static android.content.ContentValues.TAG;
-
 /**
+ * Model of an Article object.
  * Created by ivonneortega on 4/29/17.
  */
 
@@ -38,7 +35,6 @@ public class Article {
 
     private boolean mIsTopStory;
     //private boolean mIsTopStory;
-
 
     public String getBody() {
         return mBody;
@@ -127,7 +123,6 @@ public class Article {
 
     public static int getArticlePosition(long id, List<Article> list)
     {
-        boolean exit=true;
         int i=0;
         while (i<list.size())
         {
@@ -137,16 +132,7 @@ public class Article {
             }
             else
                 i++;
-
         }
         return -1;
     }
-
-//    public boolean isTopStory() {
-//        return mIsTopStory;
-//    }
-//
-//    public void setTopStory(boolean topStory) {
-//        mIsTopStory = topStory;
-//    }
 }
