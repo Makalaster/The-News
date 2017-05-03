@@ -13,7 +13,9 @@
     <android.support.v7.widget.RecyclerView
         android:layout_width="match_parent"
         android:id="@+id/category_recycler_view"
-        android:layout_marginTop="10dp"
+        android:paddingTop="10dp"
+        android:paddingBottom="10dp"
+        android:clipToPadding="false"
         android:layout_height="wrap_content"/>
 
 </android.support.constraint.ConstraintLayout>

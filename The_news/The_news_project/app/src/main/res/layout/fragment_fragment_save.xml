@@ -7,6 +7,9 @@
     <android.support.v7.widget.RecyclerView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:paddingTop="10dp"
+        android:layout_marginBottom="10dp"
+        android:clipToPadding="false"
         android:id="@+id/save_recycler_view"/>
 
 </FrameLayout>
