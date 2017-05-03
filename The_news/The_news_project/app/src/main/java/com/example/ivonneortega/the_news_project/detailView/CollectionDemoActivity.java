@@ -63,7 +63,7 @@ import java.util.List;
 
 public class CollectionDemoActivity extends FragmentActivity
 implements NavigationView.OnNavigationItemSelectedListener, View.OnClickListener{
-
+    //Constants
     public static final String TITLE = "title";
     public static final String CONTENT = "content";
     public static final String DATE = "date";
@@ -71,70 +71,61 @@ implements NavigationView.OnNavigationItemSelectedListener, View.OnClickListener
     public static final String URL = "url";
     public static final String TAG = "this";
     public static final String ID = "id";
-    Article article;
 
-    List<String> list;
+    Article mArticle;
     DemoCollectionPagerAdapter mDemoCollectionPagerAdapter;
     ViewPager mViewPager;
     private long mId;
     private int mPosition;
-    private ImageView mImage;
-    private TextView mTitle, mDate, mContent;
+
     private List<Article> articleList;
     private ImageButton mHeart;
     private boolean mStartActivity;
     private DrawerLayout drawer;
+
+    //TODO check on unused member variables
     private ActionBarDrawerToggle mDrawerToggle;
+    private ImageView mImage;
+    private TextView mTitle, mDate, mContent;
 
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setTheme();
-        //setContentView(R.layout.activity_detail_view);
-
-
 
         Intent intent = getIntent();
         mId = intent.getLongExtra(DatabaseHelper.COL_ID,-1);
 
-        article = DatabaseHelper.getInstance(this).getArticlesById(mId);
-        articleList = DatabaseHelper.getInstance(this).getArticlesByCategory(article.getCategory());
+        mArticle = DatabaseHelper.getInstance(this).getArticlesById(mId);
+        articleList = DatabaseHelper.getInstance(this).getArticlesByCategory(mArticle.getCategory());
         mPosition = Article.getArticlePosition(mId,articleList);
         creatingViews();
-
-
-
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-        if(mStartActivity == true){
+        if(mStartActivity){
             mStartActivity = false;
-
         } else {
             finish();
             startActivity(getIntent());
         }
     }
 
-    public void setTheme()
-    {
+    public void setTheme() {
         SharedPreferences sharedPreferences = getSharedPreferences("com.example.ivonneortega.the_news_project.Settings", Context.MODE_PRIVATE);
         String str = sharedPreferences.getString(SettingsActivity.THEME,"DEFAULT"); //Initial value of the String is "Hello"
         Log.d("weqweqweqwe", "setTheme: "+str);
-        if(str.equals("dark"))
-        {
+        if(str.equals("dark")) {
             Log.d("sdsdfsdfsdfsdf", "setTheme: qweqwdqqwdqwdqwdwd");
             setTheme(R.style.DarkTheme);
             setContentView(R.layout.activity_detail_view);
             findViewById(R.id.root_toolbar).setBackgroundColor(getResources().getColor(R.color.colorPrimaryDarkTheme));
         }
-        else
-        {
+        else {
             setContentView(R.layout.activity_detail_view);
         }
-        mStartActivity=true;
-
+        mStartActivity = true;
     }
 
     @Override
@@ -152,7 +143,6 @@ implements NavigationView.OnNavigationItemSelectedListener, View.OnClickListener
     public boolean onNavigationItemSelected(MenuItem item) {
         // Handle navigation view item clicks here.
         int id = item.getItemId();
-        List<String> categories = new ArrayList<>();
 
         if (id == R.id.nav_world) {
             moveToCategoryViewActivity("World");
@@ -162,26 +152,19 @@ implements NavigationView.OnNavigationItemSelectedListener, View.OnClickListener
             moveToCategoryViewActivity("Business");
         } else if (id == R.id.nav_technology) {
             moveToCategoryViewActivity("Technology");
-        }
-        else if (id == R.id.nav_science) {
+        } else if (id == R.id.nav_science) {
             moveToCategoryViewActivity("Science");
-        }
-        else if (id == R.id.nav_sports) {
+        } else if (id == R.id.nav_sports) {
             moveToCategoryViewActivity("Sports");
-        }
-        else if (id == R.id.nav_movies) {
+        } else if (id == R.id.nav_movies) {
             moveToCategoryViewActivity("Movies");
-        }
-        else if (id == R.id.nav_fashion) {
+        } else if (id == R.id.nav_fashion) {
             moveToCategoryViewActivity("Fashion");
-        }
-        else if (id == R.id.nav_food) {
+        } else if (id == R.id.nav_food) {
             moveToCategoryViewActivity("Food");
-        }
-        else if (id == R.id.nav_health) {
+        } else if (id == R.id.nav_health) {
             moveToCategoryViewActivity("Health");
-        }
-        else if (id == R.id.nav_miscellaneous) {
+        } else if (id == R.id.nav_miscellaneous) {
             moveToCategoryViewActivity("Miscellaneous");
         }
 
@@ -190,10 +173,7 @@ implements NavigationView.OnNavigationItemSelectedListener, View.OnClickListener
         return true;
     }
 
-
-
-    public void moveToCategoryViewActivity(String category)
-    {
+    public void moveToCategoryViewActivity(String category) {
         Intent intent = new Intent(this, CategoryViewActivity.class);
         intent.putExtra(DatabaseHelper.COL_CATEGORY,category);
         startActivity(intent);
@@ -202,8 +182,7 @@ implements NavigationView.OnNavigationItemSelectedListener, View.OnClickListener
 
     @Override
     public void onClick(View v) {
-        switch (v.getId())
-        {
+        switch (v.getId()) {
             case R.id.options_toolbar:
                 moveToSettingsActivity();
                 break;
@@ -216,31 +195,23 @@ implements NavigationView.OnNavigationItemSelectedListener, View.OnClickListener
         }
     }
 
-    public void share()
-    {
-
+    public void share() {
         Intent sendIntent = new Intent();
         sendIntent.setAction(Intent.ACTION_SEND);
-        sendIntent.putExtra(Intent.EXTRA_TEXT,article.getUrl());
+        sendIntent.putExtra(Intent.EXTRA_TEXT, mArticle.getUrl());
 
         sendIntent.setType("text/plain");
-        //startActivity(Intent.createChooser(sendIntent, getResources().getText(R.string.send_to)));
-        startActivity(Intent.createChooser(sendIntent, "Share this article using.."));
+        startActivity(Intent.createChooser(sendIntent, "Share this mArticle using.."));
     }
 
-    public void moveToSettingsActivity()
-    {
+    public void moveToSettingsActivity() {
         Intent intent = new Intent(this, SettingsActivity.class);
         startActivity(intent);
     }
 
 
-    public void saveArticle()
-    {
-
-
-        if(articleList.get(mPosition).isSaved())
-        {
+    public void saveArticle() {
+        if(articleList.get(mPosition).isSaved()) {
             mHeart.setImageResource(R.mipmap.ic_favorite_border_black_24dp);
             DatabaseHelper.getInstance(this).unSaveArticle(articleList.get(mPosition).getId());
             articleList.get(mPosition).setSaved(false);
@@ -256,8 +227,7 @@ implements NavigationView.OnNavigationItemSelectedListener, View.OnClickListener
                     .setActionTextColor(getResources().getColor(R.color.colorPrimaryDark))
                     .show();
         }
-        else
-        {
+        else {
             mHeart.setImageResource(R.mipmap.ic_favorite_black_24dp);
             articleList.get(mPosition).setSaved(true);
             DatabaseHelper.getInstance(this).saveArticle(articleList.get(mPosition).getId());
@@ -276,14 +246,8 @@ implements NavigationView.OnNavigationItemSelectedListener, View.OnClickListener
         }
     }
 
-
-    public void creatingViews()
-    {
+    public void creatingViews() {
         Toolbar toolbar = (Toolbar) findViewById(R.id.root_toolbar);
-        //setSupportActionBar(toolbar);
-
-
-
 
         drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
@@ -297,7 +261,7 @@ implements NavigationView.OnNavigationItemSelectedListener, View.OnClickListener
         View hView =  navigationView.getHeaderView(0);
         ImageView nav_user = (ImageView) hView.findViewById(R.id.navigation_image);
         Picasso.with(this)
-                .load(article.getImage())
+                .load(mArticle.getImage())
                 .fit()
                 .into(nav_user);
 
@@ -307,22 +271,19 @@ implements NavigationView.OnNavigationItemSelectedListener, View.OnClickListener
         shareToolbar.setClickable(true);
         optionsToolbar.setOnClickListener(this);
         shareToolbar.setOnClickListener(this);
-        ImageButton heartToolbar = (ImageButton) findViewById(R.id.heart_toolbar);
-        heartToolbar.setClickable(true);
-        heartToolbar.setOnClickListener(this);
+        mHeart = (ImageButton) findViewById(R.id.heart_toolbar);
+        mHeart.setClickable(true);
+        mHeart.setOnClickListener(this);
 
         mImage = (ImageView) findViewById(R.id.detail_image);
         mTitle = (TextView) findViewById(R.id.detail_title);
         mDate = (TextView) findViewById(R.id.detail_date);
         mContent = (TextView) findViewById(R.id.detail_content);
 
-
-        mHeart = (ImageButton) findViewById(R.id.heart_toolbar);
         if(articleList.get(mPosition).isSaved())
             mHeart.setImageResource(R.mipmap.ic_favorite_black_24dp);
         else
             mHeart.setImageResource(R.mipmap.ic_favorite_border_black_24dp);
-
 
         //Setting on click listeners
         findViewById(R.id.heart_toolbar).setOnClickListener(this);
@@ -333,24 +294,13 @@ implements NavigationView.OnNavigationItemSelectedListener, View.OnClickListener
         mViewPager = (ViewPager) findViewById(R.id.pager);
         mViewPager.setAdapter(mDemoCollectionPagerAdapter);
         mViewPager.setCurrentItem(mPosition);
-
-
     }
-
-    public void settingUpViews()
-    {
-        Intent intent = getIntent();
-        mId = intent.getLongExtra(DatabaseHelper.COL_ID,-1);
-        Article article = DatabaseHelper.getInstance(this).getArticlesById(mId);
-    }
-
 
     /**
      * A {@link FragmentStatePagerAdapter} that returns a fragment
      * representing an object in the collection.
      */
     public static class DemoCollectionPagerAdapter extends FragmentStatePagerAdapter {
-
         List<Article> mList;
 
         public DemoCollectionPagerAdapter(FragmentManager fm, List<Article> list) {
@@ -358,12 +308,10 @@ implements NavigationView.OnNavigationItemSelectedListener, View.OnClickListener
             mList = list;
         }
 
-
         @Override
         public void setPrimaryItem(ViewGroup container, int position, Object object) {
             super.setPrimaryItem(container, position, object);
         }
-
 
         @Override
         public Fragment getItem(int i) {
@@ -391,8 +339,6 @@ implements NavigationView.OnNavigationItemSelectedListener, View.OnClickListener
         }
     }
 
-
-
     //THIS IS WHERE ALL THE VIEWS ARE INFLATED
     public static class DemoObjectFragment extends Fragment {
 
@@ -409,14 +355,11 @@ implements NavigationView.OnNavigationItemSelectedListener, View.OnClickListener
             ((TextView) rootView.findViewById(R.id.detail_date)).setText((args.getString(DATE)));
             ImageView image = (ImageView) rootView.findViewById(R.id.detail_image);
 
-
-
             Picasso.with(image.getContext())
                     .load(args.getString(IMAGE))
                     .fit()
                     .centerCrop()
                     .into(image);
-
 
             return rootView;
         }
@@ -429,7 +372,6 @@ implements NavigationView.OnNavigationItemSelectedListener, View.OnClickListener
                 view.setText(paragraph);
             } else {
                 RequestQueue queue = Volley.newRequestQueue(view.getContext());
-
 
                 JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.GET,
                         NYTApiData.URL_SEARCH + "?api-key=" + NYTApiData.API_KEY + "&fq=web_url:(\"" + url + "\")", null,
@@ -454,15 +396,12 @@ implements NavigationView.OnNavigationItemSelectedListener, View.OnClickListener
                         }, new com.android.volley.Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
-
                     }
                 });
 
                 queue.add(jsonObjectRequest);
             }
         }
-
-
     }
 }
 

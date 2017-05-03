@@ -62,7 +62,7 @@ public class DetailViewActivity extends AppCompatActivity
         mId = intent.getLongExtra(DatabaseHelper.COL_ID,-1);
         Article article = DatabaseHelper.getInstance(this).getArticlesById(mId);
 
-//        DetailViewFragment detailFragment = DetailViewFragment.newInstance(article);
+//        DetailViewFragment detailFragment = DetailViewFragment.newInstance(mArticle);
 //        getSupportFragmentManager().beginTransaction()
 //                .replace(R.id.fragment_container,detailFragment)
 //                .commit();
