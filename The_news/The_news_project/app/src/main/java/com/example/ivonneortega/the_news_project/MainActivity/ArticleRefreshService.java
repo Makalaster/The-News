@@ -19,13 +19,11 @@ import com.android.volley.RequestQueue;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
-import com.example.ivonneortega.the_news_project.DatabaseHelper;
+import com.example.ivonneortega.the_news_project.database.DatabaseHelper;
 import com.example.ivonneortega.the_news_project.DetailView.CollectionDemoActivity;
-import com.example.ivonneortega.the_news_project.DetailView.DetailViewActivity;
 import com.example.ivonneortega.the_news_project.Settings.SettingsActivity;
 import com.example.ivonneortega.the_news_project.data.Article;
 import com.example.ivonneortega.the_news_project.data.NYTApiData;
-import com.google.gson.Gson;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -33,9 +31,6 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import static com.example.ivonneortega.the_news_project.Settings.SettingsActivity.NOTIFICATION;
-import static com.example.ivonneortega.the_news_project.Settings.SettingsActivity.TRUE;
 
 public class ArticleRefreshService extends JobService {
     private static final int NOTIFICATION_ID = 1;

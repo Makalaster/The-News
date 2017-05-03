@@ -14,7 +14,7 @@ import android.widget.ImageButton;
 
 import com.example.ivonneortega.the_news_project.Settings.SettingsActivity;
 import com.example.ivonneortega.the_news_project.data.Article;
-import com.example.ivonneortega.the_news_project.DatabaseHelper;
+import com.example.ivonneortega.the_news_project.database.DatabaseHelper;
 import com.example.ivonneortega.the_news_project.R;
 import com.example.ivonneortega.the_news_project.RecyclerViewAdapters.ArticlesVerticalRecyclerAdapter;
 

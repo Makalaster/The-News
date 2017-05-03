@@ -1,4 +1,4 @@
-package com.example.ivonneortega.the_news_project;
+package com.example.ivonneortega.the_news_project.database;
 
 import android.content.ContentValues;
 import android.content.Context;
@@ -12,8 +12,6 @@ import com.example.ivonneortega.the_news_project.data.Article;
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.example.ivonneortega.the_news_project.DetailView.CollectionDemoActivity.TAG;
-
 /**
  * Created by WilliamAlford on 4/30/17.
  */
@@ -21,34 +19,14 @@ import static com.example.ivonneortega.the_news_project.DetailView.CollectionDem
 public class DatabaseHelper extends SQLiteOpenHelper {
     private static final String TAG = "DatabaseHelper";
 
-
-    ////////////////////
-    //DB HELPER CONSTRUCTOR
-    ////////////////////
-    public DatabaseHelper(Context context){
-        super(context, DATABASE_NAME,null,DATABASE_VERSION);
-    }
-
-
-
-
-    ////////////////////
-    //DB VERSION + NAME
-    ////////////////////
-
+    //Database version and name
     public static final int DATABASE_VERSION = 1;
     public static final String DATABASE_NAME = "news.db";
 
-    ////////////////////
-    //ARTICLE TABLE
-    ////////////////////
-
+    //Articles table
     public static final String TABLE_ARTICLES = "articles";
 
-    ////////////////////
-    //ARTICLE TABLE COLUMNS
-    ////////////////////
-
+    //Articles table columns
     public static final String COL_ID = "id";
     public static final String COL_TITLE = "title";
     public static final String COL_BODY = "body";
@@ -60,9 +38,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public static final String COL_IS_TOP_STORY = "isTopStory";
     public static final String COL_URL = "url";
 
-
-
-
+    //Articles table creation string
     private static final String CREATE_TABLE_ARTICLES = "CREATE TABLE " + TABLE_ARTICLES + " (" +
             COL_ID + " INTEGER PRIMARY KEY, " +
             COL_TITLE + " TEXT, " +
@@ -75,6 +51,28 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             COL_IS_TOP_STORY + " INTEGER, " +
             COL_URL + " TEXT" + ")";
 
+    //Singleton instance variable
+    private static DatabaseHelper sInstance;
+
+    /**
+     * Private constructor. Can only be called from within the singleton.
+     * @param context Per the getInstance method, this is always the application context.
+     */
+    private DatabaseHelper(Context context){
+        super(context, DATABASE_NAME, null, DATABASE_VERSION);
+    }
+
+    /**
+     * The public method by which other activities, services, and classes can call and access the database.
+     * @param context the context in which the helper is called.
+     * @return the instance of the Database Helper singleton
+     */
+    public static DatabaseHelper getInstance(Context context){
+        if(sInstance == null){
+            sInstance = new DatabaseHelper(context.getApplicationContext());
+        }
+        return sInstance;
+    }
 
     @Override
     public void onCreate(SQLiteDatabase db) {
@@ -83,32 +81,16 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_ARTICLES);
 
         onCreate(db);
-
-
     }
 
-    ////////////////////
-    //SINGLETON
-    ////////////////////
-
-    private static DatabaseHelper sInstance;
-
-    public static DatabaseHelper getInstance(Context context){
-        if(sInstance == null){
-            sInstance = new DatabaseHelper(context.getApplicationContext());
-        }
-        return sInstance;
-    }
-
-
-    ////////////////////
-    //GET ARTICLES BY ID
-    ////////////////////
-
+    /**
+     * Retrieve an article from the database by its ID.
+     * @param id The ID of the article.
+     * @return The article with the given ID, or null if nothing was found.
+     */
     public Article getArticlesById(long id) {
         SQLiteDatabase db = getReadableDatabase();
         Cursor cursor = db.query(TABLE_ARTICLES,
@@ -144,63 +126,52 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             cursor.close();
             return null;
         }
-
     }
 
-    ////////////////////
-    //INSERT ARTICLE
-    ////////////////////
-
-
-    //TODO NEED TO ADD MORE STUFF DEPENDING ON OUR DATABASE
+    /**
+     * Insert an article into the database from raw attributes
+     * @param image The URL of the article's image.
+     * @param title The article's headline.
+     * @param category The category of the article.
+     * @param date The publication date of the article.
+     * @param body The first paragraph of the article.
+     * @param source The source of the article. In the current scope of this project, it is always "New York Times".
+     * @param isSaved A value that determines whether the user has saved the article.
+     * @param isTopStory A value that determines whether the article came from the New York Times' top stories feed.
+     * @param url The source URL of the article.
+     * @return The ID of the newly inserted article.
+     */
     public long insertArticleIntoDatabase(String image, String title, String category, String date,
-                                          String body, String source, int isSaved, int isTopStory,String url) {
+                                          String body, String source, int isSaved, int isTopStory, String url) {
         SQLiteDatabase db = getWritableDatabase();
 
         ContentValues values = new ContentValues();
-        //ADD IMAGE TO DATABASE
-        values.put(COL_TITLE,title);
-        values.put(COL_CATEGORY,category);
-        values.put(COL_DATE,date);
-        values.put(COL_BODY,body);
-        values.put(COL_SOURCE,source);
-        values.put(COL_IS_SAVED,isSaved);
-        values.put(COL_IMAGE,image);
-        values.put(COL_IS_TOP_STORY,isTopStory);
-        values.put(COL_URL,url);
+        values.put(COL_TITLE, title);
+        values.put(COL_CATEGORY, category);
+        values.put(COL_DATE, date);
+        values.put(COL_BODY, body);
+        values.put(COL_SOURCE, source);
+        values.put(COL_IS_SAVED, isSaved);
+        values.put(COL_IMAGE, image);
+        values.put(COL_IS_TOP_STORY, isTopStory);
+        values.put(COL_URL, url);
 
-
-        long idToReturn = db.insert(TABLE_ARTICLES,null,values);
-        //db.close();
-        return  idToReturn;
-//        db.update(TABLE_ARTICLES,
-//                values,
-//                COL_ID + " = ?",
-//                new String[]{String.valueOf(id)}
-//        );
-
-
-
-
+        return  db.insert(TABLE_ARTICLES, null, values);
     }
 
-
-
-    ////////////////////
-    //DELETE FROM DB BY ID
-    ////////////////////
-
+    /**
+     * Delete an individual article from the database based on its ID.
+     * @param id The ID of the article to delete.
+     */
     public void deleteIndividualArticlesFromDatabase(long id){
         SQLiteDatabase db = getWritableDatabase();
         db.delete(TABLE_ARTICLES, COL_ID+" = ?", new String[]{String.valueOf(id)});
     }
 
-
-
-    ////////////////////
-    //SAVE ARTICLES BY ID
-    ////////////////////
-
+    /**
+     * Update an article to mark it as saved by the user.
+     * @param id The ID of the article to mark as saved.
+     */
     public void saveArticle(long id){
         SQLiteDatabase db = getWritableDatabase();
             ContentValues values = new ContentValues();
@@ -210,15 +181,12 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                     COL_ID + " = ?",
                     new String[]{String.valueOf(id)}
             );
-
     }
 
-
-
-    ////////////////////
-    //UN SAVED ARTICLES BY ID
-    ////////////////////
-
+    /**
+     * Update an article to mark it as no longer saved by the user.
+     * @param id The ID of the article to mark as no longer saved.
+     */
     public void unSaveArticle(long id){
         SQLiteDatabase db = getWritableDatabase();
         ContentValues values = new ContentValues();
@@ -228,15 +196,11 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 COL_ID + " = ?",
                 new String[]{String.valueOf(id)}
         );
-
     }
 
-
-
-    ////////////////////
-    //DELETE ALL SAVED ARTICLES
-    ////////////////////
-
+    /**
+     * TODO find out what this is actually supposed to do
+     */
     public void deleteAllSavedArticles(){
         SQLiteDatabase db = getWritableDatabase();
         Cursor cursor = db.query(TABLE_ARTICLES,null,null,null,null,null,null);
@@ -248,26 +212,21 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 cursor.moveToNext();
             }
         }
-
         cursor.close();
-        //db.close();
     }
 
-
-
-
-    ////////////////////
-    //GET ARTICLES BY TITLE (SEARCH)
-    ////////////////////
-
+    /**
+     * Retrieve articles from the database based on title and category.
+     * @param query The string by which to search the database.
+     * @return A list of articles matching the query in the title or category.
+     */
     public List<Article> searchArticles(String query){
-        SQLiteDatabase db = this.getReadableDatabase();
-
+        SQLiteDatabase db = getReadableDatabase();
 
         Cursor cursor = db.query(TABLE_ARTICLES, // a. table
                 null, // b. column names
-                COL_TITLE +" LIKE ? OR " + COL_CATEGORY + " LIKE ?", // c. selections
-                new String[]{"%" + query +"%", "%" + query +"%"}, // d. selections args
+                COL_TITLE + " LIKE ? OR " + COL_CATEGORY + " LIKE ?", // c. selections
+                new String[]{"%" + query + "%", "%" + query + "%"}, // d. selections args
                 null, // e. group by
                 null, // f. having
                 null, // g. order by
@@ -288,7 +247,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                         cursor.getInt(cursor.getColumnIndex(COL_IS_SAVED)),
                         cursor.getInt(cursor.getColumnIndex(COL_IS_TOP_STORY)),
                         cursor.getString(cursor.getColumnIndex(COL_URL)))
-
                 );
 
                 cursor.moveToNext();
@@ -298,9 +256,11 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return articles;
     }
 
-
-    public List<Article> getTopStoryArticles()
-    {
+    /**
+     * Retrieve a full list of all items in the database designated as Top Stories.
+     * @return A list containing articles that are marked as top stories.
+     */
+    public List<Article> getTopStoryArticles() {
         SQLiteDatabase db = this.getReadableDatabase();
         Cursor cursor = db.query(TABLE_ARTICLES, // a. table
                 null, // b. column names
@@ -336,8 +296,11 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return articles;
     }
 
-    public List<Article> getSavedArticles()
-    {
+    /**
+     * Retrieve a list of all items in the database marked as saved by the user.
+     * @return A list containing articles marked as saved by the user.
+     */
+    public List<Article> getSavedArticles() {
         SQLiteDatabase db = this.getReadableDatabase();
         Cursor cursor = db.query(TABLE_ARTICLES, // a. table
                 null, // b. column names
@@ -373,10 +336,13 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return articles;
     }
 
-
-    public List<Article> getArticlesByCategory(String query){
+    /**
+     * Retrieve a list of articles that match a given category.
+     * @param query The category, as a string, that should be searched for.
+     * @return A list of articles in the given category.
+     */
+    public List<Article> getArticlesByCategory(String query) {
         SQLiteDatabase db = this.getReadableDatabase();
-
 
         Cursor cursor = db.query(TABLE_ARTICLES, // a. table
                 null, // b. column names
@@ -402,7 +368,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                         cursor.getInt(cursor.getColumnIndex(COL_IS_SAVED)),
                         cursor.getInt(cursor.getColumnIndex(COL_IS_TOP_STORY)),
                         cursor.getString(cursor.getColumnIndex(COL_URL)))
-
                 );
 
                 cursor.moveToNext();
@@ -412,9 +377,12 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return articles;
     }
 
-
-    public String isThereAParagraph(long id)
-    {
+    /**
+     * Check to see whether a given article has a value for its body text.
+     * @param id The ID of the article to check.
+     * @return The body text if it exists, otherwise null.
+     */
+    public String isThereAParagraph(long id) {
         SQLiteDatabase db = getReadableDatabase();
         Cursor cursor = db.query(TABLE_ARTICLES, // a. table
                 null, // b. column names
@@ -428,21 +396,24 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         String aux = null;
         if(cursor.moveToFirst())
         {
-            if(cursor.getString(cursor.getColumnIndex(COL_BODY))==null)
+            if(cursor.getString(cursor.getColumnIndex(COL_BODY)) == null)
             {
                 return null;
             }
              aux = cursor.getString(cursor.getColumnIndex(COL_BODY));
         }
 
-        Log.d(TAG, "isThereAParagraph: "+aux);
+        Log.d(TAG, "isThereAParagraph: " + aux);
         cursor.close();
         return aux;
-
     }
 
-    public void addParagraph(long id, String paragraph)
-    {
+    /**
+     * Adds a body paragraph to an article in the database.
+     * @param id The ID of the article for which a paragraph is to be added.
+     * @param paragraph A string which will be added to the article.
+     */
+    public void addParagraph(long id, String paragraph) {
         SQLiteDatabase db = getWritableDatabase();
         ContentValues values = new ContentValues();
         values.put(COL_BODY,paragraph);
@@ -453,6 +424,11 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         );
     }
 
+    /**
+     * Retrieve an article from the database based on a given URL.
+     * @param url The URL of the article to be searched for.
+     * @return An article that has a URL matching the input.
+     */
     public Article getArticleByUrl(String url) {
         SQLiteDatabase db = getReadableDatabase();
 
@@ -482,6 +458,9 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return article;
     }
 
+    /**
+     * Checks the size of the database and trims it by removing the oldest items.
+     */
     public void checkSizeAndRemoveOldest() {
         SQLiteDatabase db = getWritableDatabase();
 
@@ -504,8 +483,4 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
         cursor.close();
     }
-
-
-
-
 }

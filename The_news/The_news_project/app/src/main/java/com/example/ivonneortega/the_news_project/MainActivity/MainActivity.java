@@ -1,13 +1,9 @@
 package com.example.ivonneortega.the_news_project.MainActivity;
 
-import android.app.job.JobInfo;
-import android.app.job.JobScheduler;
-import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.GravityCompat;
@@ -21,27 +17,16 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.ImageView;
-import android.widget.Toast;
 
-import com.android.volley.Request;
-import com.android.volley.RequestQueue;
-import com.android.volley.VolleyError;
-import com.android.volley.toolbox.JsonObjectRequest;
-import com.android.volley.toolbox.Volley;
-import com.example.ivonneortega.the_news_project.data.Article;
 import com.example.ivonneortega.the_news_project.CategoryView.CategoryViewActivity;
-import com.example.ivonneortega.the_news_project.DatabaseHelper;
+import com.example.ivonneortega.the_news_project.database.DatabaseHelper;
 import com.example.ivonneortega.the_news_project.MainActivity.Fragments.FragmentAdapterMainActivity;
 import com.example.ivonneortega.the_news_project.R;
-import com.example.ivonneortega.the_news_project.RecyclerViewAdapters.ArticlesVerticalRecyclerAdapter;
 import com.example.ivonneortega.the_news_project.Search.SearchActivity;
 import com.example.ivonneortega.the_news_project.Settings.SettingsActivity;
+import com.example.ivonneortega.the_news_project.data.Article;
 import com.example.ivonneortega.the_news_project.data.Category;
 import com.squareup.picasso.Picasso;
-
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -96,8 +81,6 @@ public class MainActivity extends AppCompatActivity
                     .fit()
                     .into(nav_user);
         }
-
-
 
         ImageButton optionsToolbar = (ImageButton) findViewById(R.id.options_toolbar);
         optionsToolbar.setClickable(true);
@@ -254,49 +237,6 @@ public class MainActivity extends AppCompatActivity
         startActivity(intent);
     }
 
-//
-//    public void addThingsToDatabase()
-//    {
-//        DatabaseHelper databaseHelper = DatabaseHelper.getInstance(this);
-//        databaseHelper.insertArticleIntoDatabase("https://www.transit.dot.gov/sites/fta.dot.gov/files/635847974891062780-425303270_news.jpg","Business 1","Business","Today","This is the body",
-//                "New York Times",Article.FALSE,1,"https://www.transit.dot.gov/sites/fta.dot.gov/files/635847974891062780-425303270_news.jpg");
-//
-//        databaseHelper.insertArticleIntoDatabase("https://www.transit.dot.gov/sites/fta.dot.gov/files/635847974891062780-425303270_news.jpg","Business 2","Business","Today","This is the body",
-//                "New York Times",Article.FALSE,1,"https://www.transit.dot.gov/sites/fta.dot.gov/files/635847974891062780-425303270_news.jpg");
-//        databaseHelper.insertArticleIntoDatabase("https://www.transit.dot.gov/sites/fta.dot.gov/files/635847974891062780-425303270_news.jpg","Business 3","Business","Today","This is the body",
-//                "New York Times",Article.FALSE,0,"https://www.transit.dot.gov/sites/fta.dot.gov/files/635847974891062780-425303270_news.jpg");
-//
-//        databaseHelper.insertArticleIntoDatabase("https://www.transit.dot.gov/sites/fta.dot.gov/files/635847974891062780-425303270_news.jpg","Business 4","Business","Today","This is the body",
-//                "New York Times",Article.FALSE,0,"https://www.transit.dot.gov/sites/fta.dot.gov/files/635847974891062780-425303270_news.jpg");
-//
-//
-//
-//        databaseHelper.insertArticleIntoDatabase("https://www.transit.dot.gov/sites/fta.dot.gov/files/635847974891062780-425303270_news.jpg","Tech 1","Tech","Today","This is the body",
-//                "New York Times",Article.FALSE,1,"https://www.transit.dot.gov/sites/fta.dot.gov/files/635847974891062780-425303270_news.jpg");
-//
-//        databaseHelper.insertArticleIntoDatabase("https://www.transit.dot.gov/sites/fta.dot.gov/files/635847974891062780-425303270_news.jpg","Tech 2","Tech","Today","This is the body",
-//                "New York Times",Article.FALSE,1,"https://www.transit.dot.gov/sites/fta.dot.gov/files/635847974891062780-425303270_news.jpg");
-//        databaseHelper.insertArticleIntoDatabase("https://www.transit.dot.gov/sites/fta.dot.gov/files/635847974891062780-425303270_news.jpg","Tech 3","Tech","Today","This is the body",
-//                "New York Times",Article.FALSE,0,"https://www.transit.dot.gov/sites/fta.dot.gov/files/635847974891062780-425303270_news.jpg");
-//
-//        databaseHelper.insertArticleIntoDatabase("https://www.transit.dot.gov/sites/fta.dot.gov/files/635847974891062780-425303270_news.jpg","Tech 4","Tech","Today","This is the body",
-//                "New York Times",Article.FALSE,0,"https://www.transit.dot.gov/sites/fta.dot.gov/files/635847974891062780-425303270_news.jpg");
-//
-//
-//
-//
-//        databaseHelper.insertArticleIntoDatabase("https://www.transit.dot.gov/sites/fta.dot.gov/files/635847974891062780-425303270_news.jpg","World 1","World","Today","This is the body",
-//                "New York Times",Article.FALSE,1,"https://www.transit.dot.gov/sites/fta.dot.gov/files/635847974891062780-425303270_news.jpg");
-//
-//        databaseHelper.insertArticleIntoDatabase("https://www.transit.dot.gov/sites/fta.dot.gov/files/635847974891062780-425303270_news.jpg","World 2","World","Today","This is the body",
-//                "New York Times",Article.FALSE,1,"https://www.transit.dot.gov/sites/fta.dot.gov/files/635847974891062780-425303270_news.jpg");
-//        databaseHelper.insertArticleIntoDatabase("https://www.transit.dot.gov/sites/fta.dot.gov/files/635847974891062780-425303270_news.jpg","World 3","World","Today","This is the body",
-//                "New York Times",Article.FALSE,0,"https://www.transit.dot.gov/sites/fta.dot.gov/files/635847974891062780-425303270_news.jpg");
-//
-//        databaseHelper.insertArticleIntoDatabase("https://www.transit.dot.gov/sites/fta.dot.gov/files/635847974891062780-425303270_news.jpg","World 4","World","Today","This is the body",
-//                "New York Times",Article.FALSE,0,"https://www.transit.dot.gov/sites/fta.dot.gov/files/635847974891062780-425303270_news.jpg");
-//    }
-
     public void setTheme()
     {
         SharedPreferences sharedPreferences = getSharedPreferences("com.example.ivonneortega.the_news_project.Settings", Context.MODE_PRIVATE);
@@ -423,5 +363,4 @@ public class MainActivity extends AppCompatActivity
         mSourcesByLatest = new ArrayList<>();
         mSourcesByLatest.add("buzzfeed");
     }
-
 }
