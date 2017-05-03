@@ -93,7 +93,7 @@ public class SimpleItemTouchHelperCallback extends ItemTouchHelper.Callback {
 
             float height = (float) itemView.getBottom() - (float) itemView.getTop();
             float width = height / 3;
-
+            //TODO SAM DON'T DELETE THIS
             if (dX > 0) {
 //            /* Set your color for positive displacement */
 //

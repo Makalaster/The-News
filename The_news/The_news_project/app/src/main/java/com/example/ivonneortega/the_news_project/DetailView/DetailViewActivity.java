@@ -28,6 +28,8 @@ public class DetailViewActivity extends AppCompatActivity
     private ImageView mImage;
     private TextView mTitle, mDate, mContent;
 
+    //TODO I KNOW WE ARE NOT USING THIS BUT DON'T DELETE IT JUST YET
+
     private ShareActionProvider mShareActionProvider;
 
     @Override

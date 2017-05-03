@@ -106,6 +106,7 @@ public class MainActivity extends AppCompatActivity
         optionsToolbar.setOnClickListener(this);
         searchToolbar.setOnClickListener(this);
 
+        //TODO DON'T DELETE THIS
 //        JobScheduler jobScheduler = (JobScheduler) getSystemService(JOB_SCHEDULER_SERVICE);
 //        ComponentName componentName = new ComponentName(this, ArticleRefreshService.class);
 //
@@ -119,6 +120,7 @@ public class MainActivity extends AppCompatActivity
         //DatabaseHelper.getInstance(this).deleteAllSavedArticles();
         //addThingsToDatabase();
 
+        //TODO SAM DON'T DELETE THIS
 //        for(int i = 0; i< mSourcesByTop.size(); i++)
 //        {
 //            searchArticlesByTop(mSourcesByTop.get(i));
@@ -322,7 +324,7 @@ public class MainActivity extends AppCompatActivity
 
     }
 
-
+    //TODO DON'T DELETE THIS
 //    public void searchArticlesByTop(final String source) {
 //        RequestQueue queue = Volley.newRequestQueue(this);
 //        final DatabaseHelper db = DatabaseHelper.getInstance(this);
@@ -367,7 +369,7 @@ public class MainActivity extends AppCompatActivity
 //
 //        queue.add(jsonObjectRequest);
 //    }
-//
+//     TODO DON'T DELETE THIS
 //    public void searchArticlesByLatest(final String source) {
 //        RequestQueue queue = Volley.newRequestQueue(this);
 //        final DatabaseHelper db = DatabaseHelper.getInstance(this);
@@ -413,6 +415,7 @@ public class MainActivity extends AppCompatActivity
 //        queue.add(jsonObjectRequest);
 //    }
 
+    //TODO DON'T DELETE THIS
     public void setSources()
     {
         mSourcesByTop = new ArrayList<>();

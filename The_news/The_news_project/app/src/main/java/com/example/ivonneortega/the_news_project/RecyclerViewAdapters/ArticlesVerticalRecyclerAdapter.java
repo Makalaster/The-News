@@ -112,9 +112,6 @@ implements View.OnClickListener, SaveSwipeLeft{
                 }
 
             });
-
-            //TODO HANDLE WHEN USER CLICKS SHARE ON SPECIFIC ARTICLE
-
         }
         else
         {
@@ -168,6 +165,8 @@ implements View.OnClickListener, SaveSwipeLeft{
         return mList.size();
     }
 
+    //TODO SAM YOU CAN DELETE THIS
+    //TODO IS NOT BEING USED
     @Override
     public void onClick(View v) {
         switch (v.getId())
@@ -178,9 +177,6 @@ implements View.OnClickListener, SaveSwipeLeft{
             case R.id.top_stories_share:
                 //TODO DO SOMETHING WHEN USER CLICKS ON SHARE
                 Log.d(TAG, "onClick: Clicked on share");
-
-
-
                 break;
         }
     }
@@ -231,10 +227,6 @@ implements View.OnClickListener, SaveSwipeLeft{
         }
     }
 
-    public interface SaveAndShare
-    {
-        public void saveAndUnsave(Article article);
-    }
 
 
 }

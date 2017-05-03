@@ -14,15 +14,10 @@ import android.widget.TextView;
 import com.example.ivonneortega.the_news_project.data.Article;
 import com.example.ivonneortega.the_news_project.R;
 
-/**
- * A simple {@link Fragment} subclass.
- * Activities that contain this fragment must implement the
- * {@link DetailViewFragment.OnFragmentInteractionListener} interface
- * to handle interaction events.
- * Use the {@link DetailViewFragment#newInstance} factory method to
- * create an instance of this fragment.
- */
 public class DetailViewFragment extends Fragment {
+
+    //TODO I KNOW WE ARE NOT USING THIS BUT DON'T DELETE IT JUST YET
+
 
     private long mId;
     private ImageView mImage;
