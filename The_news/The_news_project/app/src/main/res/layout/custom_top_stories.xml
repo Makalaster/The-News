@@ -37,7 +37,7 @@
         android:tint="@color/blue_clock"
         android:layout_marginLeft="5dp"
         android:layout_alignParentBottom="true"
-        android:layout_marginBottom="4dp"
+        android:layout_marginBottom="8dp"
         android:layout_toRightOf="@id/top_stories_image"
         android:id="@+id/clock"/>
 
@@ -45,7 +45,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:title="8h ago"
-        android:layout_marginBottom="5dp"
+        android:layout_marginBottom="8dp"
         android:textColor="@color/textColor"
         android:id="@+id/top_stories_date"
         android:layout_toRightOf="@id/clock"
@@ -58,22 +58,9 @@
         android:background="@color/textColor"
         android:layout_toRightOf="@id/top_stories_date"
         android:layout_alignParentBottom="true"
-        android:layout_marginBottom="5dp"
+        android:layout_marginBottom="9dp"
         android:id="@+id/top_stories_divisor"
         android:layout_marginLeft="10dp"/>
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_toRightOf="@id/top_stories_divisor"
-        android:layout_marginRight="15dp"
-        android:id="@+id/top_stories_category"
-        android:title="Category"
-        android:textStyle="bold"
-        android:layout_marginLeft="10dp"
-        android:layout_marginBottom="5dp"
-        android:textColor="@color/categoryColor"/>
 
     <ImageView
         android:layout_width="wrap_content"
@@ -85,6 +72,23 @@
         android:layout_alignParentBottom="true"
         android:layout_marginRight="13dp"
         android:layout_marginBottom="5dp"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_toRightOf="@id/top_stories_divisor"
+        android:layout_marginRight="15dp"
+        android:id="@+id/top_stories_category"
+        android:title="Category"
+        android:maxLines="1"
+        android:layout_toLeftOf="@id/top_stories_heart"
+        android:textStyle="bold"
+        android:layout_marginLeft="10dp"
+        android:layout_marginBottom="8dp"
+        android:textColor="@color/categoryColor"/>
+
+
 
     <ImageView
         android:layout_width="wrap_content"

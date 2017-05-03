@@ -74,7 +74,8 @@ public class ArticleRecyclerAdapter extends RecyclerView.Adapter<ArticleRecycler
         {
             Picasso.with(holder.mArticleImage.getContext())
                     .load(mList.get(holder.getAdapterPosition()).getImage())
-                    .resize(240, 180)
+                    .fit()
+                    .centerCrop()
                     .into(holder.mArticleImage);
 
 

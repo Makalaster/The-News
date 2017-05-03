@@ -417,7 +417,8 @@ implements NavigationView.OnNavigationItemSelectedListener, View.OnClickListener
 
             Picasso.with(image.getContext())
                     .load(args.getString(IMAGE))
-                    .resize(555, 350)
+                    .fit()
+                    .centerCrop()
                     .into(image);
 
 

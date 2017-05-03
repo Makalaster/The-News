@@ -53,7 +53,8 @@ implements View.OnClickListener{
         holder.mDate.setText(mList.get(position).getDate());
         Picasso.with(holder.mImage.getContext())
                 .load(mList.get(holder.getAdapterPosition()).getImage())
-                .resize(285, 265)
+                .fit()
+                .centerCrop()
                 .into(holder.mImage);
 
 
