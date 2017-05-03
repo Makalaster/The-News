@@ -2,7 +2,9 @@ package com.example.ivonneortega.the_news_project.MainActivity.Fragments;
 
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -31,6 +33,7 @@ public class FragmentAllStories extends Fragment {
     // TODO: Rename parameter arguments, choose names that match
 
     private OnFragmentInteractionListener mListener;
+    private SwipeRefreshLayout mAllRefresh;
 
     public FragmentAllStories() {
         // Required empty public constructor
@@ -107,6 +110,23 @@ public class FragmentAllStories extends Fragment {
         recyclerView.setAdapter(adapter);
 
         return view;
+    }
+
+    @Override
+    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+
+        mAllRefresh = (SwipeRefreshLayout) view.findViewById(R.id.all_swipe_refresh);
+        mAllRefresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                refreshAllStories();
+            }
+        });
+    }
+
+    private void refreshAllStories() {
+
     }
 
     // TODO: Rename method, update argument and hook method into UI event

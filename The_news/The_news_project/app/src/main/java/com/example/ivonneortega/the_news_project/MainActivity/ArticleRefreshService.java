@@ -37,11 +37,13 @@ public class ArticleRefreshService extends JobService {
     private List<String> mTopStoriesList = new ArrayList<>();
     private static final String TAG = "ArticleRefreshService";
     public static final String JSON = ".json";
-    private DatabaseHelper mDb = DatabaseHelper.getInstance(this);
+    private DatabaseHelper mDb;
 
     @Override
     public void onCreate() {
         super.onCreate();
+
+        mDb = DatabaseHelper.getInstance(this);
 
         if (mNewsWireList.isEmpty()) {
             mNewsWireList.add("World");
@@ -207,10 +209,10 @@ public class ArticleRefreshService extends JobService {
                 int isSaved = Article.FALSE;
 
                 if (mDb.getArticleByUrl(url) == null && hasImage) {
+                    mDb.checkSizeAndRemoveOldest();
                     Log.d(TAG, "doInBackground: " + title);
                     long id = mDb.insertArticleIntoDatabase(image, title, category, date.substring(0, date.indexOf('T')), null, source, isSaved, fromTopStories, url);
 
-                    mDb.checkSizeAndRemoveOldest();
                     generateNotification(title, id);
                 }
 

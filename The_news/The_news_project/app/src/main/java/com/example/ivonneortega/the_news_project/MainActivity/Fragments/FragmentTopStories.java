@@ -2,7 +2,9 @@ package com.example.ivonneortega.the_news_project.MainActivity.Fragments;
 
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -35,6 +37,8 @@ public class FragmentTopStories extends Fragment {
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
+
+    private SwipeRefreshLayout mTopRefresh;
 
     private OnFragmentInteractionListener mListener;
 
@@ -82,6 +86,23 @@ public class FragmentTopStories extends Fragment {
         recyclerView.setAdapter(adapter);
 
         return view;
+    }
+
+    @Override
+    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+
+        mTopRefresh = (SwipeRefreshLayout) view.findViewById(R.id.top_swipe_refresh);
+        mTopRefresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                refreshTopStories();
+            }
+        });
+    }
+
+    private void refreshTopStories() {
+
     }
 
     // TODO: Rename method, update argument and hook method into UI event
