@@ -10,9 +10,12 @@ import android.widget.Switch;
 import com.example.ivonneortega.the_news_project.R;
 
 public class SettingsActivity extends AppCompatActivity implements CompoundButton.OnCheckedChangeListener {
-    private Switch mSwitch_theme;
+    private Switch mSwitch_theme, mSwitch_notification;
 
     public static final String THEME = "theme";
+    public static final String NOTIFICATION = "notification";
+    public static final int TRUE = 0;
+    public static final int FALSE = 1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -20,14 +23,23 @@ public class SettingsActivity extends AppCompatActivity implements CompoundButto
         setContentView(R.layout.activity_settings);
 
         mSwitch_theme = (Switch) findViewById(R.id.switch_theme);
+        mSwitch_notification = (Switch) findViewById(R.id.switch_notification);
         mSwitch_theme.setOnCheckedChangeListener(this);
+        mSwitch_notification.setOnCheckedChangeListener(this);
 
         SharedPreferences sharedPreferences = getSharedPreferences("com.example.ivonneortega.the_news_project.Settings", Context.MODE_PRIVATE);
-        String str = sharedPreferences.getString(SettingsActivity.THEME,"DEFAULT"); //Initial value of the String is "Hello"
+        String str = sharedPreferences.getString(SettingsActivity.THEME,"DEFAULT");
         if(str.equals("dark"))
         {
             mSwitch_theme.setChecked(true);
         }
+
+        int notification = sharedPreferences.getInt(NOTIFICATION,TRUE);
+        if(notification==TRUE)
+            mSwitch_notification.setChecked(true);
+        else
+            mSwitch_notification.setChecked(false);
+
 
     }
 
@@ -51,6 +63,22 @@ public class SettingsActivity extends AppCompatActivity implements CompoundButto
                     editor.commit();
                 }
                 break;
+
+            case R.id.switch_notification:
+                if(isChecked)
+                {
+                    SharedPreferences sharedPreferences = getSharedPreferences("com.example.ivonneortega.the_news_project.Settings", Context.MODE_PRIVATE);
+                    SharedPreferences.Editor editor = sharedPreferences.edit();
+                    editor.putInt(NOTIFICATION,TRUE);
+                    editor.commit();
+                }
+                else
+                {
+                    SharedPreferences sharedPreferences = getSharedPreferences("com.example.ivonneortega.the_news_project.Settings", Context.MODE_PRIVATE);
+                    SharedPreferences.Editor editor = sharedPreferences.edit();
+                    editor.putInt(NOTIFICATION,FALSE);
+                    editor.commit();
+                }
         }
     }
 }
