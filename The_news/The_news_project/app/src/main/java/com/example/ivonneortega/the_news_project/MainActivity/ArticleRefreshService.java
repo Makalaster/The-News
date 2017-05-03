@@ -79,7 +79,7 @@ public class ArticleRefreshService extends JobService {
                     protected Void doInBackground(String... params) {
                         queryTopStories(params[0]);
                         try {
-                            Thread.sleep(250);
+                            Thread.sleep(500);
                         } catch (InterruptedException e) {
                             e.printStackTrace();
                         }
@@ -202,7 +202,7 @@ public class ArticleRefreshService extends JobService {
 
                 if (db.getArticleByUrl(url) == null && hasImage) {
                     Log.d(TAG, "doInBackground: " + title);
-                    db.insertArticleIntoDatabase(image, title, category, date, null, source, isSaved, fromTopStories, url);
+                    db.insertArticleIntoDatabase(image, title, category, date.substring(0, date.indexOf('T')), null, source, isSaved, fromTopStories, url);
 
                     db.checkSizeAndRemoveOldest();
                     generateNotification(title);

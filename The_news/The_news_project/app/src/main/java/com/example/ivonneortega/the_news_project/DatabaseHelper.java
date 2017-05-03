@@ -440,7 +440,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public void checkSizeAndRemoveOldest() {
         SQLiteDatabase db = getWritableDatabase();
 
-        Cursor cursor = db.query(TABLE_ARTICLES, null, null, null, null, null, null);
+        Cursor cursor = db.query(TABLE_ARTICLES, null, null, null, null, null, COL_DATE + " ASC");
         boolean oldestRemoved = false;
 
         if (cursor.moveToFirst() && cursor.getCount() > 300) {
