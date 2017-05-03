@@ -47,7 +47,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener, View.OnClickListener, ArticlesVerticalRecyclerAdapter.SaveAndShare{
+        implements NavigationView.OnNavigationItemSelectedListener, View.OnClickListener {
 
     FragmentAdapterMainActivity mAdapter;
     public static final String URL = "https://newsapi.org/v1/articles?source=";
@@ -252,12 +252,6 @@ public class MainActivity extends AppCompatActivity
     {
         Intent intent = new Intent(this, SettingsActivity.class);
         startActivity(intent);
-    }
-
-
-    @Override
-    public void saveAndUnsave(Article article) {
-
     }
 
 //
