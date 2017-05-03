@@ -2,8 +2,10 @@ package com.example.ivonneortega.the_news_project.CategoryView;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.provider.ContactsContract;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -31,6 +33,7 @@ public class CategoryViewActivity extends AppCompatActivity
     RecyclerView mRecyclerView;
     ArticlesVerticalRecyclerAdapter mAdapter;
     String mCategory;
+    List<Article> mList;
 
 
     @Override
@@ -38,6 +41,7 @@ public class CategoryViewActivity extends AppCompatActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_category_view);
         settingUpTheViews();
+        mList = new ArrayList<>();
 
     }
 
@@ -83,31 +87,52 @@ public class CategoryViewActivity extends AppCompatActivity
     @SuppressWarnings("StatementWithEmptyBody")
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
-        // Handle navigation view item clicks here.
         int id = item.getItemId();
+        List<String> categories = new ArrayList<>();
 
-        if (id == R.id.nav_camera) {
-            Toast.makeText(this, "Category 1", Toast.LENGTH_SHORT).show();
-        } else if (id == R.id.nav_gallery) {
-            Toast.makeText(this, "Category 2", Toast.LENGTH_SHORT).show();
-
-        } else if (id == R.id.nav_slideshow) {
-            Toast.makeText(this, "Category 3", Toast.LENGTH_SHORT).show();
-
-        } else if (id == R.id.nav_manage) {
-            Toast.makeText(this, "Category 4", Toast.LENGTH_SHORT).show();
-
-//        } else if (id == R.id.nav_share) {
-//            Toast.makeText(this, "Category 5", Toast.LENGTH_SHORT).show();
-//
-//        } else if (id == R.id.nav_send) {
-//            Toast.makeText(this, "Category 6", Toast.LENGTH_SHORT).show();
-//
+        if (id == R.id.nav_world) {
+            moveToCategoryViewActivity("world");
+        } else if (id == R.id.nav_politics) {
+            moveToCategoryViewActivity("u.s");
+        } else if (id == R.id.nav_business) {
+            moveToCategoryViewActivity("business");
+        } else if (id == R.id.nav_technology) {
+            moveToCategoryViewActivity("tech");
+        }
+        else if (id == R.id.nav_science) {
+            moveToCategoryViewActivity("science");
+        }
+        else if (id == R.id.nav_sports) {
+            moveToCategoryViewActivity("sports");
+        }
+        else if (id == R.id.nav_movies) {
+            moveToCategoryViewActivity("movies");
+        }
+        else if (id == R.id.nav_fashion) {
+            moveToCategoryViewActivity("fashion");
+        }
+        else if (id == R.id.nav_food) {
+            moveToCategoryViewActivity("food");
+        }
+        else if (id == R.id.nav_health) {
+            moveToCategoryViewActivity("health");
+        }
+        else if (id == R.id.nav_miscellaneous) {
+            moveToCategoryViewActivity("misc");
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
+    }
+
+    public void moveToCategoryViewActivity(String category)
+    {
+        finish();
+        Intent intent = new Intent(this,CategoryViewActivity.class);
+        intent.putExtra(DatabaseHelper.COL_CATEGORY,category);
+        startActivity(intent);
+        finish();
     }
 
     public void settingUpTheViews()
@@ -120,6 +145,8 @@ public class CategoryViewActivity extends AppCompatActivity
         Intent intent = getIntent();
         mCategory = intent.getStringExtra(DatabaseHelper.COL_CATEGORY);
         getSupportActionBar().setTitle(mCategory);
+
+        getList(mCategory);
 
         //NAVIGATION DRAWER SET UP
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -146,10 +173,10 @@ public class CategoryViewActivity extends AppCompatActivity
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this,LinearLayoutManager.VERTICAL,false);
         mRecyclerView.setLayoutManager(linearLayoutManager);
 
-        List<Article> categoryIndividualItems = new ArrayList<>();
-        categoryIndividualItems = DatabaseHelper.getInstance(this).getArticlesByCategory(mCategory);
+//        List<Article> categoryIndividualItems = new ArrayList<>();
+//        categoryIndividualItems = DatabaseHelper.getInstance(this).getArticlesByCategory(mCategory);
 
-        mAdapter = new ArticlesVerticalRecyclerAdapter(categoryIndividualItems,false);
+        mAdapter = new ArticlesVerticalRecyclerAdapter(mList,false);
         mRecyclerView.setAdapter(mAdapter);
 
     }
@@ -172,6 +199,80 @@ public class CategoryViewActivity extends AppCompatActivity
     {
         Intent intent = new Intent(this, SearchActivity.class);
         startActivity(intent);
+    }
+
+    public void getList(String category)
+    {
+        List<String> categories = new ArrayList<>();
+        if (category.equals("world")) {
+            categories.add("World");
+        } else if (category.equals("u.s")) {
+            categories.add("u.s");
+            categories.add("Politics");
+        } else if (category.equals("business")) {
+            categories.add("Business Day");
+        } else if (category.equals("tech")) {
+            categories.add("Technology");
+        }
+        else if (category.equals("science")) {
+            categories.add("Science");
+        }
+        else if (category.equals("sports")) {
+            categories.add("Sports");
+        }
+        else if (category.equals("movies")) {
+            categories.add("Movies");
+            categories.add("Teather");
+        }
+        else if (category.equals("fashion")) {
+            categories.add("Fashion");
+            categories.add("Style");
+        }
+        else if (category.equals("food")) {
+            categories.add("food");
+        }
+        else if (category.equals("health")) {
+            categories.add("Health");
+            categories.add("Well");
+        }
+        else if (category.equals("misc")) {
+            categories.add("Climate");
+            categories.add("Real");
+            categories.add("Arts");
+            categories.add("The Upshot");
+            categories.add("Opinion");
+            categories.add("Times");
+            categories.add("Technology");
+            categories.add("Magazine");
+            categories.add("N.Y./Region");
+            categories.add("T Magazine Travel");
+        }
+        Log.d("THE CATEGORY IS", "getList: "+category);
+        getListWithArticlesByCategory(categories);
+    }
+
+
+
+    public void getListWithArticlesByCategory(List<String> categories)
+    {
+        DatabaseHelper db = DatabaseHelper.getInstance(this);
+        List<Article> articles = new ArrayList<>();
+        List<Article> aux = new ArrayList<>();
+        for(int i=0;i<categories.size();i++)
+        {
+            aux = db.getArticlesByCategory(categories.get(i));
+            articles = copyOneListIntoAnother(articles,aux);
+        }
+        mList = articles;
+    }
+
+    public List<Article> copyOneListIntoAnother(List<Article> list1, List<Article> list2)
+    {
+        for(int i=0;i<list2.size();i++)
+        {
+            list1.add(list2.get(i));
+        }
+        return list1;
     }
 
 }

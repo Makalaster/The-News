@@ -1,11 +1,13 @@
 package com.example.ivonneortega.the_news_project.MainActivity;
 
+import android.app.NotificationManager;
 import android.app.job.JobParameters;
 import android.app.job.JobService;
 import android.content.Context;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.AsyncTask;
+import android.support.v7.app.NotificationCompat;
 import android.util.Log;
 import android.widget.Toast;
 
@@ -16,6 +18,7 @@ import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
 import com.example.ivonneortega.the_news_project.data.Article;
 import com.example.ivonneortega.the_news_project.DatabaseHelper;
+import com.example.ivonneortega.the_news_project.data.Article;
 import com.example.ivonneortega.the_news_project.data.NYTApiData;
 import com.google.gson.Gson;
 
@@ -27,6 +30,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ArticleRefreshService extends JobService {
+    private static final int NOTIFICATION_ID = 1;
     private List<String> mNewsWireList = new ArrayList<>();
     private List<String> mTopStoriesList = new ArrayList<>();
     private static final String TAG = "ArticleRefreshService";
@@ -77,7 +81,7 @@ public class ArticleRefreshService extends JobService {
                     protected Void doInBackground(String... params) {
                         queryTopStories(params[0]);
                         try {
-                            Thread.sleep(250);
+                            Thread.sleep(500);
                         } catch (InterruptedException e) {
                             e.printStackTrace();
                         }
@@ -177,6 +181,7 @@ public class ArticleRefreshService extends JobService {
                 String date = null;
                 String category = null;
                 String image = null;
+                boolean hasImage = false;
                 try {
                     url = object.getString("url");
                     title = object.getString("title");
@@ -187,16 +192,22 @@ public class ArticleRefreshService extends JobService {
                         JSONObject pic = multimedia.getJSONObject(i);
                         if (pic.getString("format").equals("Normal") && pic.getString("type").equals("image")) {
                             image = pic.getString("url");
+                            hasImage = true;
                         }
                     }
                 } catch (JSONException e) {
+                    hasImage = false;
                     e.printStackTrace();
                 }
                 String source = "New York Times";
                 int isSaved = Article.FALSE;
 
-                if (db.getArticleByUrl(url) == null) {
-                    db.insertArticleIntoDatabase(image, title, category, date, null, source, isSaved, fromTopStories, url);
+                if (db.getArticleByUrl(url) == null && hasImage) {
+                    Log.d(TAG, "doInBackground: " + title);
+                    db.insertArticleIntoDatabase(image, title, category, date.substring(0, date.indexOf('T')), null, source, isSaved, fromTopStories, url);
+
+                    db.checkSizeAndRemoveOldest();
+                    generateNotification(title);
                 }
 
                 return null;
@@ -204,6 +215,21 @@ public class ArticleRefreshService extends JobService {
         };
         dbTask.execute(object);
     }
+
+    private void generateNotification(String title) {
+        NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(getApplicationContext());
+        notificationBuilder.setSmallIcon(android.R.drawable.ic_dialog_alert)
+                .setAutoCancel(true)
+                .setContentTitle("New top news:")
+                .setContentText(title)
+                .setOngoing(false);
+
+        NotificationManager notificationManager =
+                (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+        notificationManager.notify(NOTIFICATION_ID, notificationBuilder.build());
+    }
+
+
 
     public void searchArticles(String url, final int fromTopStories) {
         RequestQueue queue = Volley.newRequestQueue(this);

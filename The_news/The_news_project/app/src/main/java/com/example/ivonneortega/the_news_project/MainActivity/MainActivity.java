@@ -7,6 +7,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.GravityCompat;
@@ -19,6 +20,8 @@ import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageButton;
+import android.widget.ImageView;
+import android.widget.Toast;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -163,18 +166,37 @@ public class MainActivity extends AppCompatActivity
     public boolean onNavigationItemSelected(MenuItem item) {
         // Handle navigation view item clicks here.
         int id = item.getItemId();
+        List<String> categories = new ArrayList<>();
 
-        if (id == R.id.nav_camera) {
-            moveToCategoryViewActivity();
-        } else if (id == R.id.nav_gallery) {
-            moveToCategoryViewActivity();
-
-        } else if (id == R.id.nav_slideshow) {
-            moveToCategoryViewActivity();
-
-        } else if (id == R.id.nav_manage) {
-            moveToCategoryViewActivity();
-
+        if (id == R.id.nav_world) {
+            moveToCategoryViewActivity("world");
+        } else if (id == R.id.nav_politics) {
+            moveToCategoryViewActivity("u.s");
+        } else if (id == R.id.nav_business) {
+            moveToCategoryViewActivity("business");
+        } else if (id == R.id.nav_technology) {
+            moveToCategoryViewActivity("tech");
+        }
+        else if (id == R.id.nav_science) {
+        moveToCategoryViewActivity("science");
+        }
+        else if (id == R.id.nav_sports) {
+            moveToCategoryViewActivity("sports");
+        }
+        else if (id == R.id.nav_movies) {
+            moveToCategoryViewActivity("movies");
+        }
+        else if (id == R.id.nav_fashion) {
+            moveToCategoryViewActivity("fashion");
+        }
+        else if (id == R.id.nav_food) {
+            moveToCategoryViewActivity("food");
+        }
+        else if (id == R.id.nav_health) {
+            moveToCategoryViewActivity("health");
+        }
+        else if (id == R.id.nav_miscellaneous) {
+            moveToCategoryViewActivity("misc");
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -202,9 +224,10 @@ public class MainActivity extends AppCompatActivity
         startActivity(intent);
     }
 
-    public void moveToCategoryViewActivity()
+    public void moveToCategoryViewActivity(String category)
     {
         Intent intent = new Intent(this, CategoryViewActivity.class);
+        intent.putExtra(DatabaseHelper.COL_CATEGORY,category);
         startActivity(intent);
     }
 

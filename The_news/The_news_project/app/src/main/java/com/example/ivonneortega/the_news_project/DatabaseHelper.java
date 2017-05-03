@@ -481,5 +481,28 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return article;
     }
 
+    public void checkSizeAndRemoveOldest() {
+        SQLiteDatabase db = getWritableDatabase();
+
+        Cursor cursor = db.query(TABLE_ARTICLES, null, null, null, null, null, COL_DATE + " ASC");
+        boolean oldestRemoved = false;
+
+        if (cursor.moveToFirst() && cursor.getCount() > 300) {
+            while (!oldestRemoved && !cursor.isAfterLast()) {
+                if (cursor.getInt(cursor.getColumnIndex(COL_IS_SAVED)) == Article.FALSE) {
+                    db.delete(TABLE_ARTICLES,
+                            "WHERE " + COL_ID + " = ?",
+                            new String[]{String.valueOf(cursor.getInt(cursor.getColumnIndex(COL_ID)))});
+
+                    oldestRemoved = true;
+                } else {
+                    cursor.moveToNext();
+                }
+            }
+        }
+
+        cursor.close();
+    }
+
 
 }

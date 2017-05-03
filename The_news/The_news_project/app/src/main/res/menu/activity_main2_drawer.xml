@@ -3,21 +3,41 @@
 
     <group android:checkableBehavior="single">
         <item
-            android:id="@+id/nav_camera"
-            android:icon="@drawable/ic_menu_camera"
-            android:title="Category 1"/>
+            android:id="@+id/nav_world"
+            android:title="World"/>
         <item
-            android:id="@+id/nav_gallery"
-            android:icon="@drawable/ic_menu_gallery"
-            android:title="Category 2"/>
+            android:id="@+id/nav_politics"
+            android:title="Politics"/>
         <item
-            android:id="@+id/nav_slideshow"
-            android:icon="@drawable/ic_menu_slideshow"
-            android:title="Category 3"/>
+            android:id="@+id/nav_business"
+            android:title="Business"/>
         <item
-            android:id="@+id/nav_manage"
-            android:icon="@drawable/ic_menu_manage"
-            android:title="Category 4"/>
+        android:id="@+id/nav_technology"
+        android:title="Technology"/>
+        <item
+            android:id="@+id/nav_science"
+            android:title="Science"/>
+        <item
+            android:id="@+id/nav_sports"
+            android:title="Sports"/>
+        <item
+            android:id="@+id/nav_movies"
+            android:title="Movies"/>
+        <item
+            android:id="@+id/nav_fashion"
+            android:title="Fashion"/>
+
+        <item
+            android:id="@+id/nav_food"
+            android:title="Food"/>
+        <item
+            android:id="@+id/nav_health"
+            android:title="Health"/>
+        <item
+            android:id="@+id/nav_miscellaneous"
+            android:title="Miscellaneous"/>
+
+
     </group>
 
     <!--<item android:title="Communicate">-->

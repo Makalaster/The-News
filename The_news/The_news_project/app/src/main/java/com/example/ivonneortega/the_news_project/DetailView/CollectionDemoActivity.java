@@ -59,6 +59,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 import org.w3c.dom.Text;
 
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -148,25 +149,38 @@ implements NavigationView.OnNavigationItemSelectedListener, View.OnClickListener
     @SuppressWarnings("StatementWithEmptyBody")
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
-        // Handle navigation view item clicks here.
         int id = item.getItemId();
-        if (id == R.id.nav_camera) {
-            moveToCategoryViewActivity();
-        } else if (id == R.id.nav_gallery) {
-            moveToCategoryViewActivity();
+        List<String> categories = new ArrayList<>();
 
-        } else if (id == R.id.nav_slideshow) {
-            moveToCategoryViewActivity();
-
-        } else if (id == R.id.nav_manage) {
-            moveToCategoryViewActivity();
-
-//        } else if (id == R.id.nav_share) {
-//            Toast.makeText(this, "Category 5", Toast.LENGTH_SHORT).show();
-//
-//        } else if (id == R.id.nav_send) {
-//            Toast.makeText(this, "Category 6", Toast.LENGTH_SHORT).show();
-//
+        if (id == R.id.nav_world) {
+            moveToCategoryViewActivity("world");
+        } else if (id == R.id.nav_politics) {
+            moveToCategoryViewActivity("u.s");
+        } else if (id == R.id.nav_business) {
+            moveToCategoryViewActivity("business");
+        } else if (id == R.id.nav_technology) {
+            moveToCategoryViewActivity("tech");
+        }
+        else if (id == R.id.nav_science) {
+            moveToCategoryViewActivity("science");
+        }
+        else if (id == R.id.nav_sports) {
+            moveToCategoryViewActivity("sports");
+        }
+        else if (id == R.id.nav_movies) {
+            moveToCategoryViewActivity("movies");
+        }
+        else if (id == R.id.nav_fashion) {
+            moveToCategoryViewActivity("fashion");
+        }
+        else if (id == R.id.nav_food) {
+            moveToCategoryViewActivity("food");
+        }
+        else if (id == R.id.nav_health) {
+            moveToCategoryViewActivity("health");
+        }
+        else if (id == R.id.nav_miscellaneous) {
+            moveToCategoryViewActivity("misc");
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -174,10 +188,14 @@ implements NavigationView.OnNavigationItemSelectedListener, View.OnClickListener
         return true;
     }
 
-    public void moveToCategoryViewActivity()
+
+
+    public void moveToCategoryViewActivity(String category)
     {
         Intent intent = new Intent(this, CategoryViewActivity.class);
+        intent.putExtra(DatabaseHelper.COL_CATEGORY,category);
         startActivity(intent);
+        finish();
     }
 
     @Override
