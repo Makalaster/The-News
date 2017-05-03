@@ -76,7 +76,7 @@ public class MainActivity extends AppCompatActivity
                 .setRequiresCharging(true)
                 .build();
 
-        jobScheduler.schedule(refreshJob);
+        //jobScheduler.schedule(refreshJob);
 
         viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override

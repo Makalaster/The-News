@@ -448,7 +448,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 if (cursor.getInt(cursor.getColumnIndex(COL_IS_SAVED)) == Article.FALSE) {
                     db.delete(TABLE_ARTICLES,
                             COL_ID + " = ?",
-                            new String[]{String.valueOf(cursor.getInt(cursor.getColumnIndex(COL_ID)))});
+                            new String[]{String.valueOf(cursor.getLong(cursor.getColumnIndex(COL_ID)))});
 
                     oldestRemoved = true;
                 } else {
