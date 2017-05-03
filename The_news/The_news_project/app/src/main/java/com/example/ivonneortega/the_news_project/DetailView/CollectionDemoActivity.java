@@ -29,6 +29,7 @@ import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
@@ -86,6 +87,8 @@ implements NavigationView.OnNavigationItemSelectedListener, View.OnClickListener
     private List<Article> articleList;
     private ImageButton mHeart;
     private boolean mStartActivity;
+    private DrawerLayout drawer;
+    private ActionBarDrawerToggle mDrawerToggle;
 
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -286,7 +289,7 @@ implements NavigationView.OnNavigationItemSelectedListener, View.OnClickListener
 
 
 
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.setDrawerListener(toggle);
@@ -294,6 +297,13 @@ implements NavigationView.OnNavigationItemSelectedListener, View.OnClickListener
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+
+        View hView =  navigationView.getHeaderView(0);
+        ImageView nav_user = (ImageView) hView.findViewById(R.id.navigation_image);
+        Picasso.with(this)
+                .load(article.getImage())
+                .fit()
+                .into(nav_user);
 
         ImageButton optionsToolbar = (ImageButton) findViewById(R.id.options_toolbar);
         optionsToolbar.setClickable(true);

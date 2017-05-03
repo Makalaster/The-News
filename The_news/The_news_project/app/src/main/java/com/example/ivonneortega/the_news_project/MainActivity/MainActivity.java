@@ -37,6 +37,7 @@ import com.example.ivonneortega.the_news_project.RecyclerViewAdapters.ArticlesVe
 import com.example.ivonneortega.the_news_project.Search.SearchActivity;
 import com.example.ivonneortega.the_news_project.Settings.SettingsActivity;
 import com.example.ivonneortega.the_news_project.data.Category;
+import com.squareup.picasso.Picasso;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -83,6 +84,14 @@ public class MainActivity extends AppCompatActivity
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+
+        View hView =  navigationView.getHeaderView(0);
+        ImageView nav_user = (ImageView) hView.findViewById(R.id.navigation_image);
+        Picasso.with(this)
+                .load(DatabaseHelper.getInstance(this).getArticlesById(0).getImage())
+                .fit()
+                .into(nav_user);
+
 
         ImageButton optionsToolbar = (ImageButton) findViewById(R.id.options_toolbar);
         optionsToolbar.setClickable(true);
