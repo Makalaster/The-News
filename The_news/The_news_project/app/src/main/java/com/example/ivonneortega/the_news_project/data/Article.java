@@ -128,13 +128,11 @@ public class Article {
     public static int getArticlePosition(long id, List<Article> list)
     {
         boolean exit=true;
-        Log.d(TAG, "getArticlePosition: id "+id);
         int i=0;
         while (i<list.size())
         {
             if(list.get(i).getId()==id)
             {
-                Log.d(TAG, "getArticlePosition: getID "+list.get(i).getId());
                 return i;
             }
             else

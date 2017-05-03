@@ -50,6 +50,7 @@ public class FragmentAllStories extends Fragment {
     private AsyncTask<String, Void, Boolean> mTask;
     private static final String TAG = "FragmentAllStories";
     private CategoriesRecyclerAdapter mAdapter;
+    private List<String> mSources;
 
     public FragmentAllStories() {
         // Required empty public constructor
@@ -77,7 +78,7 @@ public class FragmentAllStories extends Fragment {
                              Bundle savedInstanceState) {
 
         View view = inflater.inflate(R.layout.fragment_fragment_all_stories,container,false);
-
+        setSources();
 
         //Setting Recycler View
         RecyclerView recyclerView = (RecyclerView) view.findViewById(R.id.recyclerView_all_stories);
@@ -126,6 +127,17 @@ public class FragmentAllStories extends Fragment {
         recyclerView.setAdapter(mAdapter);
 
         return view;
+    }
+
+    public void setSources()
+    {
+        mSources = new ArrayList<>();
+        mSources.add("associated-press");
+        mSources.add("bbc-news");
+        mSources.add("business-insider");
+        mSources.add("buzzfeed");
+        mSources.add("cnn");
+        mSources.add("espn");
     }
 
     @Override

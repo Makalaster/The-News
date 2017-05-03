@@ -1,15 +1,18 @@
 package com.example.ivonneortega.the_news_project.Search;
 
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SearchView;
+import android.util.Log;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.ImageButton;
 
+import com.example.ivonneortega.the_news_project.Settings.SettingsActivity;
 import com.example.ivonneortega.the_news_project.data.Article;
 import com.example.ivonneortega.the_news_project.DatabaseHelper;
 import com.example.ivonneortega.the_news_project.R;
@@ -22,11 +25,13 @@ public class SearchActivity extends AppCompatActivity implements View.OnClickLis
     SearchView mSearchView;
     ImageButton mBackButton;
     ArticlesVerticalRecyclerAdapter mAdapter;
+    boolean mStartActivity;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_search);
+        setTheme();
+//        setContentView(R.layout.activity_search);
 //        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
 //        setSupportActionBar(toolbar);
 
@@ -72,5 +77,37 @@ public class SearchActivity extends AppCompatActivity implements View.OnClickLis
         mBackButton = (ImageButton) findViewById(R.id.back_toolbar);
         mBackButton.setClickable(true);
         mBackButton.setOnClickListener(this);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if(mStartActivity == true){
+            mStartActivity = false;
+
+        } else {
+            finish();
+            startActivity(getIntent());
+        }
+    }
+
+    public void setTheme()
+    {
+        SharedPreferences sharedPreferences = getSharedPreferences("com.example.ivonneortega.the_news_project.Settings", Context.MODE_PRIVATE);
+        String str = sharedPreferences.getString(SettingsActivity.THEME,"DEFAULT"); //Initial value of the String is "Hello"
+        Log.d("weqweqweqwe", "setTheme: "+str);
+        if(str.equals("dark"))
+        {
+            Log.d("sdsdfsdfsdfsdf", "setTheme: qweqwdqqwdqwdqwdwd");
+            setTheme(R.style.DarkTheme);
+            setContentView(R.layout.activity_search);
+            findViewById(R.id.root_toolbar).setBackgroundColor(getResources().getColor(R.color.colorPrimaryDarkTheme));
+        }
+        else
+        {
+            setContentView(R.layout.activity_search);
+        }
+        mStartActivity=true;
+
     }
 }

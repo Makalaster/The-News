@@ -16,7 +16,9 @@
 
 package com.example.ivonneortega.the_news_project.DetailView;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
 import android.support.design.widget.Snackbar;
@@ -27,6 +29,7 @@ import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
@@ -39,12 +42,26 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonObjectRequest;
+import com.android.volley.toolbox.Volley;
+import com.example.ivonneortega.the_news_project.Search.SearchActivity;
+import com.example.ivonneortega.the_news_project.Settings.SettingsActivity;
 import com.example.ivonneortega.the_news_project.data.Article;
 import com.example.ivonneortega.the_news_project.CategoryView.CategoryViewActivity;
 import com.example.ivonneortega.the_news_project.DatabaseHelper;
 import com.example.ivonneortega.the_news_project.R;
+import com.example.ivonneortega.the_news_project.data.NYTApiData;
 import com.squareup.picasso.Picasso;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+import org.w3c.dom.Text;
+
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -55,7 +72,10 @@ implements NavigationView.OnNavigationItemSelectedListener, View.OnClickListener
     public static final String CONTENT = "content";
     public static final String DATE = "date";
     public static final String IMAGE = "image";
+    public static final String URL = "url";
     public static final String TAG = "this";
+    public static final String ID = "id";
+    Article article;
 
     List<String> list;
     DemoCollectionPagerAdapter mDemoCollectionPagerAdapter;
@@ -66,24 +86,58 @@ implements NavigationView.OnNavigationItemSelectedListener, View.OnClickListener
     private TextView mTitle, mDate, mContent;
     private List<Article> articleList;
     private ImageButton mHeart;
+    private boolean mStartActivity;
+    private DrawerLayout drawer;
+    private ActionBarDrawerToggle mDrawerToggle;
 
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_detail_view);
+        setTheme();
+        //setContentView(R.layout.activity_detail_view);
 
 
 
         Intent intent = getIntent();
         mId = intent.getLongExtra(DatabaseHelper.COL_ID,-1);
 
-        Article article = DatabaseHelper.getInstance(this).getArticlesById(mId);
+        article = DatabaseHelper.getInstance(this).getArticlesById(mId);
         articleList = DatabaseHelper.getInstance(this).getArticlesByCategory(article.getCategory());
         mPosition = Article.getArticlePosition(mId,articleList);
-//        Log.d(TAG, "onCreate POSITION: "+mPosition);
-//        Log.d(TAG, "onCreate ID: "+mId);
         creatingViews();
 
 
+
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if(mStartActivity == true){
+            mStartActivity = false;
+
+        } else {
+            finish();
+            startActivity(getIntent());
+        }
+    }
+
+    public void setTheme()
+    {
+        SharedPreferences sharedPreferences = getSharedPreferences("com.example.ivonneortega.the_news_project.Settings", Context.MODE_PRIVATE);
+        String str = sharedPreferences.getString(SettingsActivity.THEME,"DEFAULT"); //Initial value of the String is "Hello"
+        Log.d("weqweqweqwe", "setTheme: "+str);
+        if(str.equals("dark"))
+        {
+            Log.d("sdsdfsdfsdfsdf", "setTheme: qweqwdqqwdqwdqwdwd");
+            setTheme(R.style.DarkTheme);
+            setContentView(R.layout.activity_detail_view);
+            findViewById(R.id.root_toolbar).setBackgroundColor(getResources().getColor(R.color.colorPrimaryDarkTheme));
+        }
+        else
+        {
+            setContentView(R.layout.activity_detail_view);
+        }
+        mStartActivity=true;
 
     }
 
@@ -102,23 +156,37 @@ implements NavigationView.OnNavigationItemSelectedListener, View.OnClickListener
     public boolean onNavigationItemSelected(MenuItem item) {
         // Handle navigation view item clicks here.
         int id = item.getItemId();
-        if (id == R.id.nav_camera) {
-            moveToCategoryViewActivity();
-        } else if (id == R.id.nav_gallery) {
-            moveToCategoryViewActivity();
+        List<String> categories = new ArrayList<>();
 
-        } else if (id == R.id.nav_slideshow) {
-            moveToCategoryViewActivity();
-
-        } else if (id == R.id.nav_manage) {
-            moveToCategoryViewActivity();
-
-//        } else if (id == R.id.nav_share) {
-//            Toast.makeText(this, "Category 5", Toast.LENGTH_SHORT).show();
-//
-//        } else if (id == R.id.nav_send) {
-//            Toast.makeText(this, "Category 6", Toast.LENGTH_SHORT).show();
-//
+        if (id == R.id.nav_world) {
+            moveToCategoryViewActivity("World");
+        } else if (id == R.id.nav_politics) {
+            moveToCategoryViewActivity("Politics");
+        } else if (id == R.id.nav_business) {
+            moveToCategoryViewActivity("Business");
+        } else if (id == R.id.nav_technology) {
+            moveToCategoryViewActivity("Technology");
+        }
+        else if (id == R.id.nav_science) {
+            moveToCategoryViewActivity("Science");
+        }
+        else if (id == R.id.nav_sports) {
+            moveToCategoryViewActivity("Sports");
+        }
+        else if (id == R.id.nav_movies) {
+            moveToCategoryViewActivity("Movies");
+        }
+        else if (id == R.id.nav_fashion) {
+            moveToCategoryViewActivity("Fashion");
+        }
+        else if (id == R.id.nav_food) {
+            moveToCategoryViewActivity("Food");
+        }
+        else if (id == R.id.nav_health) {
+            moveToCategoryViewActivity("Health");
+        }
+        else if (id == R.id.nav_miscellaneous) {
+            moveToCategoryViewActivity("Miscellaneous");
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -126,10 +194,14 @@ implements NavigationView.OnNavigationItemSelectedListener, View.OnClickListener
         return true;
     }
 
-    public void moveToCategoryViewActivity()
+
+
+    public void moveToCategoryViewActivity(String category)
     {
         Intent intent = new Intent(this, CategoryViewActivity.class);
+        intent.putExtra(DatabaseHelper.COL_CATEGORY,category);
         startActivity(intent);
+        finish();
     }
 
     @Override
@@ -137,16 +209,35 @@ implements NavigationView.OnNavigationItemSelectedListener, View.OnClickListener
         switch (v.getId())
         {
             case R.id.options_toolbar:
-                Toast.makeText(this, "Click on options button", Toast.LENGTH_SHORT).show();
+                moveToSettingsActivity();
                 break;
             case R.id.share_toolbar:
-                Toast.makeText(this, "Click on share button", Toast.LENGTH_SHORT).show();
+                share();
                 break;
             case R.id.heart_toolbar:
                 saveArticle();
                 break;
         }
     }
+
+    public void share()
+    {
+
+        Intent sendIntent = new Intent();
+        sendIntent.setAction(Intent.ACTION_SEND);
+        sendIntent.putExtra(Intent.EXTRA_TEXT,article.getUrl());
+
+        sendIntent.setType("text/plain");
+        //startActivity(Intent.createChooser(sendIntent, getResources().getText(R.string.send_to)));
+        startActivity(Intent.createChooser(sendIntent, "Share this article using.."));
+    }
+
+    public void moveToSettingsActivity()
+    {
+        Intent intent = new Intent(this, SettingsActivity.class);
+        startActivity(intent);
+    }
+
 
     public void saveArticle()
     {
@@ -198,7 +289,7 @@ implements NavigationView.OnNavigationItemSelectedListener, View.OnClickListener
 
 
 
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.setDrawerListener(toggle);
@@ -206,6 +297,13 @@ implements NavigationView.OnNavigationItemSelectedListener, View.OnClickListener
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+
+        View hView =  navigationView.getHeaderView(0);
+        ImageView nav_user = (ImageView) hView.findViewById(R.id.navigation_image);
+        Picasso.with(this)
+                .load(article.getImage())
+                .fit()
+                .into(nav_user);
 
         ImageButton optionsToolbar = (ImageButton) findViewById(R.id.options_toolbar);
         optionsToolbar.setClickable(true);
@@ -273,13 +371,15 @@ implements NavigationView.OnNavigationItemSelectedListener, View.OnClickListener
 
         @Override
         public Fragment getItem(int i) {
-            Log.d(TAG, "getItem: "+i);
             Fragment fragment = new DemoObjectFragment();
             Bundle args = new Bundle();
             args.putString(TITLE,mList.get(i).getTitle());
             args.putString(CONTENT,mList.get(i).getBody());
             args.putString(DATE,mList.get(i).getDate());
             args.putString(IMAGE,mList.get(i).getImage());
+            args.putString(URL,mList.get(i).getUrl());
+            args.putLong(ID, mList.get(i).getId());
+            Log.d(TAG, "getItem URL: "+mList.get(i).getUrl());
             fragment.setArguments(args);
             return fragment;
         }
@@ -308,9 +408,12 @@ implements NavigationView.OnNavigationItemSelectedListener, View.OnClickListener
             View rootView = inflater.inflate(R.layout.fragment_detail_view, container, false);
             Bundle args = getArguments();
             ((TextView) rootView.findViewById(R.id.detail_title)).setText((args.getString(TITLE)));
-            ((TextView) rootView.findViewById(R.id.detail_content)).setText((args.getString(CONTENT)));
+            //((TextView)rootView.findViewById(R.id.detail_content)).setText(args.getString(CONTENT));
+            searchArticlesByTop(args.getString(URL),((TextView)rootView.findViewById(R.id.detail_content)),args.getLong(ID));
             ((TextView) rootView.findViewById(R.id.detail_date)).setText((args.getString(DATE)));
             ImageView image = (ImageView) rootView.findViewById(R.id.detail_image);
+
+
 
             Picasso.with(image.getContext())
                     .load(args.getString(IMAGE))
@@ -320,6 +423,49 @@ implements NavigationView.OnNavigationItemSelectedListener, View.OnClickListener
 
             return rootView;
         }
+
+        public void searchArticlesByTop(String url, final TextView view, final long id) {
+
+            final DatabaseHelper db = DatabaseHelper.getInstance(view.getContext());
+            String paragraph = db.isThereAParagraph(id);
+            if (paragraph != null) {
+                view.setText(paragraph);
+            } else {
+                RequestQueue queue = Volley.newRequestQueue(view.getContext());
+
+
+                JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.GET,
+                        NYTApiData.URL_SEARCH + "?api-key=" + NYTApiData.API_KEY + "&fq=web_url:(\"" + url + "\")", null,
+                        new com.android.volley.Response.Listener<JSONObject>() {
+                            @Override
+                            public void onResponse(JSONObject response) {
+                                try {
+                                    String paragraph;
+                                    JSONObject root = response;
+                                    JSONObject searchResponse = root.getJSONObject("response");
+                                    JSONArray docs = searchResponse.getJSONArray("docs");
+                                    JSONObject article = docs.getJSONObject(0);
+                                    Log.d(TAG, "onResponse: " + article.getString("web_url"));
+                                    paragraph = article.getString("lead_paragraph");
+                                    db.addParagraph(id,paragraph);
+                                    view.setText(paragraph);
+                                } catch (JSONException e) {
+                                    e.printStackTrace();
+                                }
+
+                            }
+                        }, new com.android.volley.Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+
+                    }
+                });
+
+                queue.add(jsonObjectRequest);
+            }
+        }
+
+
     }
 }
 

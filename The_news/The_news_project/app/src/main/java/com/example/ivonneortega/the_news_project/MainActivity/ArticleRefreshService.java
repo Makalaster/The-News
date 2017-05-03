@@ -6,6 +6,7 @@ import android.app.job.JobParameters;
 import android.app.job.JobService;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.AsyncTask;
@@ -21,8 +22,10 @@ import com.android.volley.toolbox.Volley;
 import com.example.ivonneortega.the_news_project.DatabaseHelper;
 import com.example.ivonneortega.the_news_project.DetailView.CollectionDemoActivity;
 import com.example.ivonneortega.the_news_project.DetailView.DetailViewActivity;
+import com.example.ivonneortega.the_news_project.Settings.SettingsActivity;
 import com.example.ivonneortega.the_news_project.data.Article;
 import com.example.ivonneortega.the_news_project.data.NYTApiData;
+import com.google.gson.Gson;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -30,6 +33,9 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import static com.example.ivonneortega.the_news_project.Settings.SettingsActivity.NOTIFICATION;
+import static com.example.ivonneortega.the_news_project.Settings.SettingsActivity.TRUE;
 
 public class ArticleRefreshService extends JobService {
     private static final int NOTIFICATION_ID = 1;
@@ -42,6 +48,7 @@ public class ArticleRefreshService extends JobService {
     @Override
     public void onCreate() {
         super.onCreate();
+        mDb = DatabaseHelper.getInstance(this);
 
         mDb = DatabaseHelper.getInstance(this);
 
@@ -70,7 +77,6 @@ public class ArticleRefreshService extends JobService {
             mTopStoriesList.add("food");
             mTopStoriesList.add("health");
         }
-
 
     }
 
@@ -223,28 +229,60 @@ public class ArticleRefreshService extends JobService {
     }
 
     private void generateNotification(String title, long id) {
-        NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(getApplicationContext());
 
-        Intent openArticleIntent = new Intent(this, CollectionDemoActivity.class);
-        openArticleIntent.putExtra(DatabaseHelper.COL_ID, id);
-        PendingIntent openDetails = PendingIntent.getActivity(this, (int) System.currentTimeMillis(), openArticleIntent, 0);
+        SharedPreferences sharedPreferences = getSharedPreferences("com.example.ivonneortega.the_news_project.Settings", Context.MODE_PRIVATE);
+        int notification = sharedPreferences.getInt(SettingsActivity.NOTIFICATION,SettingsActivity.TRUE);
+        if(notification==SettingsActivity.TRUE) {
+            NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(getApplicationContext());
 
-        Intent saveArticleIntent = new Intent(this, SaveFromNotificationService.class);
-        saveArticleIntent.putExtra(DatabaseHelper.COL_ID, id);
-        PendingIntent saveArticle = PendingIntent.getService(this, (int) System.currentTimeMillis(), saveArticleIntent, 0);
+            Intent openArticleIntent = new Intent(this, CollectionDemoActivity.class);
+            openArticleIntent.putExtra(DatabaseHelper.COL_ID, id);
+            PendingIntent openDetails = PendingIntent.getActivity(this, (int) System.currentTimeMillis(), openArticleIntent, 0);
 
-        notificationBuilder.setSmallIcon(android.R.drawable.ic_dialog_alert)
-                .setAutoCancel(true)
-                .setContentTitle("New top news:")
-                .setContentText(title)
-                .setContentIntent(openDetails)
-                .setOngoing(false)
-                .addAction(android.R.drawable.ic_input_add, "Save", saveArticle);
+            Intent saveArticleIntent = new Intent(this, SaveFromNotificationService.class);
+            saveArticleIntent.putExtra(DatabaseHelper.COL_ID, id);
+            PendingIntent saveArticle = PendingIntent.getService(this, (int) System.currentTimeMillis(), saveArticleIntent, 0);
 
-        NotificationManager notificationManager =
-                (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
-        notificationManager.notify(NOTIFICATION_ID, notificationBuilder.build());
+            notificationBuilder.setSmallIcon(android.R.drawable.ic_dialog_alert)
+                    .setAutoCancel(true)
+                    .setContentTitle("New top news:")
+                    .setContentText(title)
+                    .setContentIntent(openDetails)
+                    .setOngoing(false)
+                    .addAction(android.R.drawable.ic_input_add, "Save", saveArticle);
+
+            NotificationManager notificationManager =
+                    (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+            notificationManager.notify(NOTIFICATION_ID, notificationBuilder.build());
+        }
     }
+
+//    JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.GET,
+//            NYTApiData.URL_SEARCH + "?api-key=" + NYTApiData.API_KEY + "&fq=web_url(\"" + url + "\")", null,
+//            new com.android.volley.Response.Listener<JSONObject>() {
+//                @Override
+//                public void onResponse(JSONObject response) {
+//                    try {
+//                        JSONArray docs = response.getJSONArray("docs");
+//                        JSONObject article = docs.getJSONObject(0);
+//                        String paragraph = article.getString("lead_paragraph");
+//                    } catch (JSONException e) {
+//                        e.printStackTrace();
+//                    }
+//
+//                }
+//            }, new com.android.volley.Response.ErrorListener() {
+//        @Override
+//        public void onErrorResponse(VolleyError error) {
+//
+//        }
+//    });
+
+
+
+
+
+
 
     @Override
     public boolean onStopJob(JobParameters params) {
@@ -252,3 +290,4 @@ public class ArticleRefreshService extends JobService {
         return false;
     }
 }
+

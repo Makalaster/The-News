@@ -108,32 +108,34 @@ implements View.OnClickListener{
             });
 
             //TODO HANDLE WHEN USER CLICKS SHARE ON SPECIFIC ARTICLE
-            holder.mShare.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
 
-                    mList.get(holder.getAdapterPosition()).getUrl();
-
-                   // Intent intent  = v.getContext().getPackageManager().getLaunchIntentForPackage(application);
-
-
-
-                    Intent sendIntent = new Intent();
-                    sendIntent.setAction(Intent.ACTION_SEND);
-                    sendIntent.putExtra(Intent.EXTRA_TEXT, mList.get(holder.getAdapterPosition()).getUrl());
-
-                    sendIntent.setType("text/plain");
-                    //startActivity(Intent.createChooser(sendIntent, getResources().getText(R.string.send_to)));
-                    v.getContext().startActivity(Intent.createChooser(sendIntent, "Share this article using.."));
-
-
-                }
-            });
         }
         else
         {
             holder.mHeart.setVisibility(View.GONE);
         }
+
+        holder.mShare.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                mList.get(holder.getAdapterPosition()).getUrl();
+
+                // Intent intent  = v.getContext().getPackageManager().getLaunchIntentForPackage(application);
+
+
+
+                Intent sendIntent = new Intent();
+                sendIntent.setAction(Intent.ACTION_SEND);
+                sendIntent.putExtra(Intent.EXTRA_TEXT, mList.get(holder.getAdapterPosition()).getUrl());
+
+                sendIntent.setType("text/plain");
+                //startActivity(Intent.createChooser(sendIntent, getResources().getText(R.string.send_to)));
+                v.getContext().startActivity(Intent.createChooser(sendIntent, "Share this article using.."));
+
+
+            }
+        });
 
         //CLICK LISTENER WHEN CLICKING ON A PRODUCT
         holder.mRoot.setOnClickListener(new View.OnClickListener() {
