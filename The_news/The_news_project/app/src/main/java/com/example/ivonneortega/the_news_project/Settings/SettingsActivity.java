@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.widget.CompoundButton;
 import android.widget.Switch;
 
@@ -16,11 +17,13 @@ public class SettingsActivity extends AppCompatActivity implements CompoundButto
     public static final String NOTIFICATION = "notification";
     public static final int TRUE = 0;
     public static final int FALSE = 1;
+    private boolean mStartActivity;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_settings);
+        setTheme();
+//        setContentView(R.layout.activity_settings);
 
         mSwitch_theme = (Switch) findViewById(R.id.switch_theme);
         mSwitch_notification = (Switch) findViewById(R.id.switch_notification);
@@ -43,6 +46,27 @@ public class SettingsActivity extends AppCompatActivity implements CompoundButto
 
     }
 
+    public void setTheme()
+    {
+        SharedPreferences sharedPreferences = getSharedPreferences("com.example.ivonneortega.the_news_project.Settings", Context.MODE_PRIVATE);
+        String str = sharedPreferences.getString(SettingsActivity.THEME,"DEFAULT"); //Initial value of the String is "Hello"
+        Log.d("weqweqweqwe", "setTheme: "+str);
+        if(str.equals("dark"))
+        {
+            Log.d("sdsdfsdfsdfsdf", "setTheme: qweqwdqqwdqwdqwdwd");
+            setTheme(R.style.DarkTheme);
+            setContentView(R.layout.activity_settings);
+            findViewById(R.id.root_toolbar).setBackgroundColor(getResources().getColor(R.color.colorPrimaryDarkTheme));
+        }
+        else
+        {
+            setContentView(R.layout.activity_settings);
+
+        }
+        mStartActivity=true;
+
+    }
+    
     @Override
     public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
         switch (buttonView.getId())

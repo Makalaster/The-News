@@ -1,6 +1,8 @@
 package com.example.ivonneortega.the_news_project.CategoryView;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.provider.ContactsContract;
 import android.support.v7.widget.LinearLayoutManager;
@@ -17,6 +19,7 @@ import android.view.MenuItem;
 import android.widget.ImageButton;
 import android.widget.Toast;
 
+import com.example.ivonneortega.the_news_project.Settings.SettingsActivity;
 import com.example.ivonneortega.the_news_project.data.Article;
 import com.example.ivonneortega.the_news_project.DatabaseHelper;
 import com.example.ivonneortega.the_news_project.RecyclerViewAdapters.ArticlesVerticalRecyclerAdapter;
@@ -34,19 +37,56 @@ public class CategoryViewActivity extends AppCompatActivity
     ArticlesVerticalRecyclerAdapter mAdapter;
     String mCategory;
     List<Article> mList;
+    boolean mStartActivity;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_category_view);
+        setTheme();
+//        setContentView(R.layout.activity_category_view);
         settingUpTheViews();
         mList = new ArrayList<>();
 
     }
 
 
+    @Override
+    protected void onResume() {
+        super.onResume();
 
+        if(mAdapter!=null)
+        {
+            mAdapter.notifyDataSetChanged();
+        }
+
+        if(mStartActivity == true){
+            mStartActivity = false;
+
+        } else {
+            finish();
+            startActivity(getIntent());
+        }
+    }
+
+    public void setTheme()
+    {
+        SharedPreferences sharedPreferences = getSharedPreferences("com.example.ivonneortega.the_news_project.Settings", Context.MODE_PRIVATE);
+        String str = sharedPreferences.getString(SettingsActivity.THEME,"DEFAULT"); //Initial value of the String is "Hello"
+        if(str.equals("dark"))
+        {
+            setTheme(R.style.DarkTheme);
+            setContentView(R.layout.activity_category_view);
+            findViewById(R.id.root_toolbar).setBackgroundColor(getResources().getColor(R.color.colorPrimaryDarkTheme));
+        }
+        else
+        {
+            setContentView(R.layout.activity_category_view);
+
+        }
+        mStartActivity=true;
+
+    }
 
 
     //NAVIGATION DRAWER METHOD
