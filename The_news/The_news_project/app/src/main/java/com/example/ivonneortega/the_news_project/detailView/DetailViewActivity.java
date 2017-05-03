@@ -36,6 +36,7 @@ public class DetailViewActivity extends AppCompatActivity
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_detail_view);
+
         Toolbar toolbar = (Toolbar) findViewById(R.id.root_toolbar);
         setSupportActionBar(toolbar);
 
@@ -67,7 +68,6 @@ public class DetailViewActivity extends AppCompatActivity
 //                .replace(R.id.fragment_container,detailFragment)
 //                .commit();
         //creatingViews();
-
     }
 
     @Override
@@ -89,19 +89,10 @@ public class DetailViewActivity extends AppCompatActivity
             moveToCategoryViewActivity();
         } else if (id == R.id.nav_gallery) {
             moveToCategoryViewActivity();
-
         } else if (id == R.id.nav_slideshow) {
             moveToCategoryViewActivity();
-
         } else if (id == R.id.nav_manage) {
             moveToCategoryViewActivity();
-
-//        } else if (id == R.id.nav_share) {
-//            Toast.makeText(this, "Category 5", Toast.LENGTH_SHORT).show();
-//
-//        } else if (id == R.id.nav_send) {
-//            Toast.makeText(this, "Category 6", Toast.LENGTH_SHORT).show();
-//
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -109,16 +100,14 @@ public class DetailViewActivity extends AppCompatActivity
         return true;
     }
 
-    public void moveToCategoryViewActivity()
-    {
+    public void moveToCategoryViewActivity() {
         Intent intent = new Intent(this, CategoryViewActivity.class);
         startActivity(intent);
     }
 
     @Override
     public void onClick(View v) {
-        switch (v.getId())
-        {
+        switch (v.getId()) {
             case R.id.options_toolbar:
                 Toast.makeText(this, "Click on options button", Toast.LENGTH_SHORT).show();
                 break;
@@ -130,6 +119,7 @@ public class DetailViewActivity extends AppCompatActivity
                 break;
         }
     }
+
     private void setShareIntent(Intent shareIntent) {
         if (mShareActionProvider != null) {
             mShareActionProvider.setShareIntent(shareIntent);
@@ -137,8 +127,7 @@ public class DetailViewActivity extends AppCompatActivity
 
     }
 
-    public void creatingViews()
-    {
+    public void creatingViews() {
         Toolbar toolbar = (Toolbar) findViewById(R.id.root_toolbar);
         setSupportActionBar(toolbar);
 
@@ -168,8 +157,7 @@ public class DetailViewActivity extends AppCompatActivity
         mContent = (TextView) findViewById(R.id.detail_content);
     }
 
-    public void settingUpViews()
-    {
+    public void settingUpViews() {
         Intent intent = getIntent();
         mId = intent.getLongExtra(DatabaseHelper.COL_ID,-1);
         Article article = DatabaseHelper.getInstance(this).getArticlesById(mId);
