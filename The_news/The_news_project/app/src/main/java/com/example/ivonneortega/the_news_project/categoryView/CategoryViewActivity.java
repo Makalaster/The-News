@@ -151,7 +151,7 @@ public class CategoryViewActivity extends AppCompatActivity
     //TODO check if both finishes are correct
     public void moveToCategoryViewActivity(String category)
     {
-        finish();
+        //finish();
         Intent intent = new Intent(this, CategoryViewActivity.class);
         intent.putExtra(DatabaseHelper.COL_CATEGORY,category);
         startActivity(intent);

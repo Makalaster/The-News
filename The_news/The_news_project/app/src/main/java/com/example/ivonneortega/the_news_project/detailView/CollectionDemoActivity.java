@@ -45,19 +45,18 @@ import com.android.volley.RequestQueue;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
-import com.example.ivonneortega.the_news_project.categoryView.CategoryViewActivity;
 import com.example.ivonneortega.the_news_project.R;
-import com.example.ivonneortega.the_news_project.settings.SettingsActivity;
+import com.example.ivonneortega.the_news_project.categoryView.CategoryViewActivity;
 import com.example.ivonneortega.the_news_project.data.Article;
 import com.example.ivonneortega.the_news_project.data.NYTApiData;
 import com.example.ivonneortega.the_news_project.database.DatabaseHelper;
+import com.example.ivonneortega.the_news_project.settings.SettingsActivity;
 import com.squareup.picasso.Picasso;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.util.ArrayList;
 import java.util.List;
 
 
