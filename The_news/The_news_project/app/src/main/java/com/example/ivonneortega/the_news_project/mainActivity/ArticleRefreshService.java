@@ -72,7 +72,6 @@ public class ArticleRefreshService extends JobService {
             mTopStoriesList.add("food");
             mTopStoriesList.add("health");
         }
-
     }
 
     @Override
@@ -112,7 +111,6 @@ public class ArticleRefreshService extends JobService {
         RequestQueue queue = Volley.newRequestQueue(this);
 
         JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.GET,
-                //NYTApiData.URL_TOP_STORY + query + JSON+"?api-key=" + NYTApiData.API_KEY, null,
                 NYTApiData.URL_TOP_STORY + query + JSON+"?api-key=" + NYTApiData.API_KEY, null,
                 new com.android.volley.Response.Listener<JSONObject>() {
                     @Override
@@ -224,7 +222,6 @@ public class ArticleRefreshService extends JobService {
     }
 
     private void generateNotification(String title, long id) {
-
         SharedPreferences sharedPreferences = getSharedPreferences("com.example.ivonneortega.the_news_project.Settings", Context.MODE_PRIVATE);
         int notification = sharedPreferences.getInt(SettingsActivity.NOTIFICATION,SettingsActivity.TRUE);
         if(notification==SettingsActivity.TRUE) {
@@ -251,33 +248,6 @@ public class ArticleRefreshService extends JobService {
             notificationManager.notify(NOTIFICATION_ID, notificationBuilder.build());
         }
     }
-
-//    JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.GET,
-//            NYTApiData.URL_SEARCH + "?api-key=" + NYTApiData.API_KEY + "&fq=web_url(\"" + url + "\")", null,
-//            new com.android.volley.Response.Listener<JSONObject>() {
-//                @Override
-//                public void onResponse(JSONObject response) {
-//                    try {
-//                        JSONArray docs = response.getJSONArray("docs");
-//                        JSONObject article = docs.getJSONObject(0);
-//                        String paragraph = article.getString("lead_paragraph");
-//                    } catch (JSONException e) {
-//                        e.printStackTrace();
-//                    }
-//
-//                }
-//            }, new com.android.volley.Response.ErrorListener() {
-//        @Override
-//        public void onErrorResponse(VolleyError error) {
-//
-//        }
-//    });
-
-
-
-
-
-
 
     @Override
     public boolean onStopJob(JobParameters params) {

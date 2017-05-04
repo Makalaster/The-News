@@ -82,30 +82,24 @@ public class FragmentTopStories extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View view =  inflater.inflate(R.layout.fragment_fragment_top_stories, container, false);
+        return inflater.inflate(R.layout.fragment_fragment_top_stories, container, false);
+    }
+
+    @Override
+    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+
         //Setting Recycler View
         RecyclerView recyclerView = (RecyclerView) view.findViewById(R.id.top_stories_recycler_view);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(view.getContext(),LinearLayoutManager.VERTICAL,false);
         recyclerView.setLayoutManager(linearLayoutManager);
 
         //Creating a list to test recycler view
-        List<Article> categoryIndividualItems = new ArrayList<>();
-//        categoryIndividualItems.add(new Article(1,"image","This is the text for the article. Testing Text. What happens if I add more?","Business","today","this is the body","source",0,0,"url"));
-//        categoryIndividualItems.add(new Article(1,"image","This is the text for the article. Testing Text. What happens if I add more?","Business","today","this is the body","source",0,0,"url"));
-//        categoryIndividualItems.add(new Article(1,"image","This is the text for the article. Testing Text. What happens if I add more?","Business","today","this is the body","source",0,0,"url"));
-//        categoryIndividualItems.add(new Article(1,"image","This is the text for the article. Testing Text. What happens if I add more?","Business","today","this is the body","source",0,0,"url"));
-//        categoryIndividualItems.add(new Article(1,"image","This is the text for the article. Testing Text. What happens if I add more?","Business","today","this is the body","source",0,0,"url"));
+        List<Article> categoryIndividualItems;
         categoryIndividualItems = DatabaseHelper.getInstance(view.getContext()).getTopStoryArticles();
 
         mAdapter = new ArticlesVerticalRecyclerAdapter(categoryIndividualItems,false);
         recyclerView.setAdapter(mAdapter);
-
-        return view;
-    }
-
-    @Override
-    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
 
         mTopRefresh = (SwipeRefreshLayout) view.findViewById(R.id.top_swipe_refresh);
         mTopRefresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
@@ -175,10 +169,10 @@ public class FragmentTopStories extends Fragment {
         long added = 0;
 
         for (int i = 0; i < articles.length(); i++) {
-            String url = null;
-            String title = null;
-            String date = null;
-            String category = null;
+            String url;
+            String title;
+            String date;
+            String category;
             String image = null;
             boolean hasImage = false;
             try {

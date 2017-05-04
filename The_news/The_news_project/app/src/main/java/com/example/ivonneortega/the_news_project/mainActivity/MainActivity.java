@@ -142,7 +142,7 @@ public class MainActivity extends AppCompatActivity
             mAdapter.notifyDataSetChanged();
         }
 
-        if(mStartActivity == true){
+        if(mStartActivity){
             mStartActivity = false;
 
         } else {

@@ -77,8 +77,24 @@ public class FragmentAllStories extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
-        View view = inflater.inflate(R.layout.fragment_fragment_all_stories,container,false);
         setSources();
+        return inflater.inflate(R.layout.fragment_fragment_all_stories,container,false);
+    }
+
+    public void setSources()
+    {
+        mSources = new ArrayList<>();
+        mSources.add("associated-press");
+        mSources.add("bbc-news");
+        mSources.add("business-insider");
+        mSources.add("buzzfeed");
+        mSources.add("cnn");
+        mSources.add("espn");
+    }
+
+    @Override
+    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
 
         //Setting Recycler View
         RecyclerView recyclerView = (RecyclerView) view.findViewById(R.id.recyclerView_all_stories);
@@ -86,7 +102,7 @@ public class FragmentAllStories extends Fragment {
         recyclerView.setLayoutManager(linearLayoutManager);
 
         //Creating a list to test recycler view
-        List<Article> categoryIndividualItems = new ArrayList<>();
+        List<Article> categoryIndividualItems;
 
         //Secondary Test
         List<Category> allStories = new ArrayList<>();
@@ -116,24 +132,6 @@ public class FragmentAllStories extends Fragment {
         //Setting Adapter With lists
         mAdapter = new CategoriesRecyclerAdapter(allStories);
         recyclerView.setAdapter(mAdapter);
-
-        return view;
-    }
-
-    public void setSources()
-    {
-        mSources = new ArrayList<>();
-        mSources.add("associated-press");
-        mSources.add("bbc-news");
-        mSources.add("business-insider");
-        mSources.add("buzzfeed");
-        mSources.add("cnn");
-        mSources.add("espn");
-    }
-
-    @Override
-    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
 
         mAllRefresh = (SwipeRefreshLayout) view.findViewById(R.id.all_swipe_refresh);
         mAllRefresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
@@ -202,10 +200,10 @@ public class FragmentAllStories extends Fragment {
         long added = 0;
 
         for (int i = 0; i < articles.length(); i++) {
-            String url = null;
-            String title = null;
-            String date = null;
-            String category = null;
+            String url;
+            String title;
+            String date;
+            String category;
             String image = null;
             boolean hasImage = false;
             try {
