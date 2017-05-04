@@ -14,6 +14,8 @@ Users can view news as it comes out based on category, and they can view top new
 
 #### Functionality
 
+When the app first opens, it takes the user to a loading page, which checks the server for new articles, which will be available for reading once the check is complete.
+
 ---
 
 #### Screenshots
