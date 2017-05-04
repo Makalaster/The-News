@@ -113,6 +113,12 @@ implements NavigationView.OnNavigationItemSelectedListener, View.OnClickListener
         creatingViews();
     }
 
+    /**
+     * On Resume Method
+     * mStartActivity is a boolean used to determine where the activity is starting
+     * if mStartActivity is true it means this is the first time the activity is starting or the theme has already being set
+     * else the activity already started so we relaunch the activity to reflect the changes in the theme
+     */
     @Override
     protected void onResume() {
         super.onResume();
@@ -124,12 +130,13 @@ implements NavigationView.OnNavigationItemSelectedListener, View.OnClickListener
         }
     }
 
+    /**
+     * Method that gets sets the theme, taking the extra from SharedPreferences
+     */
     public void setTheme() {
         SharedPreferences sharedPreferences = getSharedPreferences("com.example.ivonneortega.the_news_project.Settings", Context.MODE_PRIVATE);
         String str = sharedPreferences.getString(SettingsActivity.THEME,"DEFAULT"); //Initial value of the String is "Hello"
-        Log.d("weqweqweqwe", "setTheme: "+str);
         if(str.equals("dark")) {
-            Log.d("sdsdfsdfsdfsdf", "setTheme: qweqwdqqwdqwdqwdwd");
             setTheme(R.style.DarkTheme);
             setContentView(R.layout.activity_detail_view);
             findViewById(R.id.root_toolbar).setBackgroundColor(getResources().getColor(R.color.colorPrimaryDarkTheme));
@@ -140,6 +147,10 @@ implements NavigationView.OnNavigationItemSelectedListener, View.OnClickListener
         mStartActivity = true;
     }
 
+
+    /**
+     * Method for Navigation Drawer that handles the drawer opening and closing
+     */
     @Override
     public void onBackPressed() {
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -150,6 +161,11 @@ implements NavigationView.OnNavigationItemSelectedListener, View.OnClickListener
         }
     }
 
+    /**
+     * Method that handles the clicks on each item in the navigation drawer
+     * @param item is the item that has been clicked
+     * @return
+     */
     @SuppressWarnings("StatementWithEmptyBody")
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
@@ -185,6 +201,11 @@ implements NavigationView.OnNavigationItemSelectedListener, View.OnClickListener
         return true;
     }
 
+    /**
+     * Method that launches the Category View Activity
+     * @param category is a String from OnNavigationItemSelected that reflects the category
+     *                 that is going to show in Category View Activity
+     */
     public void moveToCategoryViewActivity(String category) {
         Intent intent = new Intent(this, CategoryViewActivity.class);
         intent.putExtra(DatabaseHelper.COL_CATEGORY,category);
@@ -192,6 +213,10 @@ implements NavigationView.OnNavigationItemSelectedListener, View.OnClickListener
         finish();
     }
 
+    /**
+     * Method that handles every click on items in the toolbar
+     * @param v is the view that has been clicked
+     */
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
@@ -207,6 +232,9 @@ implements NavigationView.OnNavigationItemSelectedListener, View.OnClickListener
         }
     }
 
+    /**
+     * Method that launches the share intent
+     */
     public void share() {
         Intent sendIntent = new Intent();
         sendIntent.setAction(Intent.ACTION_SEND);
@@ -221,7 +249,13 @@ implements NavigationView.OnNavigationItemSelectedListener, View.OnClickListener
         startActivity(intent);
     }
 
-
+    /**
+     * Method that saves and article
+     * If the article is already saved, the method unsaves the article and shows a Snackbar to let the user
+     * UNDO the actions.
+     * If the article is not yet saved, the method saves the article and shows a Snackbar to let the user
+     * UNDO the actions.
+     */
     public void saveArticle() {
         if(articleList.get(mPosition).isSaved()) {
             mHeart.setImageResource(R.mipmap.ic_favorite_border_black_24dp);
@@ -258,6 +292,11 @@ implements NavigationView.OnNavigationItemSelectedListener, View.OnClickListener
         }
     }
 
+    /**
+     * Method that handles all the view creations
+     * including the navigation drawer
+     * and a onPageChangeListener for the view pager to change the toolbar icons
+     */
     public void creatingViews() {
         Toolbar toolbar = (Toolbar) findViewById(R.id.root_toolbar);
 
@@ -333,6 +372,10 @@ implements NavigationView.OnNavigationItemSelectedListener, View.OnClickListener
 
     }
 
+    /**
+     * Method that handles the change of the heart in the toolbar
+     * depending on the current article
+     */
     public void setHeartView()
     {
         if(articleList.get(mPosition).isSaved())
@@ -341,20 +384,35 @@ implements NavigationView.OnNavigationItemSelectedListener, View.OnClickListener
             mHeart.setImageResource(R.mipmap.ic_favorite_border_black_24dp);
     }
 
-
+    /**
+     * Class that extends FragmentStatePageAdapter
+     * This class handles loading the dapa for each fragment in detail view (previous, current and next)
+     */
     public static class DemoCollectionPagerAdapter extends FragmentStatePagerAdapter {
         List<Article> mList;
 
+        /**
+         * Constructor
+         * @param fm the FragmentManager
+         * @param list is the list of articles that the fragment state pager adapter is going to show
+         */
         public DemoCollectionPagerAdapter(FragmentManager fm, List<Article> list) {
             super(fm);
             mList = list;
         }
+
 
         @Override
         public void setPrimaryItem(ViewGroup container, int position, Object object) {
             super.setPrimaryItem(container, position, object);
         }
 
+        /**
+         * Method that sets the content of each article in a bundle so then the fragment can get
+         * the data and update the views
+         * @param i is the current intent in the list
+         * @return the fragment with the bundle
+         */
         @Override
         public Fragment getItem(int i) {
             Fragment fragment = new DemoObjectFragment();
@@ -370,22 +428,31 @@ implements NavigationView.OnNavigationItemSelectedListener, View.OnClickListener
             return fragment;
         }
 
+        /**
+         *
+         * @return the number of items in the list
+         */
         @Override
         public int getCount() {
             return mList.size();
         }
 
-        @Override
-        public CharSequence getPageTitle(int position) {
-            return "OBJECT " + (position + 1);
-        }
     }
 
-    //THIS IS WHERE ALL THE VIEWS ARE INFLATED
+    /**
+     * Fragment that hold the views for each article
+     */
     public static class DemoObjectFragment extends Fragment {
 
         public static final String ARG_OBJECT = "object";
 
+        /**
+         * Create the views
+         * @param inflater
+         * @param container
+         * @param savedInstanceState
+         * @return
+         */
         @Override
         public View onCreateView(LayoutInflater inflater, ViewGroup container,
                 Bundle savedInstanceState) {
@@ -406,6 +473,12 @@ implements NavigationView.OnNavigationItemSelectedListener, View.OnClickListener
             return rootView;
         }
 
+        /**
+         * Method that searches the articles to get the description of each article
+         * @param url is the url of the article
+         * @param view is the view where the description is going to be
+         * @param id is the id of the article
+         */
         public void searchArticlesByTop(String url, final TextView view, final long id) {
 
             final DatabaseHelper db = DatabaseHelper.getInstance(view.getContext());
