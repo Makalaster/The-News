@@ -149,8 +149,8 @@ public class MainActivity extends AppCompatActivity
             mStartActivity = false;
 
         } else {
-            finish();
-            startActivity(getIntent());
+            //finish();
+            //startActivity(getIntent());
         }
     }
 
