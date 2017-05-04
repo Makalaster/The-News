@@ -44,6 +44,7 @@ public class CategoryViewActivity extends AppCompatActivity
     ImageView nav_user;
     NavigationView navigationView;
     ProgressBar mProgressBar;
+    private boolean theme_changed;
 
 
     @Override
@@ -64,10 +65,17 @@ public class CategoryViewActivity extends AppCompatActivity
             mAdapter.notifyDataSetChanged();
         }
 
+        SharedPreferences sharedPreferences = getSharedPreferences("com.example.ivonneortega.the_news_project.Settings", Context.MODE_PRIVATE);
+        theme_changed = sharedPreferences.getBoolean(SettingsActivity.THEME_HAS_CHANGED,false);
+
         if(mStartActivity){
             mStartActivity = false;
 
-        } else {
+        } else if (theme_changed){
+            SharedPreferences sharedPreferences1 = getSharedPreferences("com.example.ivonneortega.the_news_project.Settings", Context.MODE_PRIVATE);
+            SharedPreferences.Editor editor = sharedPreferences1.edit();
+            editor.putBoolean(SettingsActivity.THEME_HAS_CHANGED,false);
+            editor.apply();
             finish();
             startActivity(getIntent());
         }
@@ -157,7 +165,7 @@ public class CategoryViewActivity extends AppCompatActivity
     //TODO check if both finishes are correct
     public void moveToCategoryViewActivity(String category)
     {
-        finish();
+        //finish();
         Intent intent = new Intent(this, CategoryViewActivity.class);
         intent.putExtra(DatabaseHelper.COL_CATEGORY,category);
         startActivity(intent);
@@ -250,6 +258,7 @@ public class CategoryViewActivity extends AppCompatActivity
                 categories.add("World");
                 break;
             case "Politics":
+            case "U.S.":
                 categories.add("u.s");
                 categories.add("Politics");
                 break;
@@ -270,6 +279,7 @@ public class CategoryViewActivity extends AppCompatActivity
                 categories.add("Teather");
                 break;
             case "Fashion":
+            case "Fashion & Style":
                 categories.add("Fashion");
                 categories.add("Style");
                 break;

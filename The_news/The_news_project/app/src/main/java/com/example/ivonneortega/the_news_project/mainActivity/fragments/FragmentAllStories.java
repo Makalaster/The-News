@@ -33,6 +33,8 @@ import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
 
+import static com.example.ivonneortega.the_news_project.data.NYTApiData.JSON;
+
 
 /**
  * A simple {@link Fragment} subclass.
@@ -202,7 +204,7 @@ public class FragmentAllStories extends Fragment {
         OkHttpClient client = new OkHttpClient();
 
         Request request = new Request.Builder()
-                .url(NYTApiData.URL_NEWS_WIRE + topic + ArticleRefreshService.JSON + "?api-key=" + NYTApiData.API_KEY)
+                .url(NYTApiData.URL_NEWS_WIRE + topic + JSON + "?api-key=" + NYTApiData.API_KEY)
                 .build();
 
         JSONArray articles = null;

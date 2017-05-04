@@ -45,19 +45,18 @@ import com.android.volley.RequestQueue;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
-import com.example.ivonneortega.the_news_project.categoryView.CategoryViewActivity;
 import com.example.ivonneortega.the_news_project.R;
-import com.example.ivonneortega.the_news_project.settings.SettingsActivity;
+import com.example.ivonneortega.the_news_project.categoryView.CategoryViewActivity;
 import com.example.ivonneortega.the_news_project.data.Article;
 import com.example.ivonneortega.the_news_project.data.NYTApiData;
 import com.example.ivonneortega.the_news_project.database.DatabaseHelper;
+import com.example.ivonneortega.the_news_project.settings.SettingsActivity;
 import com.squareup.picasso.Picasso;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.util.ArrayList;
 import java.util.List;
 
 
@@ -78,6 +77,8 @@ implements NavigationView.OnNavigationItemSelectedListener, View.OnClickListener
     ViewPager mViewPager;
     private long mId;
     private int mPosition;
+    private boolean theme_changed;
+
 
     private List<Article> articleList;
     private ImageButton mHeart;
@@ -122,9 +123,18 @@ implements NavigationView.OnNavigationItemSelectedListener, View.OnClickListener
     @Override
     protected void onResume() {
         super.onResume();
+
+        SharedPreferences sharedPreferences = getSharedPreferences("com.example.ivonneortega.the_news_project.Settings", Context.MODE_PRIVATE);
+        theme_changed = sharedPreferences.getBoolean(SettingsActivity.THEME_HAS_CHANGED,false);
+
         if(mStartActivity){
             mStartActivity = false;
-        } else {
+
+        } else if (theme_changed){
+            SharedPreferences sharedPreferences1 = getSharedPreferences("com.example.ivonneortega.the_news_project.Settings", Context.MODE_PRIVATE);
+            SharedPreferences.Editor editor = sharedPreferences1.edit();
+            editor.putBoolean(SettingsActivity.THEME_HAS_CHANGED,false);
+            editor.apply();
             finish();
             startActivity(getIntent());
         }

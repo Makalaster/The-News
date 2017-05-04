@@ -8,6 +8,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -30,6 +31,8 @@ import java.util.List;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
+
+import static com.example.ivonneortega.the_news_project.data.NYTApiData.JSON;
 
 
 /**
@@ -158,21 +161,24 @@ public class FragmentTopStories extends Fragment {
                 }
             }
         };
-        mTask.execute("World", "politics", "Business", "technology", "science", "Sports", "Movies", "fashion", "Food", "Health");
+        mTask.execute("world", "politics", "business", "technology", "science", "sports", "movies", "fashion", "food", "health");
     }
 
     private JSONArray getArticles(String topic) {
         OkHttpClient client = new OkHttpClient();
 
+        String url = NYTApiData.URL_TOP_STORY + topic + JSON + "?api-key=" + NYTApiData.API_KEY;
+
         Request request = new Request.Builder()
-                .url(NYTApiData.URL_NEWS_WIRE + topic + ArticleRefreshService.JSON + "?api-key=" + NYTApiData.API_KEY)
+                .url(url)
                 .build();
 
         JSONArray articles = null;
 
         try {
             Response response = client.newCall(request).execute();
-            JSONObject jsonReply = new JSONObject(response.body().string());
+            String reply = response.body().string();
+            JSONObject jsonReply = new JSONObject(reply);
             articles = jsonReply.getJSONArray("results");
         } catch (IOException e) {
             e.printStackTrace();

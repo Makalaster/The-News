@@ -32,12 +32,13 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.List;
 
+import static com.example.ivonneortega.the_news_project.data.NYTApiData.JSON;
+
 public class ArticleRefreshService extends JobService {
     private static final int NOTIFICATION_ID = 1;
     private List<String> mNewsWireList = new ArrayList<>();
     private List<String> mTopStoriesList = new ArrayList<>();
     private static final String TAG = "ArticleRefreshService";
-    public static final String JSON = ".json";
     private DatabaseHelper mDb;
 
     @Override
@@ -45,12 +46,10 @@ public class ArticleRefreshService extends JobService {
         super.onCreate();
         mDb = DatabaseHelper.getInstance(this);
 
-        mDb = DatabaseHelper.getInstance(this);
-
         if (mNewsWireList.isEmpty()) {
             mNewsWireList.add("World");
             mNewsWireList.add("u.s.");
-            mNewsWireList.add("Business Day");
+            mNewsWireList.add("Business+Day");
             mNewsWireList.add("technology");
             mNewsWireList.add("science");
             mNewsWireList.add("Sports");
@@ -111,7 +110,7 @@ public class ArticleRefreshService extends JobService {
         RequestQueue queue = Volley.newRequestQueue(this);
 
         JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.GET,
-                NYTApiData.URL_TOP_STORY + query + JSON+"?api-key=" + NYTApiData.API_KEY, null,
+                NYTApiData.URL_TOP_STORY + query + JSON + "?api-key=" + NYTApiData.API_KEY, null,
                 new com.android.volley.Response.Listener<JSONObject>() {
                     @Override
                     public void onResponse(JSONObject response) {
