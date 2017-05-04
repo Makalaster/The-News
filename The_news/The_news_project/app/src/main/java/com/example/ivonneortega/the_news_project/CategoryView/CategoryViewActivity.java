@@ -190,6 +190,7 @@ public class CategoryViewActivity extends AppCompatActivity
         getSupportActionBar().setTitle(mCategory);
 
         getList(mCategory);
+        Log.d("TAG", "settingUpTheViews: "+mCategory);
 
         //NAVIGATION DRAWER SET UP
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -262,10 +263,10 @@ public class CategoryViewActivity extends AppCompatActivity
         List<String> categories = new ArrayList<>();
         if (category.equals("World")) {
             categories.add("World");
-        } else if (category.equals("Politics")) {
+        } else if (category.equals("Politics")||category.equalsIgnoreCase("u.s.")) {
             categories.add("u.s");
             categories.add("Politics");
-        } else if (category.equals("Business")) {
+        } else if (category.equals("Business")||category.equals("Business Day")) {
             categories.add("Business Day");
         } else if (category.equals("Technology")) {
             categories.add("Technology");
@@ -280,7 +281,7 @@ public class CategoryViewActivity extends AppCompatActivity
             categories.add("Movies");
             categories.add("Teather");
         }
-        else if (category.equals("Fashion")) {
+        else if (category.equals("Fashion")||category.equals("Fashion & Style")) {
             categories.add("Fashion");
             categories.add("Style");
         }
@@ -321,6 +322,7 @@ public class CategoryViewActivity extends AppCompatActivity
             articles = copyOneListIntoAnother(articles,aux);
         }
         mList = articles;
+        Log.d("TAG", "getListWithArticlesByCategory: mLIST 2:"+articles.size());
     }
 
     public List<Article> copyOneListIntoAnother(List<Article> list1, List<Article> list2)
