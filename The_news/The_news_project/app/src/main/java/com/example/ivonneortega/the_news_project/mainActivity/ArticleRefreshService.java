@@ -45,8 +45,6 @@ public class ArticleRefreshService extends JobService {
         super.onCreate();
         mDb = DatabaseHelper.getInstance(this);
 
-        mDb = DatabaseHelper.getInstance(this);
-
         if (mNewsWireList.isEmpty()) {
             mNewsWireList.add("World");
             mNewsWireList.add("u.s.");
