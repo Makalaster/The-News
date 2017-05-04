@@ -27,19 +27,16 @@
                 <action android:name="android.intent.action.SEND"/>
             </intent-filter>
         </activity>
-
         <activity
             android:name=".detailView.DetailViewActivity"
             android:label="@string/title_activity_main2"
             android:theme="@style/AppTheme">
         </activity>
-
         <activity
             android:name=".categoryView.CategoryViewActivity"
             android:label="@string/title_activity_category_view"
             android:theme="@style/AppTheme">
         </activity>
-
         <activity
             android:name=".search.SearchActivity"
             android:label="@string/title_activity_search"
@@ -49,21 +46,23 @@
         <service
             android:name=".mainActivity.ArticleRefreshService"
             android:permission="android.permission.BIND_JOB_SERVICE"/>
-
-        <service android:name=".mainActivity.SaveFromNotificationService"
-                 android:enabled="true"
-                 android:exported="false"/>
+        <service
+            android:name=".mainActivity.SaveFromNotificationService"
+            android:enabled="true"
+            android:exported="false"/>
 
         <activity
             android:name=".detailView.CollectionDemoActivity"
             android:label="CollectionDemoActivity"
             android:theme="@style/AppTheme">
         </activity>
-
         <activity
             android:name=".settings.SettingsActivity"
             android:label="@string/title_activity_settings"
             android:theme="@style/AppTheme">
+        </activity>
+        <activity
+            android:name=".loadingPage.LoadingActivity">
         </activity>
     </application>
 
