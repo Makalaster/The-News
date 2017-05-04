@@ -14,7 +14,22 @@ Users can view news as it comes out based on category, and they can view top new
 
 #### Functionality
 
-When the app first opens, it takes the user to a loading page, which checks the server for new articles, which will be available for reading once the check is complete.
+When the app first opens, it takes the user to a loading page, which checks the server for new articles, which will be available for reading once the check is complete. This check can take additional time based on how long it has been since the last load.
+
+Main activity
+	All stories
+	Top stories
+	Saved
+
+Categories
+
+Sharing
+
+Navigation drawer
+
+Notification
+
+Settings
 
 ---
 
