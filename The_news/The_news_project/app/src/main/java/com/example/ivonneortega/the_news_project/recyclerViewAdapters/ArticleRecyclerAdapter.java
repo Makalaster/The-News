@@ -104,6 +104,8 @@ public class ArticleRecyclerAdapter extends RecyclerView.Adapter<ArticleRecycler
 
     @Override
     public int getItemCount() {
+        if(mList.size()<=0)
+            return 0;
         return 6;
     }
 

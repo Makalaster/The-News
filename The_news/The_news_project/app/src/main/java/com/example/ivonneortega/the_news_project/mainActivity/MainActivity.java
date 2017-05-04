@@ -39,7 +39,9 @@ public class MainActivity extends AppCompatActivity
 
     FragmentAdapterMainActivity mAdapter;
     public static final String URL = "https://newsapi.org/v1/articles?source=";
-    public static final String API_KEY = "b9742f05aeab45e097c3c57a30ccb224";
+    //public static final String API_KEY = "b9742f05aeab45e097c3c57a30ccb224";
+    public static final String API_KEY = "8c686febe98446aeaf2f3170b3a5d200";
+
     List<String> mSourcesByTop, mSourcesByLatest;
     boolean mStartActivity;
     List<Category> categories_by_top;
@@ -72,18 +74,14 @@ public class MainActivity extends AppCompatActivity
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+//
+//        View hView =  navigationView.getHeaderView(0);
+//        ImageView nav_user = (ImageView) hView.findViewById(R.id.navigation_image);
+//        Picasso.with(this)
+//                .load(DatabaseHelper.getInstance(this).getArticlesById(0).getImage())
+//                .fit()
+//                .into(nav_user);
 
-
-        Article article = DatabaseHelper.getInstance(this).getArticlesById(1);
-        if(article!=null)
-        {
-            View hView =  navigationView.getHeaderView(0);
-            ImageView nav_user = (ImageView) hView.findViewById(R.id.navigation_image);
-            Picasso.with(this)
-                    .load(article.getImage())
-                    .fit()
-                    .into(nav_user);
-        }
 
         ImageButton optionsToolbar = (ImageButton) findViewById(R.id.options_toolbar);
         optionsToolbar.setClickable(true);
@@ -92,19 +90,18 @@ public class MainActivity extends AppCompatActivity
         optionsToolbar.setOnClickListener(this);
         searchToolbar.setOnClickListener(this);
 
-        //TODO DON'T DELETE THIS
-        JobScheduler jobScheduler = (JobScheduler) getSystemService(JOB_SCHEDULER_SERVICE);
-        ComponentName componentName = new ComponentName(this, ArticleRefreshService.class);
+//        JobScheduler jobScheduler = (JobScheduler) getSystemService(JOB_SCHEDULER_SERVICE);
+//        ComponentName componentName = new ComponentName(this, ArticleRefreshService.class);
+//
+//        JobInfo refreshJob = new JobInfo.Builder(ARTICLE_REFRESH_JOB, componentName)
+//                .setRequiredNetworkType(JobInfo.NETWORK_TYPE_ANY)
+//                .setRequiresCharging(true)
+//                .build();
+//
+//        jobScheduler.schedule(refreshJob);
 
-        JobInfo refreshJob = new JobInfo.Builder(ARTICLE_REFRESH_JOB, componentName)
-                .setRequiredNetworkType(JobInfo.NETWORK_TYPE_ANY)
-                .setRequiresCharging(true)
-                .build();
-
-        jobScheduler.schedule(refreshJob);
-
-        //DatabaseHelper.getInstance(this).deleteAllSavedArticles();
-        //addThingsToDatabase();
+//        DatabaseHelper.getInstance(this).deleteAllSavedArticles();
+//        addThingsToDatabase();
 
         //TODO SAM DON'T DELETE THIS
 //        for(int i = 0; i< mSourcesByTop.size(); i++)
@@ -240,6 +237,49 @@ public class MainActivity extends AppCompatActivity
         startActivity(intent);
     }
 
+//
+//    public void addThingsToDatabase()
+//    {
+//        DatabaseHelper databaseHelper = DatabaseHelper.getInstance(this);
+//        databaseHelper.insertArticleIntoDatabase("https://www.transit.dot.gov/sites/fta.dot.gov/files/635847974891062780-425303270_news.jpg","Business 1","Business","Today","This is the body",
+//                "New York Times",Article.FALSE,1,"https://www.transit.dot.gov/sites/fta.dot.gov/files/635847974891062780-425303270_news.jpg");
+//
+//        databaseHelper.insertArticleIntoDatabase("https://www.transit.dot.gov/sites/fta.dot.gov/files/635847974891062780-425303270_news.jpg","Business 2","Business","Today","This is the body",
+//                "New York Times",Article.FALSE,1,"https://www.transit.dot.gov/sites/fta.dot.gov/files/635847974891062780-425303270_news.jpg");
+//        databaseHelper.insertArticleIntoDatabase("https://www.transit.dot.gov/sites/fta.dot.gov/files/635847974891062780-425303270_news.jpg","Business 3","Business","Today","This is the body",
+//                "New York Times",Article.FALSE,0,"https://www.transit.dot.gov/sites/fta.dot.gov/files/635847974891062780-425303270_news.jpg");
+//
+//        databaseHelper.insertArticleIntoDatabase("https://www.transit.dot.gov/sites/fta.dot.gov/files/635847974891062780-425303270_news.jpg","Business 4","Business","Today","This is the body",
+//                "New York Times",Article.FALSE,0,"https://www.transit.dot.gov/sites/fta.dot.gov/files/635847974891062780-425303270_news.jpg");
+//
+//
+//
+//        databaseHelper.insertArticleIntoDatabase("https://www.transit.dot.gov/sites/fta.dot.gov/files/635847974891062780-425303270_news.jpg","Tech 1","Tech","Today","This is the body",
+//                "New York Times",Article.FALSE,1,"https://www.transit.dot.gov/sites/fta.dot.gov/files/635847974891062780-425303270_news.jpg");
+//
+//        databaseHelper.insertArticleIntoDatabase("https://www.transit.dot.gov/sites/fta.dot.gov/files/635847974891062780-425303270_news.jpg","Tech 2","Tech","Today","This is the body",
+//                "New York Times",Article.FALSE,1,"https://www.transit.dot.gov/sites/fta.dot.gov/files/635847974891062780-425303270_news.jpg");
+//        databaseHelper.insertArticleIntoDatabase("https://www.transit.dot.gov/sites/fta.dot.gov/files/635847974891062780-425303270_news.jpg","Tech 3","Tech","Today","This is the body",
+//                "New York Times",Article.FALSE,0,"https://www.transit.dot.gov/sites/fta.dot.gov/files/635847974891062780-425303270_news.jpg");
+//
+//        databaseHelper.insertArticleIntoDatabase("https://www.transit.dot.gov/sites/fta.dot.gov/files/635847974891062780-425303270_news.jpg","Tech 4","Tech","Today","This is the body",
+//                "New York Times",Article.FALSE,0,"https://www.transit.dot.gov/sites/fta.dot.gov/files/635847974891062780-425303270_news.jpg");
+//
+//
+//
+//
+//        databaseHelper.insertArticleIntoDatabase("https://www.transit.dot.gov/sites/fta.dot.gov/files/635847974891062780-425303270_news.jpg","World 1","World","Today","This is the body",
+//                "New York Times",Article.FALSE,1,"https://www.transit.dot.gov/sites/fta.dot.gov/files/635847974891062780-425303270_news.jpg");
+//
+//        databaseHelper.insertArticleIntoDatabase("https://www.transit.dot.gov/sites/fta.dot.gov/files/635847974891062780-425303270_news.jpg","World 2","World","Today","This is the body",
+//                "New York Times",Article.FALSE,1,"https://www.transit.dot.gov/sites/fta.dot.gov/files/635847974891062780-425303270_news.jpg");
+//        databaseHelper.insertArticleIntoDatabase("https://www.transit.dot.gov/sites/fta.dot.gov/files/635847974891062780-425303270_news.jpg","World 3","World","Today","This is the body",
+//                "New York Times",Article.FALSE,0,"https://www.transit.dot.gov/sites/fta.dot.gov/files/635847974891062780-425303270_news.jpg");
+//
+//        databaseHelper.insertArticleIntoDatabase("https://www.transit.dot.gov/sites/fta.dot.gov/files/635847974891062780-425303270_news.jpg","World 4","World","Today","This is the body",
+//                "New York Times",Article.FALSE,0,"https://www.transit.dot.gov/sites/fta.dot.gov/files/635847974891062780-425303270_news.jpg");
+//    }
+
     public void setTheme()
     {
         SharedPreferences sharedPreferences = getSharedPreferences("com.example.ivonneortega.the_news_project.Settings", Context.MODE_PRIVATE);
@@ -261,7 +301,7 @@ public class MainActivity extends AppCompatActivity
 
     }
 
-    //TODO DON'T DELETE THIS
+
 //    public void searchArticlesByTop(final String source) {
 //        RequestQueue queue = Volley.newRequestQueue(this);
 //        final DatabaseHelper db = DatabaseHelper.getInstance(this);
@@ -306,7 +346,7 @@ public class MainActivity extends AppCompatActivity
 //
 //        queue.add(jsonObjectRequest);
 //    }
-//     TODO DON'T DELETE THIS
+//
 //    public void searchArticlesByLatest(final String source) {
 //        RequestQueue queue = Volley.newRequestQueue(this);
 //        final DatabaseHelper db = DatabaseHelper.getInstance(this);
@@ -352,7 +392,6 @@ public class MainActivity extends AppCompatActivity
 //        queue.add(jsonObjectRequest);
 //    }
 
-    //TODO DON'T DELETE THIS
     public void setSources()
     {
         mSourcesByTop = new ArrayList<>();
