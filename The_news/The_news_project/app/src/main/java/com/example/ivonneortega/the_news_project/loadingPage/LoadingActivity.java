@@ -106,6 +106,9 @@ public class LoadingActivity extends AppCompatActivity {
                     startActivity(new Intent(LoadingActivity.this, MainActivity.class));
                 }
             }.execute();
+        } else {
+            Toast.makeText(this, "No connectivity", Toast.LENGTH_SHORT).show();
+            startActivity(new Intent(LoadingActivity.this, MainActivity.class));
         }
     }
 

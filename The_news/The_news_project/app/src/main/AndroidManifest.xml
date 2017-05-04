@@ -56,13 +56,17 @@
             android:label="@string/title_activity_settings"
             android:theme="@style/AppTheme">
         </activity>
-        <activity
-            android:name=".loadingPage.LoadingActivity">
+        <activity android:name=".loadingPage.LoadingActivity">
             <intent-filter>
                 <category android:name="android.intent.category.LAUNCHER"/>
 
                 <action android:name="android.intent.action.MAIN"/>
             </intent-filter>
+        </activity>
+        <activity
+            android:name=".webview.WebActivity"
+            android:label="@string/title_activity_web"
+            android:theme="@style/AppTheme">
         </activity>
     </application>
 
