@@ -64,6 +64,8 @@ import org.w3c.dom.Text;
 import java.util.ArrayList;
 import java.util.List;
 
+import static android.content.ContentValues.TAG;
+
 
 public class CollectionDemoActivity extends FragmentActivity
 implements NavigationView.OnNavigationItemSelectedListener, View.OnClickListener{
@@ -75,6 +77,7 @@ implements NavigationView.OnNavigationItemSelectedListener, View.OnClickListener
     public static final String URL = "url";
     public static final String TAG = "this";
     public static final String ID = "id";
+    public static final String TYPE_OF_INTENT = "type";
     Article article;
 
     List<String> list;
@@ -99,9 +102,18 @@ implements NavigationView.OnNavigationItemSelectedListener, View.OnClickListener
 
         Intent intent = getIntent();
         mId = intent.getLongExtra(DatabaseHelper.COL_ID,-1);
+        String type = intent.getStringExtra(TYPE_OF_INTENT);
+        Log.d(TAG, "clickOnProduct2: "+intent.getStringExtra(CollectionDemoActivity.TYPE_OF_INTENT));
+        Log.d(TAG, "clickOnProduct2: "+type);
 
         article = DatabaseHelper.getInstance(this).getArticlesById(mId);
-        articleList = DatabaseHelper.getInstance(this).getArticlesByCategory(article.getCategory());
+        if(type.equalsIgnoreCase("allStories"))
+            articleList = DatabaseHelper.getInstance(this).getArticlesByCategory(article.getCategory());
+        else if(type.equalsIgnoreCase("save"))
+            articleList = DatabaseHelper.getInstance(this).getSavedArticles();
+        else if(type.equalsIgnoreCase("top"))
+            articleList = DatabaseHelper.getInstance(this).getTopStoryArticles();
+
         mPosition = Article.getArticlePosition(mId,articleList);
         creatingViews();
 

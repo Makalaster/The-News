@@ -34,6 +34,7 @@ implements View.OnClickListener, SaveSwipeLeft{
     private int mPosition;
     Context mContext;
     View view;
+    boolean isTop;
 
 
     public ArticlesVerticalRecyclerAdapter(List<Article> list, boolean isSaveFragment) {
@@ -50,12 +51,15 @@ implements View.OnClickListener, SaveSwipeLeft{
     @Override
     public void onBindViewHolder(final ArticlesViewHolder holder, final int position) {
 
+        isTop = false;
         mPosition = position;
         view = holder.mRoot;
         mContext = holder.mCategory.getContext();
         holder.mTitle.setText(mList.get(position).getTitle());
         holder.mCategory.setText(mList.get(position).getCategory());
         holder.mDate.setText(mList.get(position).getDate());
+        if(mList.get(position).isTopStory())
+            isTop = true;
         Picasso.with(holder.mImage.getContext())
                 .load(mList.get(holder.getAdapterPosition()).getImage())
                 .fit()
@@ -157,6 +161,20 @@ implements View.OnClickListener, SaveSwipeLeft{
     {
         Intent intent = new Intent(v.getContext().getApplicationContext(), CollectionDemoActivity.class);
         intent.putExtra(DatabaseHelper.COL_ID,id);
+        if(mIsSaveFragment) {
+            intent.putExtra(CollectionDemoActivity.TYPE_OF_INTENT, "save");
+            Log.d(TAG, "clickOnProduct: "+intent.getStringExtra(CollectionDemoActivity.TYPE_OF_INTENT));
+        }
+        else if(isTop) {
+            intent.putExtra(CollectionDemoActivity.TYPE_OF_INTENT, "top");
+            Log.d(TAG, "clickOnProduct: "+intent.getStringExtra(CollectionDemoActivity.TYPE_OF_INTENT));
+
+        }
+        else {
+            intent.putExtra(CollectionDemoActivity.TYPE_OF_INTENT, "allStories");
+            Log.d(TAG, "clickOnProduct: "+intent.getStringExtra(CollectionDemoActivity.TYPE_OF_INTENT));
+
+        }
         v.getContext().startActivity(intent);
     }
 

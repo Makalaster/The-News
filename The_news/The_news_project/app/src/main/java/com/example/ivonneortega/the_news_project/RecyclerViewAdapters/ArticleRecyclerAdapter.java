@@ -11,6 +11,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.example.ivonneortega.the_news_project.DetailView.DetailViewActivity;
 import com.example.ivonneortega.the_news_project.data.Article;
 import com.example.ivonneortega.the_news_project.CategoryView.CategoryViewActivity;
 import com.example.ivonneortega.the_news_project.DatabaseHelper;
@@ -103,6 +104,7 @@ public class ArticleRecyclerAdapter extends RecyclerView.Adapter<ArticleRecycler
     {
         Intent intent = new Intent(v.getContext().getApplicationContext(), CollectionDemoActivity.class);
         intent.putExtra(DatabaseHelper.COL_ID,id);
+        intent.putExtra(CollectionDemoActivity.TYPE_OF_INTENT,"allStories");
         v.getContext().startActivity(intent);
     }
 
@@ -110,6 +112,7 @@ public class ArticleRecyclerAdapter extends RecyclerView.Adapter<ArticleRecycler
     {
         Intent intent = new Intent(v.getContext().getApplicationContext(), CategoryViewActivity.class);
         intent.putExtra(DatabaseHelper.COL_CATEGORY,category);
+
         v.getContext().startActivity(intent);
     }
 
