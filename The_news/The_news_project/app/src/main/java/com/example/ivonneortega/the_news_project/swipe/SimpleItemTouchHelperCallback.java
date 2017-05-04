@@ -29,7 +29,6 @@ public class SimpleItemTouchHelperCallback extends ItemTouchHelper.Callback {
         mAdapterArticles = adapter;
     }
 
-
     @Override
     public boolean isLongPressDragEnabled()
     {
@@ -47,9 +46,6 @@ public class SimpleItemTouchHelperCallback extends ItemTouchHelper.Callback {
 
     @Override
     public int getMovementFlags(RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder) {
-
-
-
         // Set movement flags based on the layout manager
 
         if (recyclerView.getLayoutManager() instanceof GridLayoutManager) {
@@ -65,22 +61,17 @@ public class SimpleItemTouchHelperCallback extends ItemTouchHelper.Callback {
 
     @Override
     public boolean onMove(RecyclerView recyclerView, RecyclerView.ViewHolder source, RecyclerView.ViewHolder target) {
-
         return false;
-
-
-
     }
 
     @Override
     public void onSwiped(RecyclerView.ViewHolder viewHolder, int i) {
-
+        //TODO clean up empty if statement
             if (i  == ItemTouchHelper.END){
                 //
             } else {
                 mAdapterArticles.onItemDismiss(viewHolder.getAdapterPosition());
             }
-
     }
 
     @Override
@@ -118,7 +109,6 @@ public class SimpleItemTouchHelperCallback extends ItemTouchHelper.Callback {
                 RectF icon_dest = new RectF((float) itemView.getRight() - 2*width ,(float) itemView.getTop() + width,(float) itemView.getRight() - width,(float)itemView.getBottom() - width);
                 c.drawBitmap(icon,null,icon_dest,p);     c.drawBitmap(icon,null,icon_dest,p);
             }
-
         }
         super.onChildDraw(c, recyclerView, viewHolder, dX, dY, actionState, isCurrentlyActive);
     }
