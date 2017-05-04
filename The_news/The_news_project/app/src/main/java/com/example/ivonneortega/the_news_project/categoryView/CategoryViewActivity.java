@@ -248,7 +248,7 @@ public class CategoryViewActivity extends AppCompatActivity
                 categories.add("u.s");
                 categories.add("Politics");
                 break;
-            case "Business":
+            case "Business Day":
                 categories.add("Business Day");
                 break;
             case "Technology":

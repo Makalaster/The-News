@@ -71,6 +71,7 @@ implements NavigationView.OnNavigationItemSelectedListener, View.OnClickListener
     public static final String URL = "url";
     public static final String TAG = "this";
     public static final String ID = "id";
+    public static final String TYPE_OF_INTENT = "type";
 
     Article mArticle;
     DemoCollectionPagerAdapter mDemoCollectionPagerAdapter;
@@ -99,7 +100,7 @@ implements NavigationView.OnNavigationItemSelectedListener, View.OnClickListener
         Log.d(TAG, "clickOnProduct2: "+type);
 
         mArticle = DatabaseHelper.getInstance(this).getArticlesById(mId);
-        articleList = DatabaseHelper.getInstance(this).getArticlesByCategory(mArticle.getCategory());
+        //articleList = DatabaseHelper.getInstance(this).getArticlesByCategory(mArticle.getCategory());
         mArticle = DatabaseHelper.getInstance(this).getArticlesById(mId);
         if(type.equalsIgnoreCase("allStories"))
             articleList = DatabaseHelper.getInstance(this).getArticlesByCategory(mArticle.getCategory());
