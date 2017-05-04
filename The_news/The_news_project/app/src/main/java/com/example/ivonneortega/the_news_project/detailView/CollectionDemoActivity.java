@@ -94,9 +94,20 @@ implements NavigationView.OnNavigationItemSelectedListener, View.OnClickListener
 
         Intent intent = getIntent();
         mId = intent.getLongExtra(DatabaseHelper.COL_ID,-1);
+        String type = intent.getStringExtra(TYPE_OF_INTENT);
+        Log.d(TAG, "clickOnProduct2: "+intent.getStringExtra(CollectionDemoActivity.TYPE_OF_INTENT));
+        Log.d(TAG, "clickOnProduct2: "+type);
 
         mArticle = DatabaseHelper.getInstance(this).getArticlesById(mId);
         articleList = DatabaseHelper.getInstance(this).getArticlesByCategory(mArticle.getCategory());
+        mArticle = DatabaseHelper.getInstance(this).getArticlesById(mId);
+        if(type.equalsIgnoreCase("allStories"))
+            articleList = DatabaseHelper.getInstance(this).getArticlesByCategory(mArticle.getCategory());
+        else if(type.equalsIgnoreCase("save"))
+            articleList = DatabaseHelper.getInstance(this).getSavedArticles();
+        else if(type.equalsIgnoreCase("top"))
+            articleList = DatabaseHelper.getInstance(this).getTopStoryArticles();
+
         mPosition = Article.getArticlePosition(mId,articleList);
         creatingViews();
     }
@@ -285,6 +296,9 @@ implements NavigationView.OnNavigationItemSelectedListener, View.OnClickListener
         else
             mHeart.setImageResource(R.mipmap.ic_favorite_border_black_24dp);
 
+        mHeart = (ImageButton) findViewById(R.id.heart_toolbar);
+        setHeartView();
+
         //Setting on click listeners
         findViewById(R.id.heart_toolbar).setOnClickListener(this);
         findViewById(R.id.share_toolbar).setOnClickListener(this);
@@ -294,12 +308,39 @@ implements NavigationView.OnNavigationItemSelectedListener, View.OnClickListener
         mViewPager = (ViewPager) findViewById(R.id.pager);
         mViewPager.setAdapter(mDemoCollectionPagerAdapter);
         mViewPager.setCurrentItem(mPosition);
+
+        mViewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+            @Override
+            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+
+            }
+
+            @Override
+            public void onPageSelected(int position) {
+                mPosition = position;
+                setHeartView();
+            }
+
+            @Override
+            public void onPageScrollStateChanged(int state) {
+
+            }
+        });
+
+
+
+
     }
 
-    /**
-     * A {@link FragmentStatePagerAdapter} that returns a fragment
-     * representing an object in the collection.
-     */
+    public void setHeartView()
+    {
+        if(articleList.get(mPosition).isSaved())
+            mHeart.setImageResource(R.mipmap.ic_favorite_black_24dp);
+        else
+            mHeart.setImageResource(R.mipmap.ic_favorite_border_black_24dp);
+    }
+
+
     public static class DemoCollectionPagerAdapter extends FragmentStatePagerAdapter {
         List<Article> mList;
 

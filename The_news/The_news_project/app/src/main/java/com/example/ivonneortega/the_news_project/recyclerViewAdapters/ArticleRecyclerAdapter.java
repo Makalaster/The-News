@@ -2,12 +2,20 @@ package com.example.ivonneortega.the_news_project.recyclerViewAdapters;
 
 import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
+import android.view.GestureDetector;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.example.ivonneortega.the_news_project.DetailView.DetailViewActivity;
+import com.example.ivonneortega.the_news_project.data.Article;
+import com.example.ivonneortega.the_news_project.CategoryView.CategoryViewActivity;
+import com.example.ivonneortega.the_news_project.DatabaseHelper;
+import com.example.ivonneortega.the_news_project.DetailView.CollectionDemoActivity;
 import com.example.ivonneortega.the_news_project.categoryView.CategoryViewActivity;
 import com.example.ivonneortega.the_news_project.detailView.CollectionDemoActivity;
 import com.example.ivonneortega.the_news_project.R;
@@ -70,7 +78,10 @@ public class ArticleRecyclerAdapter extends RecyclerView.Adapter<ArticleRecycler
                     .fit()
                     .centerCrop()
                     .into(holder.mArticleImage);
-
+            if(mList.get(holder.getAdapterPosition()).isSaved())
+                holder.mHeart.setVisibility(View.VISIBLE);
+            else
+                holder.mHeart.setVisibility(View.INVISIBLE);
 
             //This is the title of each article
             holder.mTitleOfArticle.setText(mList.get(position).getTitle());
@@ -87,6 +98,7 @@ public class ArticleRecyclerAdapter extends RecyclerView.Adapter<ArticleRecycler
     {
         Intent intent = new Intent(v.getContext().getApplicationContext(), CollectionDemoActivity.class);
         intent.putExtra(DatabaseHelper.COL_ID,id);
+        intent.putExtra(CollectionDemoActivity.TYPE_OF_INTENT,"allStories");
         v.getContext().startActivity(intent);
     }
 
@@ -94,6 +106,7 @@ public class ArticleRecyclerAdapter extends RecyclerView.Adapter<ArticleRecycler
     {
         Intent intent = new Intent(v.getContext().getApplicationContext(), CategoryViewActivity.class);
         intent.putExtra(DatabaseHelper.COL_CATEGORY,category);
+
         v.getContext().startActivity(intent);
     }
 
@@ -107,6 +120,7 @@ public class ArticleRecyclerAdapter extends RecyclerView.Adapter<ArticleRecycler
         ImageView mArticleImage;
         View mSeeMore;
         View mRoot;
+        ImageView mHeart;
 
         public CategoryIndividualItemViewHolder(View itemView) {
             super(itemView);
@@ -114,6 +128,9 @@ public class ArticleRecyclerAdapter extends RecyclerView.Adapter<ArticleRecycler
             mArticleImage = (ImageView) itemView.findViewById(R.id.all_stories_article_images);
             mSeeMore = itemView.findViewById(R.id.see_more_layout);
             mRoot = itemView.findViewById(R.id.root_category_individual_item);
+            mHeart = (ImageView) itemView.findViewById(R.id.horizontal_heart);
+
+
         }
     }
 

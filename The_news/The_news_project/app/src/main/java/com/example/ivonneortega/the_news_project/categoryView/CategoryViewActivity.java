@@ -169,6 +169,7 @@ public class CategoryViewActivity extends AppCompatActivity
         getSupportActionBar().setTitle(mCategory);
 
         getList(mCategory);
+        Log.d("TAG", "settingUpTheViews: "+mCategory);
 
         //NAVIGATION DRAWER SET UP
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -305,6 +306,7 @@ public class CategoryViewActivity extends AppCompatActivity
             articles = copyOneListIntoAnother(articles,aux);
         }
         mList = articles;
+        Log.d("TAG", "getListWithArticlesByCategory: mLIST 2:"+articles.size());
     }
 
     public List<Article> copyOneListIntoAnother(List<Article> list1, List<Article> list2)
