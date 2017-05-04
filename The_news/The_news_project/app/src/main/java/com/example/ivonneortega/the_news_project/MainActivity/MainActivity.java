@@ -47,7 +47,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener, View.OnClickListener{
+        implements NavigationView.OnNavigationItemSelectedListener, View.OnClickListener {
 
     FragmentAdapterMainActivity mAdapter;
     public static final String URL = "https://newsapi.org/v1/articles?source=";
