@@ -322,10 +322,7 @@ implements NavigationView.OnNavigationItemSelectedListener, View.OnClickListener
 
 
         mHeart = (ImageButton) findViewById(R.id.heart_toolbar);
-        if(articleList.get(mPosition).isSaved())
-            mHeart.setImageResource(R.mipmap.ic_favorite_black_24dp);
-        else
-            mHeart.setImageResource(R.mipmap.ic_favorite_border_black_24dp);
+        setHeartView();
 
 
         //Setting on click listeners
@@ -338,7 +335,35 @@ implements NavigationView.OnNavigationItemSelectedListener, View.OnClickListener
         mViewPager.setAdapter(mDemoCollectionPagerAdapter);
         mViewPager.setCurrentItem(mPosition);
 
+        mViewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+            @Override
+            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
 
+            }
+
+            @Override
+            public void onPageSelected(int position) {
+                mPosition = position;
+                setHeartView();
+            }
+
+            @Override
+            public void onPageScrollStateChanged(int state) {
+
+            }
+        });
+
+
+
+
+    }
+
+    public void setHeartView()
+    {
+        if(articleList.get(mPosition).isSaved())
+            mHeart.setImageResource(R.mipmap.ic_favorite_black_24dp);
+        else
+            mHeart.setImageResource(R.mipmap.ic_favorite_border_black_24dp);
     }
 
     public void settingUpViews()
@@ -349,10 +374,7 @@ implements NavigationView.OnNavigationItemSelectedListener, View.OnClickListener
     }
 
 
-    /**
-     * A {@link FragmentStatePagerAdapter} that returns a fragment
-     * representing an object in the collection.
-     */
+
     public static class DemoCollectionPagerAdapter extends FragmentStatePagerAdapter {
 
         List<Article> mList;
