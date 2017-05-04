@@ -35,7 +35,6 @@ implements View.OnClickListener, SaveSwipeLeft{
     Context mContext;
     View view;
 
-
     public ArticlesVerticalRecyclerAdapter(List<Article> list, boolean isSaveFragment) {
         mList = list;
         mIsSaveFragment = isSaveFragment;
@@ -48,9 +47,9 @@ implements View.OnClickListener, SaveSwipeLeft{
     }
 
     @Override
-    public void onBindViewHolder(final ArticlesViewHolder holder, final int position) {
-
-        mPosition = position;
+    public void onBindViewHolder(final ArticlesViewHolder holder, int position) {
+        //TODO ask why position was saved
+        //mPosition = position;
         view = holder.mRoot;
         mContext = holder.mCategory.getContext();
         holder.mTitle.setText(mList.get(position).getTitle());
@@ -62,14 +61,12 @@ implements View.OnClickListener, SaveSwipeLeft{
                 .centerCrop()
                 .into(holder.mImage);
 
-
         if(!mIsSaveFragment) {
             if (mList.get(position).isSaved())
                 holder.mHeart.setImageResource(R.mipmap.ic_favorite_black_24dp);
             else
             {
                 holder.mHeart.setImageResource(R.mipmap.ic_favorite_border_black_24dp);
-
             }
             holder.mHeart.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -125,9 +122,6 @@ implements View.OnClickListener, SaveSwipeLeft{
                 mList.get(holder.getAdapterPosition()).getUrl();
 
                 // Intent intent  = v.getContext().getPackageManager().getLaunchIntentForPackage(application);
-
-
-
                 Intent sendIntent = new Intent();
                 sendIntent.setAction(Intent.ACTION_SEND);
                 sendIntent.putExtra(Intent.EXTRA_TEXT, mList.get(holder.getAdapterPosition()).getUrl());
@@ -135,8 +129,6 @@ implements View.OnClickListener, SaveSwipeLeft{
                 sendIntent.setType("text/plain");
                 //startActivity(Intent.createChooser(sendIntent, getResources().getText(R.string.send_to)));
                 v.getContext().startActivity(Intent.createChooser(sendIntent, "Share this article using.."));
-
-
             }
         });
 
@@ -148,9 +140,6 @@ implements View.OnClickListener, SaveSwipeLeft{
             }
         });
         //holder.mShare.setOnClickListener(this);
-
-
-
     }
 
     private void clickOnProduct(View v, long id)
@@ -199,11 +188,11 @@ implements View.OnClickListener, SaveSwipeLeft{
                 .setActionTextColor(view.getResources().getColor(R.color.colorPrimaryDark))
                 .show();
     }
+
     public void swapData(List<Article> newList) {
         mList = newList;
         notifyDataSetChanged();
     }
-
 
     public class ArticlesViewHolder extends RecyclerView.ViewHolder {
 
@@ -222,11 +211,6 @@ implements View.OnClickListener, SaveSwipeLeft{
             mShare = (ImageView) itemView.findViewById(R.id.top_stories_share);
             mRoot = itemView.findViewById(R.id.top_stories_root);
             mImage = (ImageView) itemView.findViewById(R.id.top_stories_image);
-
-
         }
     }
-
-
-
 }

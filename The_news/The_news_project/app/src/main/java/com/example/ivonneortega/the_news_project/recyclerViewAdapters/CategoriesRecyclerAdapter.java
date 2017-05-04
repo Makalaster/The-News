@@ -18,12 +18,10 @@ import java.util.List;
 
 public class CategoriesRecyclerAdapter extends RecyclerView.Adapter<CategoriesRecyclerAdapter.CategoriesViewHolder>  {
 
-    List<Category> mList;
-
+    private List<Category> mList;
 
     public CategoriesRecyclerAdapter(List<Category> categoriesList) {
         mList = categoriesList;
-
     }
 
     @Override
@@ -46,7 +44,6 @@ public class CategoriesRecyclerAdapter extends RecyclerView.Adapter<CategoriesRe
 
         ArticleRecyclerAdapter adapter = new ArticleRecyclerAdapter(mList.get(position).getList());
         holder.mRecyclerView.setAdapter(adapter);
-
     }
 
     @Override

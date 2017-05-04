@@ -25,14 +25,11 @@ public class ArticleRecyclerAdapter extends RecyclerView.Adapter<ArticleRecycler
 
     private static final int VIEW_TYPE_MORE = 1 ;
     private static final int VIEW_TYPE_ARTICLE = 2 ;
-    List<Article> mList;
-
+    private List<Article> mList;
 
     public ArticleRecyclerAdapter(List<Article> individualItems) {
         mList = individualItems;
-
     }
-
 
     @Override
     public CategoryIndividualItemViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
@@ -49,7 +46,6 @@ public class ArticleRecyclerAdapter extends RecyclerView.Adapter<ArticleRecycler
             LayoutInflater inflater = LayoutInflater.from(parent.getContext());
             return new CategoryIndividualItemViewHolder(inflater.inflate(R.layout.see_more_custom,parent,false));
         }
-
     }
 
     @Override
@@ -84,8 +80,6 @@ public class ArticleRecyclerAdapter extends RecyclerView.Adapter<ArticleRecycler
                  clickOnProduct(v,mList.get(holder.getAdapterPosition()).getId());
                 }
             });
-
-
         }
     }
 
@@ -109,12 +103,10 @@ public class ArticleRecyclerAdapter extends RecyclerView.Adapter<ArticleRecycler
     }
 
     public class CategoryIndividualItemViewHolder extends RecyclerView.ViewHolder {
-
         TextView mTitleOfArticle;
         ImageView mArticleImage;
         View mSeeMore;
         View mRoot;
-
 
         public CategoryIndividualItemViewHolder(View itemView) {
             super(itemView);
@@ -122,8 +114,6 @@ public class ArticleRecyclerAdapter extends RecyclerView.Adapter<ArticleRecycler
             mArticleImage = (ImageView) itemView.findViewById(R.id.all_stories_article_images);
             mSeeMore = itemView.findViewById(R.id.see_more_layout);
             mRoot = itemView.findViewById(R.id.root_category_individual_item);
-
-
         }
     }
 
