@@ -25,7 +25,6 @@ public class SettingsActivity extends AppCompatActivity implements CompoundButto
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setTheme();
-//        setContentView(R.layout.activity_settings);
 
         mSwitch_theme = (Switch) findViewById(R.id.switch_theme);
         mSwitch_notification = (Switch) findViewById(R.id.switch_notification);
@@ -52,8 +51,6 @@ public class SettingsActivity extends AppCompatActivity implements CompoundButto
             mSwitch_notification.setChecked(true);
         else
             mSwitch_notification.setChecked(false);
-
-
     }
 
     public void setTheme()
@@ -69,7 +66,6 @@ public class SettingsActivity extends AppCompatActivity implements CompoundButto
         else
         {
             setContentView(R.layout.activity_settings);
-
         }
         mStartActivity=true;
 
@@ -85,14 +81,14 @@ public class SettingsActivity extends AppCompatActivity implements CompoundButto
                     SharedPreferences sharedPreferences = getSharedPreferences("com.example.ivonneortega.the_news_project.Settings", Context.MODE_PRIVATE);
                     SharedPreferences.Editor editor = sharedPreferences.edit();
                     editor.putString(THEME,"dark");
-                    editor.commit();
+                    editor.apply();
                 }
                 else
                 {
                     SharedPreferences sharedPreferences = getSharedPreferences("com.example.ivonneortega.the_news_project.Settings", Context.MODE_PRIVATE);
                     SharedPreferences.Editor editor = sharedPreferences.edit();
                     editor.putString(THEME,"light");
-                    editor.commit();
+                    editor.apply();
                 }
                 break;
 
@@ -102,14 +98,14 @@ public class SettingsActivity extends AppCompatActivity implements CompoundButto
                     SharedPreferences sharedPreferences = getSharedPreferences("com.example.ivonneortega.the_news_project.Settings", Context.MODE_PRIVATE);
                     SharedPreferences.Editor editor = sharedPreferences.edit();
                     editor.putInt(NOTIFICATION,TRUE);
-                    editor.commit();
+                    editor.apply();
                 }
                 else
                 {
                     SharedPreferences sharedPreferences = getSharedPreferences("com.example.ivonneortega.the_news_project.Settings", Context.MODE_PRIVATE);
                     SharedPreferences.Editor editor = sharedPreferences.edit();
                     editor.putInt(NOTIFICATION,FALSE);
-                    editor.commit();
+                    editor.apply();
                 }
         }
     }
