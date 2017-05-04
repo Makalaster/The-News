@@ -54,6 +54,7 @@ public class FragmentTopStories extends Fragment {
     private SwipeRefreshLayout mTopRefresh;
     private static final String TAG = "FragmentTopStories";
     private AsyncTask<String, Void, Boolean> mTask;
+    private DatabaseHelper db;
 
     private OnFragmentInteractionListener mListener;
 
@@ -95,11 +96,12 @@ public class FragmentTopStories extends Fragment {
         recyclerView.setLayoutManager(linearLayoutManager);
 
         //Creating a list to test recycler view
-        List<Article> categoryIndividualItems;
-        categoryIndividualItems = DatabaseHelper.getInstance(view.getContext()).getTopStoryArticles();
+        List<Article> categoryIndividualItems = new ArrayList<>();
+        db = DatabaseHelper.getInstance(view.getContext());//.getTopStoryArticles();
 
         mAdapter = new ArticlesVerticalRecyclerAdapter(categoryIndividualItems,false);
         recyclerView.setAdapter(mAdapter);
+        getTopStoriesArticles();
 
         mTopRefresh = (SwipeRefreshLayout) view.findViewById(R.id.top_swipe_refresh);
         mTopRefresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
@@ -108,6 +110,23 @@ public class FragmentTopStories extends Fragment {
                 refreshTopStories();
             }
         });
+    }
+
+    private void getTopStoriesArticles()
+    {
+        AsyncTask<Void,Void,List<Article>> asyncTask = new AsyncTask<Void, Void, List<Article>>() {
+            @Override
+            protected List<Article> doInBackground(Void... params) {
+                List<Article> list = db.getTopStoryArticles();
+                return list;
+            }
+
+            @Override
+            protected void onPostExecute(List<Article> list) {
+                super.onPostExecute(list);
+                mAdapter.swapData(list);
+            }
+        }.execute();
     }
 
     private void refreshTopStories() {

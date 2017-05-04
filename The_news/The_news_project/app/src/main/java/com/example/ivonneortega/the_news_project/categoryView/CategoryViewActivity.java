@@ -3,6 +3,7 @@ package com.example.ivonneortega.the_news_project.categoryView;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -17,6 +18,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 
 import com.example.ivonneortega.the_news_project.R;
 import com.example.ivonneortega.the_news_project.recyclerViewAdapters.ArticlesVerticalRecyclerAdapter;
@@ -38,6 +40,10 @@ public class CategoryViewActivity extends AppCompatActivity
     String mCategory;
     List<Article> mList;
     boolean mStartActivity;
+    View hView;
+    ImageView nav_user;
+    NavigationView navigationView;
+    ProgressBar mProgressBar;
 
 
     @Override
@@ -113,7 +119,7 @@ public class CategoryViewActivity extends AppCompatActivity
                 category = "Politics";
                 break;
             case R.id.nav_business:
-                category = "Business";
+                category = "Business Day";
                 break;
             case R.id.nav_technology:
                 category = "Technology";
@@ -168,8 +174,7 @@ public class CategoryViewActivity extends AppCompatActivity
         mCategory = intent.getStringExtra(DatabaseHelper.COL_CATEGORY);
         getSupportActionBar().setTitle(mCategory);
 
-        getList(mCategory);
-        Log.d("TAG", "settingUpTheViews: "+mCategory);
+
 
         //NAVIGATION DRAWER SET UP
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -178,20 +183,18 @@ public class CategoryViewActivity extends AppCompatActivity
         drawer.setDrawerListener(toggle);
         toggle.syncState();
 
-        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
+        navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
 
-        View hView =  navigationView.getHeaderView(0);
-        ImageView nav_user = (ImageView) hView.findViewById(R.id.navigation_image);
-        Picasso.with(this)
-                .load(mList.get(mList.size()/2).getImage())
-                .fit()
-                .into(nav_user);
+
+
+
 
         //Setting up views and click listener
         mSearch = (ImageButton) findViewById(R.id.search_toolbar);
         mOptions = (ImageButton) findViewById(R.id.options_toolbar);
+        mProgressBar = (ProgressBar) findViewById(R.id.category_progress);
         mSearch.setClickable(true);
         mOptions.setClickable(true);
         mSearch.setOnClickListener(this);
@@ -203,11 +206,13 @@ public class CategoryViewActivity extends AppCompatActivity
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this,LinearLayoutManager.VERTICAL,false);
         mRecyclerView.setLayoutManager(linearLayoutManager);
 
-//        List<Article> categoryIndividualItems = new ArrayList<>();
+        List<Article> categoryIndividualItems = new ArrayList<>();
 //        categoryIndividualItems = DatabaseHelper.getInstance(this).getArticlesByCategory(mCategory);
 
-        mAdapter = new ArticlesVerticalRecyclerAdapter(mList,false);
+        mAdapter = new ArticlesVerticalRecyclerAdapter(categoryIndividualItems,false);
         mRecyclerView.setAdapter(mAdapter);
+
+        getList(mCategory);
 
     }
 
@@ -294,19 +299,45 @@ public class CategoryViewActivity extends AppCompatActivity
 
 
 
-    public void getListWithArticlesByCategory(List<String> categories)
+    public void getListWithArticlesByCategory(final List<String> categories)
     {
-        //TODO MOVE THIS TO THREAD
-        DatabaseHelper db = DatabaseHelper.getInstance(this);
-        List<Article> articles = new ArrayList<>();
-        List<Article> aux;
-        for(int i=0;i<categories.size();i++)
-        {
-            aux = db.getArticlesByCategory(categories.get(i));
-            articles = copyOneListIntoAnother(articles,aux);
-        }
-        mList = articles;
-        Log.d("TAG", "getListWithArticlesByCategory: mLIST 2:"+articles.size());
+        final DatabaseHelper db = DatabaseHelper.getInstance(this);
+
+        AsyncTask<List<String>,Void,List<Article>> asyncTask = new AsyncTask<List<String>, Void, List<Article>>() {
+            @Override
+            protected List<Article> doInBackground(List<String>... params) {
+                List<Article> articles = new ArrayList<>();
+                List<Article> aux;
+                for(int i=0;i<categories.size();i++)
+                {
+                    aux = db.getArticlesByCategory(categories.get(i));
+                    articles = copyOneListIntoAnother(articles,aux);
+                }
+                return articles;
+            }
+
+            @Override
+            protected void onPreExecute() {
+                super.onPreExecute();
+                mProgressBar.setVisibility(View.VISIBLE);
+
+
+            }
+
+            @Override
+            protected void onPostExecute(List<Article> list) {
+                super.onPostExecute(list);
+                mProgressBar.setVisibility(View.GONE);
+                mAdapter.swapData(list);
+                hView =  navigationView.getHeaderView(0);
+                nav_user = (ImageView) hView.findViewById(R.id.navigation_image);
+                Picasso.with(hView.getContext())
+                        .load(list.get(list.size()/2).getImage())
+                        .fit()
+                        .into(nav_user);
+            }
+        }.execute(categories);
+
     }
 
     public List<Article> copyOneListIntoAnother(List<Article> list1, List<Article> list2)
