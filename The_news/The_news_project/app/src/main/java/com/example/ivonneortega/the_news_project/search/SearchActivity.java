@@ -31,9 +31,6 @@ public class SearchActivity extends AppCompatActivity implements View.OnClickLis
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setTheme();
-//        setContentView(R.layout.activity_search);
-//        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-//        setSupportActionBar(toolbar);
 
         settingUpTheViews();
 
@@ -57,7 +54,6 @@ public class SearchActivity extends AppCompatActivity implements View.OnClickLis
                 return true;
             }
         });
-
     }
 
     @Override
@@ -82,7 +78,7 @@ public class SearchActivity extends AppCompatActivity implements View.OnClickLis
     @Override
     protected void onResume() {
         super.onResume();
-        if(mStartActivity == true){
+        if(mStartActivity){
             mStartActivity = false;
 
         } else {
@@ -108,6 +104,5 @@ public class SearchActivity extends AppCompatActivity implements View.OnClickLis
             setContentView(R.layout.activity_search);
         }
         mStartActivity=true;
-
     }
 }
