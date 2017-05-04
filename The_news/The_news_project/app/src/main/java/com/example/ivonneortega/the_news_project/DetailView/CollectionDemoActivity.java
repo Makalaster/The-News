@@ -64,6 +64,8 @@ import org.w3c.dom.Text;
 import java.util.ArrayList;
 import java.util.List;
 
+import static android.content.ContentValues.TAG;
+
 
 public class CollectionDemoActivity extends FragmentActivity
 implements NavigationView.OnNavigationItemSelectedListener, View.OnClickListener{
@@ -75,6 +77,7 @@ implements NavigationView.OnNavigationItemSelectedListener, View.OnClickListener
     public static final String URL = "url";
     public static final String TAG = "this";
     public static final String ID = "id";
+    public static final String TYPE_OF_INTENT = "type";
     Article article;
 
     List<String> list;
@@ -99,9 +102,18 @@ implements NavigationView.OnNavigationItemSelectedListener, View.OnClickListener
 
         Intent intent = getIntent();
         mId = intent.getLongExtra(DatabaseHelper.COL_ID,-1);
+        String type = intent.getStringExtra(TYPE_OF_INTENT);
+        Log.d(TAG, "clickOnProduct2: "+intent.getStringExtra(CollectionDemoActivity.TYPE_OF_INTENT));
+        Log.d(TAG, "clickOnProduct2: "+type);
 
         article = DatabaseHelper.getInstance(this).getArticlesById(mId);
-        articleList = DatabaseHelper.getInstance(this).getArticlesByCategory(article.getCategory());
+        if(type.equalsIgnoreCase("allStories"))
+            articleList = DatabaseHelper.getInstance(this).getArticlesByCategory(article.getCategory());
+        else if(type.equalsIgnoreCase("save"))
+            articleList = DatabaseHelper.getInstance(this).getSavedArticles();
+        else if(type.equalsIgnoreCase("top"))
+            articleList = DatabaseHelper.getInstance(this).getTopStoryArticles();
+
         mPosition = Article.getArticlePosition(mId,articleList);
         creatingViews();
 
@@ -322,10 +334,7 @@ implements NavigationView.OnNavigationItemSelectedListener, View.OnClickListener
 
 
         mHeart = (ImageButton) findViewById(R.id.heart_toolbar);
-        if(articleList.get(mPosition).isSaved())
-            mHeart.setImageResource(R.mipmap.ic_favorite_black_24dp);
-        else
-            mHeart.setImageResource(R.mipmap.ic_favorite_border_black_24dp);
+        setHeartView();
 
 
         //Setting on click listeners
@@ -338,7 +347,35 @@ implements NavigationView.OnNavigationItemSelectedListener, View.OnClickListener
         mViewPager.setAdapter(mDemoCollectionPagerAdapter);
         mViewPager.setCurrentItem(mPosition);
 
+        mViewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+            @Override
+            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
 
+            }
+
+            @Override
+            public void onPageSelected(int position) {
+                mPosition = position;
+                setHeartView();
+            }
+
+            @Override
+            public void onPageScrollStateChanged(int state) {
+
+            }
+        });
+
+
+
+
+    }
+
+    public void setHeartView()
+    {
+        if(articleList.get(mPosition).isSaved())
+            mHeart.setImageResource(R.mipmap.ic_favorite_black_24dp);
+        else
+            mHeart.setImageResource(R.mipmap.ic_favorite_border_black_24dp);
     }
 
     public void settingUpViews()
@@ -349,10 +386,7 @@ implements NavigationView.OnNavigationItemSelectedListener, View.OnClickListener
     }
 
 
-    /**
-     * A {@link FragmentStatePagerAdapter} that returns a fragment
-     * representing an object in the collection.
-     */
+
     public static class DemoCollectionPagerAdapter extends FragmentStatePagerAdapter {
 
         List<Article> mList;

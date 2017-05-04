@@ -237,6 +237,7 @@ public class ArticleRefreshService extends JobService {
 
             Intent openArticleIntent = new Intent(this, CollectionDemoActivity.class);
             openArticleIntent.putExtra(DatabaseHelper.COL_ID, id);
+            openArticleIntent.putExtra(CollectionDemoActivity.TYPE_OF_INTENT,"allStories");
             PendingIntent openDetails = PendingIntent.getActivity(this, (int) System.currentTimeMillis(), openArticleIntent, 0);
 
             Intent saveArticleIntent = new Intent(this, SaveFromNotificationService.class);
