@@ -38,5 +38,10 @@ In the `OnCreate` method of the main activity, a background service is started t
 
 ---
 
-#### Screenshots
+#### Known bugs
 
+- Due to relatively low number of allotted Top Stories API calls, 1000 per day, the daily limit can be reached and result in errors.
+
+---
+
+#### Screenshots
