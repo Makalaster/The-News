@@ -27,7 +27,7 @@ import static android.content.ContentValues.TAG;
  */
 
 public class ArticlesVerticalRecyclerAdapter extends RecyclerView.Adapter<ArticlesVerticalRecyclerAdapter.ArticlesViewHolder>
-implements View.OnClickListener, SaveSwipeLeft{
+implements  SaveSwipeLeft{
 
     private List<Article> mList;
     private boolean mIsSaveFragment;
