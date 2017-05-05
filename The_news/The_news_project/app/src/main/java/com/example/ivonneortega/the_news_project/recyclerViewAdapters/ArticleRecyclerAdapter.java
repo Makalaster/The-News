@@ -26,6 +26,7 @@ public class ArticleRecyclerAdapter extends RecyclerView.Adapter<ArticleRecycler
     private static final int VIEW_TYPE_MORE = 1 ;
     private static final int VIEW_TYPE_ARTICLE = 2 ;
     private List<Article> mList;
+    private int lastposition;
 
     /**
      * Recycler view constructor
@@ -69,7 +70,7 @@ public class ArticleRecyclerAdapter extends RecyclerView.Adapter<ArticleRecycler
         //This is the recycler view that scrolls horizontally
 
         //If we are not at the last position
-        if(position == 5)
+        if(position == lastposition-1)
         {
             holder.mSeeMore.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -135,9 +136,16 @@ public class ArticleRecyclerAdapter extends RecyclerView.Adapter<ArticleRecycler
     @Override
     public int getItemCount() {
         //if the list is empty return 0
-        if(mList.size()<=0)
+        if(mList.size()<=0) {
+            lastposition = 0;
             return 0;
+        }
+        if(mList.size()<6) {
+            lastposition = mList.size();
+            return mList.size();
+        }
         //else return just 6 so we are always displaying just 6 articles
+        lastposition=6;
         return 6;
     }
     /**
@@ -148,7 +156,7 @@ public class ArticleRecyclerAdapter extends RecyclerView.Adapter<ArticleRecycler
      */
     @Override
     public int getItemViewType(int position) {
-        return (position == 5) ? VIEW_TYPE_MORE : VIEW_TYPE_ARTICLE;
+        return (position == lastposition-1) ? VIEW_TYPE_MORE : VIEW_TYPE_ARTICLE;
     }
 
     /**

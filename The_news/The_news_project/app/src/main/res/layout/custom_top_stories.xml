@@ -48,6 +48,7 @@
         android:layout_alignParentBottom="true"
         android:layout_marginBottom="8dp"
         android:layout_marginLeft="6dp"
+        android:textSize="10sp"
         android:layout_toRightOf="@id/clock"
         android:textColor="@color/textColor"
         android:title="8h ago"/>
