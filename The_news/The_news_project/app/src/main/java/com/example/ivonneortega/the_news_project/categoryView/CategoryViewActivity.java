@@ -57,7 +57,6 @@ public class CategoryViewActivity extends AppCompatActivity
     }
 
     /**
-     * onResume method
      * change the adapter everytime an item from the navigation drawer is clicked
      * if mStartActivity is true it means the activity just started
      * if mStartActivity is false it means the activity already started so it checks the theme from
@@ -89,7 +88,7 @@ public class CategoryViewActivity extends AppCompatActivity
     }
 
     /**
-     * Method that sets the theme, taking the extra from shared preferences and then setting the content views
+     * sets the theme, taking the extra from shared preferences and then setting the content views
      */
     public void setTheme()
     {
@@ -177,19 +176,26 @@ public class CategoryViewActivity extends AppCompatActivity
         return true;
     }
 
-    //TODO check if both finishes are correct
+    /**
+     * Launch Category Activity passing the category as an intent
+     * @param category
+     */
     public void moveToCategoryViewActivity(String category)
     {
-        //finish();
         Intent intent = new Intent(this, CategoryViewActivity.class);
         intent.putExtra(DatabaseHelper.COL_CATEGORY,category);
         startActivity(intent);
         finish();
     }
 
+    /**
+     * Setting up all the views
+     * including the navigation drawer, setting the toolbar title to reference the category
+     * and the recycler view adapter
+     */
     public void settingUpTheViews()
     {
-        //TODO SET TITLE FROM INTENT
+
         Toolbar toolbar = (Toolbar) findViewById(R.id.root_toolbar);
         setSupportActionBar(toolbar);
 
@@ -209,11 +215,6 @@ public class CategoryViewActivity extends AppCompatActivity
         navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
-
-
-
-
-
         //Setting up views and click listener
         mSearch = (ImageButton) findViewById(R.id.search_toolbar);
         mOptions = (ImageButton) findViewById(R.id.options_toolbar);
@@ -230,7 +231,6 @@ public class CategoryViewActivity extends AppCompatActivity
         mRecyclerView.setLayoutManager(linearLayoutManager);
 
         List<Article> categoryIndividualItems = new ArrayList<>();
-//        categoryIndividualItems = DatabaseHelper.getInstance(this).getArticlesByCategory(mCategory);
 
         mAdapter = new ArticlesVerticalRecyclerAdapter(categoryIndividualItems,false);
         mRecyclerView.setAdapter(mAdapter);
@@ -239,6 +239,10 @@ public class CategoryViewActivity extends AppCompatActivity
 
     }
 
+    /**
+     * Handle the click for both icons in the tool bar
+     * @param v
+     */
     @Override
     public void onClick(View v) {
         switch (v.getId())
@@ -253,18 +257,31 @@ public class CategoryViewActivity extends AppCompatActivity
 
     }
 
+
+    /**
+     * Launch Search Activity
+     */
     public void moveToSearchActivity()
     {
         Intent intent = new Intent(this, SearchActivity.class);
         startActivity(intent);
     }
 
+
+    /**
+     * Launch Settings Activity
+     */
     public void moveToSettingsActivity()
     {
         Intent intent = new Intent(this, SettingsActivity.class);
         startActivity(intent);
     }
 
+
+    /**
+     * Sets a list of all the sub categories within an specific category
+     * @param category is the category that's currently displaying
+     */
     public void getList(String category)
     {
         List<String> categories = new ArrayList<>();
@@ -326,7 +343,10 @@ public class CategoryViewActivity extends AppCompatActivity
     }
 
 
-
+    /**
+     * From a list of categories make a database call for each category and stores them in a list
+     * @param categories is the list of categories
+     */
     public void getListWithArticlesByCategory(final List<String> categories)
     {
         final DatabaseHelper db = DatabaseHelper.getInstance(this);
@@ -368,6 +388,13 @@ public class CategoryViewActivity extends AppCompatActivity
 
     }
 
+
+    /**
+     * Copy one list into another
+     * @param list1 is the result
+     * @param list2 is the list with are going to paste into list1
+     * @return
+     */
     public List<Article> copyOneListIntoAnother(List<Article> list1, List<Article> list2)
     {
         for(int i=0;i<list2.size();i++)
