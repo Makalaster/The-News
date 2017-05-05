@@ -160,7 +160,9 @@ public class FragmentTopStories extends Fragment {
             Response response = client.newCall(request).execute();
             String reply = response.body().string();
             JSONObject jsonReply = new JSONObject(reply);
-            articles = jsonReply.getJSONArray("results");
+            if (jsonReply.has("results")) {
+                articles = jsonReply.getJSONArray("results");
+            }
         } catch (IOException e) {
             e.printStackTrace();
         } catch (JSONException e) {
@@ -174,39 +176,41 @@ public class FragmentTopStories extends Fragment {
         DatabaseHelper db = DatabaseHelper.getInstance(getContext());
         long added = 0;
 
-        for (int i = 0; i < articles.length(); i++) {
-            String url;
-            String title;
-            String date;
-            String category;
-            String image = null;
-            boolean hasImage = false;
-            try {
-                JSONObject article = articles.getJSONObject(i);
-                url = article.getString("url");
-                title = article.getString("title");
-                date = article.getString("published_date");
-                category = article.getString("section");
-                if (!article.getString("multimedia").equals("")) {
-                    JSONArray multimedia = article.getJSONArray("multimedia");
-                    for (int j = 0; j < multimedia.length(); j++) {
-                        JSONObject pic = multimedia.getJSONObject(j);
-                        if (pic.getString("format").equals("Normal") && pic.getString("type").equals("image")) {
-                            image = pic.getString("url");
-                            hasImage = true;
+        if (articles != null) {
+            for (int i = 0; i < articles.length(); i++) {
+                String url;
+                String title;
+                String date;
+                String category;
+                String image = null;
+                boolean hasImage = false;
+                try {
+                    JSONObject article = articles.getJSONObject(i);
+                    url = article.getString("url");
+                    title = article.getString("title");
+                    date = article.getString("published_date");
+                    category = article.getString("section");
+                    if (!article.getString("multimedia").equals("")) {
+                        JSONArray multimedia = article.getJSONArray("multimedia");
+                        for (int j = 0; j < multimedia.length(); j++) {
+                            JSONObject pic = multimedia.getJSONObject(j);
+                            if (pic.getString("format").equals("Normal") && pic.getString("type").equals("image")) {
+                                image = pic.getString("url");
+                                hasImage = true;
+                            }
                         }
                     }
-                }
-                String source = "New York Times";
-                int isSaved = Article.FALSE;
+                    String source = "New York Times";
+                    int isSaved = Article.FALSE;
 
-                if (db.getArticleByUrl(url) == null && hasImage) {
-                    db.checkSizeAndRemoveOldest();
-                    //Log.d(TAG, "doInBackground: " + title);
-                    added += db.insertArticleIntoDatabase(image, title, category, date.substring(0, date.indexOf('T')), null, source, isSaved, Article.TRUE, url);
+                    if (db.getArticleByUrl(url) == null && hasImage) {
+                        db.checkSizeAndRemoveOldest();
+                        //Log.d(TAG, "doInBackground: " + title);
+                        added += db.insertArticleIntoDatabase(image, title, category, date.substring(0, date.indexOf('T')), null, source, isSaved, Article.TRUE, url);
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
                 }
-            } catch (JSONException e) {
-                e.printStackTrace();
             }
         }
 

@@ -106,6 +106,9 @@ public class LoadingActivity extends AppCompatActivity {
                     startActivity(new Intent(LoadingActivity.this, MainActivity.class));
                 }
             }.execute();
+        } else {
+            Toast.makeText(this, "No connectivity", Toast.LENGTH_SHORT).show();
+            startActivity(new Intent(LoadingActivity.this, MainActivity.class));
         }
     }
 
@@ -124,7 +127,9 @@ public class LoadingActivity extends AppCompatActivity {
             response = topClient.newCall(request).execute();
             String reply = response.body().string();
             JSONObject jsonReply = new JSONObject(reply);
-            articles = jsonReply.getJSONArray("results");
+            if (jsonReply.has("results")) {
+                articles = jsonReply.getJSONArray("results");
+            }
         } catch (IOException e) {
             e.printStackTrace();
         } catch (JSONException e) {

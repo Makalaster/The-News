@@ -51,6 +51,7 @@ import com.example.ivonneortega.the_news_project.data.Article;
 import com.example.ivonneortega.the_news_project.data.NYTApiData;
 import com.example.ivonneortega.the_news_project.database.DatabaseHelper;
 import com.example.ivonneortega.the_news_project.settings.SettingsActivity;
+import com.example.ivonneortega.the_news_project.webview.WebActivity;
 import com.squareup.picasso.Picasso;
 
 import org.json.JSONArray;
@@ -389,11 +390,19 @@ implements NavigationView.OnNavigationItemSelectedListener, View.OnClickListener
         public View onCreateView(LayoutInflater inflater, ViewGroup container,
                 Bundle savedInstanceState) {
             View rootView = inflater.inflate(R.layout.fragment_detail_view, container, false);
-            Bundle args = getArguments();
+            final Bundle args = getArguments();
             ((TextView) rootView.findViewById(R.id.detail_title)).setText((args.getString(TITLE)));
             //((TextView)rootView.findViewById(R.id.detail_content)).setText(args.getString(CONTENT));
             searchArticlesByTop(args.getString(URL),((TextView)rootView.findViewById(R.id.detail_content)),args.getLong(ID));
             ((TextView) rootView.findViewById(R.id.detail_date)).setText((args.getString(DATE)));
+            TextView urlText = (TextView) rootView.findViewById(R.id.detail_url);
+            urlText.setText(args.getString(URL));
+            urlText.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    goToWebView(args.getString(URL));
+                }
+            });
             ImageView image = (ImageView) rootView.findViewById(R.id.detail_image);
 
             Picasso.with(image.getContext())
@@ -442,6 +451,13 @@ implements NavigationView.OnNavigationItemSelectedListener, View.OnClickListener
 
                 queue.add(jsonObjectRequest);
             }
+        }
+
+        private void goToWebView(String url) {
+            Intent intent = new Intent(getContext(), WebActivity.class);
+            intent.putExtra(URL, url);
+
+            startActivity(intent);
         }
     }
 }
