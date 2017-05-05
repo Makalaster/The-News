@@ -158,6 +158,15 @@ public class FragmentAllStories extends Fragment {
                 categoryIndividualItems = db.getArticlesByCategory("food");
                 allStories.add(new Category("Food", categoryIndividualItems));
 
+                //Miscellaneous list
+                List<Article> aux = db.getArticlesByCategory("Climate");
+                categoryIndividualItems = aux;
+                aux = db.getArticlesByCategory("Real");
+                copyOneListIntoAnother(categoryIndividualItems,aux);
+                aux = db.getArticlesByCategory("Arts");
+                copyOneListIntoAnother(categoryIndividualItems,aux);
+                allStories.add(new Category("Miscellaneous", categoryIndividualItems));
+
                 return allStories;
             }
 
@@ -167,6 +176,15 @@ public class FragmentAllStories extends Fragment {
                 mAdapter.swapData(list);
             }
         }.execute();
+    }
+
+    public List<Article> copyOneListIntoAnother(List<Article> list1, List<Article> list2)
+    {
+        for(int i=0;i<list2.size();i++)
+        {
+            list1.add(list2.get(i));
+        }
+        return list1;
     }
 
     private void refreshAllStories() {

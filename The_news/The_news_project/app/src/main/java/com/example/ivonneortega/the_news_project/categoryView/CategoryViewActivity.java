@@ -306,6 +306,9 @@ public class CategoryViewActivity extends AppCompatActivity
                 categories.add("Well");
                 break;
             case "Miscellaneous":
+            case "Climate":
+            case "Real":
+            case "Arts":
                 categories.add("Climate");
                 categories.add("Real");
                 categories.add("Arts");
