@@ -34,6 +34,9 @@ import okhttp3.Response;
 
 import static com.example.ivonneortega.the_news_project.data.NYTApiData.JSON;
 
+/**
+ * Activity to load articles before the main activity is started.
+ */
 public class LoadingActivity extends AppCompatActivity {
     private static final String TAG = "LoadingActivity";
 
@@ -53,6 +56,9 @@ public class LoadingActivity extends AppCompatActivity {
         load();
     }
 
+    /**
+     * Populate the lists of topics
+     */
     private void setupTopicLists() {
         if (mNewsWireList.isEmpty()) {
             mNewsWireList.add("World");
@@ -81,6 +87,11 @@ public class LoadingActivity extends AppCompatActivity {
         }
     }
 
+    /**
+     * If there is no network connectivity and the database is empty, the app immediately quits.
+     * Otherwise, check the top stories and newswire API endpoints for new articles, add them to
+     * the database, then launch MainActivity.
+     */
     private void load() {
         ConnectivityManager connMgr = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo networkInfo = connMgr.getActiveNetworkInfo();
@@ -114,11 +125,13 @@ public class LoadingActivity extends AppCompatActivity {
             {
                 finish();
             }
-
-
         }
     }
 
+    /**
+     * Query the top stories API, then send the results to the addArticleToDatabase method.
+     * @param query The topic of articles to search for.
+     */
     private void queryTopStories(String query) {
         OkHttpClient topClient = new OkHttpClient();
 
@@ -154,6 +167,10 @@ public class LoadingActivity extends AppCompatActivity {
         }
     }
 
+    /**
+     * Query the newswire API, then send the results to the addArticleToDatabase method.
+     * @param query The topic of articles to search for.
+     */
     private void queryNewsWire(String query) {
         OkHttpClient wireClient = new OkHttpClient();
 
@@ -187,6 +204,12 @@ public class LoadingActivity extends AppCompatActivity {
         }
     }
 
+    /**
+     * Add an article to the database. Checks to make sure the article is not already in the DB,
+     * also makes sure the DB has not grown too large.
+     * @param object A raw JSON object to be parsed into an article.
+     * @param fromTopStories whether the article came from the Top Stories API endpoint.
+     */
     public void addArticleToDatabase(JSONObject object, final int fromTopStories) {
         String url = null;
         String title = null;

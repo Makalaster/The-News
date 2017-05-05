@@ -169,6 +169,10 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         db.delete(TABLE_ARTICLES, COL_ID+" = ?", new String[]{String.valueOf(id)});
     }
 
+    /**
+     * Method to return whether there is anything in the database.
+     * @return True if there are any items in the database. Otherwise false.
+     */
     public boolean isDatabaseEmpty()
     {
         SQLiteDatabase db = getWritableDatabase();
