@@ -118,8 +118,8 @@ implements NavigationView.OnNavigationItemSelectedListener, View.OnClickListener
         if(mStartActivity){
             mStartActivity = false;
         } else {
-            finish();
-            startActivity(getIntent());
+            //finish();
+            //startActivity(getIntent());
         }
     }
 

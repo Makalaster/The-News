@@ -2,26 +2,41 @@
 
 #### Overview
 
-During Project 3, ADI students will work in groups to design and build an application that meets a set of technical and design specifications. Each set of specifications has been provided by the Android team at a real company--the idea is for students to work as part of a team on a real-world challenge. Each group of students will be assigned a project from the following list of project briefs:  
+##### Team members - Will, Ivonne, Sam
+
+Our app for this project is a news reader based on the New York Times API per the following specifications:
 
 * [CNN](CNN)
-* [TouchLab](TouchLab)
-* [Yelp](Yelp)
 
-These projects have been designed to be fairly open-ended and will allow for a great deal of creativity with regard to design, implementation and interaction. Students will have approximately two and a half weeks to work on this project. Please see the individual project briefs for more information on project requirements.
+Users can view news as it comes out based on category, and they can view top news items in a continuous stream. Users can also share articles via social media. The app periodically checks for new articles, and the user can also manually check for updates.
 
 ---
 
-#### Code of Conduct
+#### Functionality
 
-As always, your app must adhere to General Assembly's [student code of conduct guidelines](https://ga-adi.gitbooks.io/adi-oreo/content/markdown/code-of-conduct.html).
+When the app first opens, it takes the user to a loading page, which checks the server for new articles, which will be available for reading once the check is complete. This check can take additional time based on how long it has been since the last load. Articles downloaded during this check are stored in a database for quick access. Part of the download process checks to see whether articles are already in the database, so as not to add duplicates.
 
-If you have questions about whether or not your work adheres to these guidelines, please speak with a member of your instructional team.
+Once the initial load has been completed the user is taken to the main activity, which has three primary tabs in a `ViewPager`: All stories, Top stories, and Save. All stories contains categorized horizontal scrolling `RecyclerView`s of news thumbnails, all nested within a standard vertical scrolling `RecyclerView`.
+
+The Top stories tab contains a single `RecyclerView` containing all of the collected top news items. Each item in this tab displays a thumbnail, the title, the date of publication, the category, and buttons for sharing and saving. Tapping the save button, shaped like a heart, adds the article to the saved articles list, while tapping the share button brings up a share using chooser.
+
+The Save tab contains a list of all items the user has saved. Tapping the share button brings up a share using chooser. Swiping left on an article in this view removes it from the saved list. Removing an article from the saved list brings up a `SnackBar` giving the user the option to undo this action.
+
+Detail view, web view
+
+Categories
+
+Navigation drawer
+
+Sharing
+
+Notification
+
+Search
+
+Settings
 
 ---
 
-#### Team & Project Assignments
+#### Screenshots
 
-- Will, Ivonne, Sam - [CNN](CNN)
-- Ryan, Adrienne, Galen, Tim - [Yelp](Yelp)
-- Dave, Justin, Omar  - [TouchLab](TouchLab)

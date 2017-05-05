@@ -146,8 +146,8 @@ public class MainActivity extends AppCompatActivity
             mStartActivity = false;
 
         } else {
-            finish();
-            startActivity(getIntent());
+            //finish();
+            //startActivity(getIntent());
         }
     }
 
@@ -157,7 +157,7 @@ public class MainActivity extends AppCompatActivity
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
         } else {
-            super.onBackPressed();
+            moveTaskToBack(true);
         }
     }
 

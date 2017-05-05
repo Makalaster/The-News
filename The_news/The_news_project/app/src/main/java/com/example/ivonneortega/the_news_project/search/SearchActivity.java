@@ -97,7 +97,7 @@ public class SearchActivity extends AppCompatActivity implements View.OnClickLis
             Log.d("sdsdfsdfsdfsdf", "setTheme: qweqwdqqwdqwdqwdwd");
             setTheme(R.style.DarkTheme);
             setContentView(R.layout.activity_search);
-            findViewById(R.id.root_toolbar).setBackgroundColor(getResources().getColor(R.color.colorPrimaryDarkTheme));
+            findViewById(R.id.root_toolbar).setBackgroundColor(getResources().ogetColor(R.color.colorPrimaryDarkTheme));
         }
         else
         {
