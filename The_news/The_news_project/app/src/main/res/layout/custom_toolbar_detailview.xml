@@ -17,13 +17,6 @@
             android:background="@color/colorPrimary"
             app:layout_collapseMode="pin"/>
 
-        <!--<ImageView-->
-        <!--android:id="@+id/menu_toolbar"-->
-        <!--android:layout_width="wrap_content"-->
-        <!--android:layout_height="wrap_content"-->
-        <!--android:layout_centerVertical="true"-->
-        <!--android:layout_marginLeft="16dp"-->
-        <!--android:src="@mipmap/ic_menu_white_24dp"/>-->
 
         <TextView
             android:id="@+id/title_toolbar"

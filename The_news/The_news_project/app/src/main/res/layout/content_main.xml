@@ -5,17 +5,11 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/background"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
     tools:context="com.example.ivonneortega.the_news_project.mainActivity.MainActivity"
-    tools:showIn="@layout/activity_main"
-    android:background="@color/background">
+    tools:showIn="@layout/activity_main">
 
-
-    <!--<LinearLayout-->
-        <!--android:layout_width="match_parent"-->
-        <!--android:layout_height="match_parent"-->
-        <!--android:orientation="vertical"-->
-        <!--android:id="@+id/fragment_container_main_activity"/>-->
     <android.support.v4.view.ViewPager
         android:id="@+id/viewpager"
         android:layout_width="match_parent"
