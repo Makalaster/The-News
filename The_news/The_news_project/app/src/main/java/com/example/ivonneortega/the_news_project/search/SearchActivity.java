@@ -26,6 +26,7 @@ public class SearchActivity extends AppCompatActivity implements View.OnClickLis
     ImageButton mBackButton;
     ArticlesVerticalRecyclerAdapter mAdapter;
     boolean mStartActivity;
+    private boolean theme_changed;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -78,10 +79,17 @@ public class SearchActivity extends AppCompatActivity implements View.OnClickLis
     @Override
     protected void onResume() {
         super.onResume();
+        SharedPreferences sharedPreferences = getSharedPreferences("com.example.ivonneortega.the_news_project.Settings", Context.MODE_PRIVATE);
+        theme_changed = sharedPreferences.getBoolean(SettingsActivity.THEME_HAS_CHANGED,false);
+
         if(mStartActivity){
             mStartActivity = false;
 
-        } else {
+        } else if (theme_changed){
+            SharedPreferences sharedPreferences1 = getSharedPreferences("com.example.ivonneortega.the_news_project.Settings", Context.MODE_PRIVATE);
+            SharedPreferences.Editor editor = sharedPreferences1.edit();
+            editor.putBoolean(SettingsActivity.THEME_HAS_CHANGED,false);
+            editor.apply();
             finish();
             startActivity(getIntent());
         }

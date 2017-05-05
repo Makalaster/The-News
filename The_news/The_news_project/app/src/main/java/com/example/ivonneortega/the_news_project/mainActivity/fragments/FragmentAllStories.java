@@ -53,6 +53,7 @@ public class FragmentAllStories extends Fragment {
     private static final String TAG = "FragmentAllStories";
     private CategoriesRecyclerAdapter mAdapter;
     private List<String> mSources;
+    private DatabaseHelper db;
 
     public FragmentAllStories() {
         // Required empty public constructor
@@ -109,31 +110,12 @@ public class FragmentAllStories extends Fragment {
         //Secondary Test
         List<Category> allStories = new ArrayList<>();
 
-        DatabaseHelper db = DatabaseHelper.getInstance(view.getContext());
-        categoryIndividualItems = db.getArticlesByCategory("Business");
-        allStories.add(new Category("Business",categoryIndividualItems));
-        categoryIndividualItems = db.getArticlesByCategory("Tech");
-        allStories.add(new Category("Tech",categoryIndividualItems));
-        categoryIndividualItems = db.getArticlesByCategory("World");
-        allStories.add(new Category("World",categoryIndividualItems));
-        categoryIndividualItems = db.getArticlesByCategory("Health");
-        allStories.add(new Category("Health", categoryIndividualItems));
-        categoryIndividualItems = db.getArticlesByCategory("u.s.");
-        allStories.add(new Category("National", categoryIndividualItems));
-        categoryIndividualItems = db.getArticlesByCategory("science");
-        allStories.add(new Category("Science", categoryIndividualItems));
-        categoryIndividualItems = db.getArticlesByCategory("sports");
-        allStories.add(new Category("Sports", categoryIndividualItems));
-        categoryIndividualItems = db.getArticlesByCategory("movies");
-        allStories.add(new Category("Movies", categoryIndividualItems));
-        categoryIndividualItems = db.getArticlesByCategory("fashion");
-        allStories.add(new Category("Fashion", categoryIndividualItems));
-        categoryIndividualItems = db.getArticlesByCategory("food");
-        allStories.add(new Category("Food", categoryIndividualItems));
 
+        db = DatabaseHelper.getInstance(view.getContext());
         //Setting Adapter With lists
         mAdapter = new CategoriesRecyclerAdapter(allStories);
         recyclerView.setAdapter(mAdapter);
+        getAllStoriesArticles();
 
         mAllRefresh = (SwipeRefreshLayout) view.findViewById(R.id.all_swipe_refresh);
         mAllRefresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
@@ -142,6 +124,49 @@ public class FragmentAllStories extends Fragment {
                 refreshAllStories();
             }
         });
+    }
+
+    private void getAllStoriesArticles()
+    {
+        AsyncTask<Void,Void,List<Category>> asyncTask = new AsyncTask<Void, Void, List<Category>>() {
+            @Override
+            protected List<Category> doInBackground(Void... params) {
+                //Creating a list to test recycler view
+                List<Article> categoryIndividualItems;
+
+                //Secondary Test
+                List<Category> allStories = new ArrayList<>();
+
+                categoryIndividualItems = db.getArticlesByCategory("Business");
+                allStories.add(new Category("Business",categoryIndividualItems));
+                categoryIndividualItems = db.getArticlesByCategory("Tech");
+                allStories.add(new Category("Tech",categoryIndividualItems));
+                categoryIndividualItems = db.getArticlesByCategory("World");
+                allStories.add(new Category("World",categoryIndividualItems));
+                categoryIndividualItems = db.getArticlesByCategory("Health");
+                allStories.add(new Category("Health", categoryIndividualItems));
+                categoryIndividualItems = db.getArticlesByCategory("u.s.");
+                allStories.add(new Category("National", categoryIndividualItems));
+                categoryIndividualItems = db.getArticlesByCategory("science");
+                allStories.add(new Category("Science", categoryIndividualItems));
+                categoryIndividualItems = db.getArticlesByCategory("sports");
+                allStories.add(new Category("Sports", categoryIndividualItems));
+                categoryIndividualItems = db.getArticlesByCategory("movies");
+                allStories.add(new Category("Movies", categoryIndividualItems));
+                categoryIndividualItems = db.getArticlesByCategory("fashion");
+                allStories.add(new Category("Fashion", categoryIndividualItems));
+                categoryIndividualItems = db.getArticlesByCategory("food");
+                allStories.add(new Category("Food", categoryIndividualItems));
+
+                return allStories;
+            }
+
+            @Override
+            protected void onPostExecute(List<Category> list) {
+                super.onPostExecute(list);
+                mAdapter.swapData(list);
+            }
+        }.execute();
     }
 
     private void refreshAllStories() {

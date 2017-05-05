@@ -3,6 +3,7 @@ package com.example.ivonneortega.the_news_project.categoryView;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -17,6 +18,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 
 import com.example.ivonneortega.the_news_project.R;
 import com.example.ivonneortega.the_news_project.recyclerViewAdapters.ArticlesVerticalRecyclerAdapter;
@@ -38,6 +40,11 @@ public class CategoryViewActivity extends AppCompatActivity
     String mCategory;
     List<Article> mList;
     boolean mStartActivity;
+    View hView;
+    ImageView nav_user;
+    NavigationView navigationView;
+    ProgressBar mProgressBar;
+    private boolean theme_changed;
 
 
     @Override
@@ -49,6 +56,13 @@ public class CategoryViewActivity extends AppCompatActivity
         mList = new ArrayList<>();
     }
 
+    /**
+     * onResume method
+     * change the adapter everytime an item from the navigation drawer is clicked
+     * if mStartActivity is true it means the activity just started
+     * if mStartActivity is false it means the activity already started so it checks the theme from
+     * shared preferences to see if the theme has changed, if the theme changed then the activity needs to be relaunched
+     */
     @Override
     protected void onResume() {
         super.onResume();
@@ -58,15 +72,25 @@ public class CategoryViewActivity extends AppCompatActivity
             mAdapter.notifyDataSetChanged();
         }
 
+        SharedPreferences sharedPreferences = getSharedPreferences("com.example.ivonneortega.the_news_project.Settings", Context.MODE_PRIVATE);
+        theme_changed = sharedPreferences.getBoolean(SettingsActivity.THEME_HAS_CHANGED,false);
+
         if(mStartActivity){
             mStartActivity = false;
 
-        } else {
+        } else if (theme_changed){
+            SharedPreferences sharedPreferences1 = getSharedPreferences("com.example.ivonneortega.the_news_project.Settings", Context.MODE_PRIVATE);
+            SharedPreferences.Editor editor = sharedPreferences1.edit();
+            editor.putBoolean(SettingsActivity.THEME_HAS_CHANGED,false);
+            editor.apply();
             finish();
             startActivity(getIntent());
         }
     }
 
+    /**
+     * Method that sets the theme, taking the extra from shared preferences and then setting the content views
+     */
     public void setTheme()
     {
         SharedPreferences sharedPreferences = getSharedPreferences("com.example.ivonneortega.the_news_project.Settings", Context.MODE_PRIVATE);
@@ -85,7 +109,9 @@ public class CategoryViewActivity extends AppCompatActivity
         mStartActivity=true;
     }
 
-    //NAVIGATION DRAWER METHOD
+    /**
+     * On Back Pressed method from navigation drawer
+     */
     @Override
     public void onBackPressed() {
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -96,8 +122,11 @@ public class CategoryViewActivity extends AppCompatActivity
         }
     }
 
-    //NAVIGATION DRAWER METHOD
-    //HANDLES THE CLICKS INSIDE THE DRAWER
+    /**
+     * Navigation Drawer
+     * @param item
+     * @return
+     */
     @SuppressWarnings("StatementWithEmptyBody")
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
@@ -113,7 +142,7 @@ public class CategoryViewActivity extends AppCompatActivity
                 category = "Politics";
                 break;
             case R.id.nav_business:
-                category = "Business";
+                category = "Business Day";
                 break;
             case R.id.nav_technology:
                 category = "Technology";
@@ -168,8 +197,7 @@ public class CategoryViewActivity extends AppCompatActivity
         mCategory = intent.getStringExtra(DatabaseHelper.COL_CATEGORY);
         getSupportActionBar().setTitle(mCategory);
 
-        getList(mCategory);
-        Log.d("TAG", "settingUpTheViews: "+mCategory);
+
 
         //NAVIGATION DRAWER SET UP
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -178,20 +206,18 @@ public class CategoryViewActivity extends AppCompatActivity
         drawer.setDrawerListener(toggle);
         toggle.syncState();
 
-        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
+        navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
 
-        View hView =  navigationView.getHeaderView(0);
-        ImageView nav_user = (ImageView) hView.findViewById(R.id.navigation_image);
-        Picasso.with(this)
-                .load(mList.get(mList.size()/2).getImage())
-                .fit()
-                .into(nav_user);
+
+
+
 
         //Setting up views and click listener
         mSearch = (ImageButton) findViewById(R.id.search_toolbar);
         mOptions = (ImageButton) findViewById(R.id.options_toolbar);
+        mProgressBar = (ProgressBar) findViewById(R.id.category_progress);
         mSearch.setClickable(true);
         mOptions.setClickable(true);
         mSearch.setOnClickListener(this);
@@ -203,11 +229,13 @@ public class CategoryViewActivity extends AppCompatActivity
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this,LinearLayoutManager.VERTICAL,false);
         mRecyclerView.setLayoutManager(linearLayoutManager);
 
-//        List<Article> categoryIndividualItems = new ArrayList<>();
+        List<Article> categoryIndividualItems = new ArrayList<>();
 //        categoryIndividualItems = DatabaseHelper.getInstance(this).getArticlesByCategory(mCategory);
 
-        mAdapter = new ArticlesVerticalRecyclerAdapter(mList,false);
+        mAdapter = new ArticlesVerticalRecyclerAdapter(categoryIndividualItems,false);
         mRecyclerView.setAdapter(mAdapter);
+
+        getList(mCategory);
 
     }
 
@@ -245,6 +273,7 @@ public class CategoryViewActivity extends AppCompatActivity
                 categories.add("World");
                 break;
             case "Politics":
+            case "U.S.":
                 categories.add("u.s");
                 categories.add("Politics");
                 break;
@@ -265,6 +294,7 @@ public class CategoryViewActivity extends AppCompatActivity
                 categories.add("Teather");
                 break;
             case "Fashion":
+            case "Fashion & Style":
                 categories.add("Fashion");
                 categories.add("Style");
                 break;
@@ -294,19 +324,45 @@ public class CategoryViewActivity extends AppCompatActivity
 
 
 
-    public void getListWithArticlesByCategory(List<String> categories)
+    public void getListWithArticlesByCategory(final List<String> categories)
     {
-        //TODO MOVE THIS TO THREAD
-        DatabaseHelper db = DatabaseHelper.getInstance(this);
-        List<Article> articles = new ArrayList<>();
-        List<Article> aux;
-        for(int i=0;i<categories.size();i++)
-        {
-            aux = db.getArticlesByCategory(categories.get(i));
-            articles = copyOneListIntoAnother(articles,aux);
-        }
-        mList = articles;
-        Log.d("TAG", "getListWithArticlesByCategory: mLIST 2:"+articles.size());
+        final DatabaseHelper db = DatabaseHelper.getInstance(this);
+
+        AsyncTask<List<String>,Void,List<Article>> asyncTask = new AsyncTask<List<String>, Void, List<Article>>() {
+            @Override
+            protected List<Article> doInBackground(List<String>... params) {
+                List<Article> articles = new ArrayList<>();
+                List<Article> aux;
+                for(int i=0;i<categories.size();i++)
+                {
+                    aux = db.getArticlesByCategory(categories.get(i));
+                    articles = copyOneListIntoAnother(articles,aux);
+                }
+                return articles;
+            }
+
+            @Override
+            protected void onPreExecute() {
+                super.onPreExecute();
+                mProgressBar.setVisibility(View.VISIBLE);
+
+
+            }
+
+            @Override
+            protected void onPostExecute(List<Article> list) {
+                super.onPostExecute(list);
+                mProgressBar.setVisibility(View.GONE);
+                mAdapter.swapData(list);
+                hView =  navigationView.getHeaderView(0);
+                nav_user = (ImageView) hView.findViewById(R.id.navigation_image);
+                Picasso.with(hView.getContext())
+                        .load(list.get(list.size()/2).getImage())
+                        .fit()
+                        .into(nav_user);
+            }
+        }.execute(categories);
+
     }
 
     public List<Article> copyOneListIntoAnother(List<Article> list1, List<Article> list2)

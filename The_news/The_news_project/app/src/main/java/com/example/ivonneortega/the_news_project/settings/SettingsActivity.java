@@ -1,20 +1,28 @@
 package com.example.ivonneortega.the_news_project.settings;
 
+import android.app.AlarmManager;
+import android.app.PendingIntent;
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
 import android.widget.CompoundButton;
 import android.widget.ImageView;
 import android.widget.Switch;
 
 import com.example.ivonneortega.the_news_project.R;
+import com.example.ivonneortega.the_news_project.mainActivity.MainActivity;
 
 public class SettingsActivity extends AppCompatActivity implements CompoundButton.OnCheckedChangeListener {
+    private static final String TAG = "Settings Activity" ;
     private Switch mSwitch_theme, mSwitch_notification;
 
     public static final String THEME = "theme";
+    public static final String THEME_HAS_CHANGED = "theme_changed";
     public static final String NOTIFICATION = "notification";
     public static final int TRUE = 0;
     public static final int FALSE = 1;
@@ -76,37 +84,34 @@ public class SettingsActivity extends AppCompatActivity implements CompoundButto
         switch (buttonView.getId())
         {
             case R.id.switch_theme:
+                SharedPreferences sharedPreferences = getSharedPreferences("com.example.ivonneortega.the_news_project.Settings", Context.MODE_PRIVATE);
+                SharedPreferences.Editor editor = sharedPreferences.edit();
                 if(isChecked)
                 {
-                    SharedPreferences sharedPreferences = getSharedPreferences("com.example.ivonneortega.the_news_project.Settings", Context.MODE_PRIVATE);
-                    SharedPreferences.Editor editor = sharedPreferences.edit();
                     editor.putString(THEME,"dark");
-                    editor.apply();
                 }
                 else
                 {
-                    SharedPreferences sharedPreferences = getSharedPreferences("com.example.ivonneortega.the_news_project.Settings", Context.MODE_PRIVATE);
-                    SharedPreferences.Editor editor = sharedPreferences.edit();
                     editor.putString(THEME,"light");
-                    editor.apply();
                 }
+                editor.putBoolean(THEME_HAS_CHANGED,true);
+                editor.apply();
                 break;
 
             case R.id.switch_notification:
+                SharedPreferences sharedPreferences1 = getSharedPreferences("com.example.ivonneortega.the_news_project.Settings", Context.MODE_PRIVATE);
+                SharedPreferences.Editor editor1 = sharedPreferences1.edit();
                 if(isChecked)
                 {
-                    SharedPreferences sharedPreferences = getSharedPreferences("com.example.ivonneortega.the_news_project.Settings", Context.MODE_PRIVATE);
-                    SharedPreferences.Editor editor = sharedPreferences.edit();
-                    editor.putInt(NOTIFICATION,TRUE);
-                    editor.apply();
+                    editor1.putInt(NOTIFICATION,TRUE);
+                    editor1.apply();
                 }
                 else
                 {
-                    SharedPreferences sharedPreferences = getSharedPreferences("com.example.ivonneortega.the_news_project.Settings", Context.MODE_PRIVATE);
-                    SharedPreferences.Editor editor = sharedPreferences.edit();
-                    editor.putInt(NOTIFICATION,FALSE);
-                    editor.apply();
+                    editor1.putInt(NOTIFICATION,FALSE);
+                    editor1.apply();
                 }
+                break;
         }
     }
 }
