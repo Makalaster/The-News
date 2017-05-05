@@ -56,6 +56,13 @@ public class CategoryViewActivity extends AppCompatActivity
         mList = new ArrayList<>();
     }
 
+    /**
+     * onResume method
+     * change the adapter everytime an item from the navigation drawer is clicked
+     * if mStartActivity is true it means the activity just started
+     * if mStartActivity is false it means the activity already started so it checks the theme from
+     * shared preferences to see if the theme has changed, if the theme changed then the activity needs to be relaunched
+     */
     @Override
     protected void onResume() {
         super.onResume();
@@ -81,6 +88,9 @@ public class CategoryViewActivity extends AppCompatActivity
         }
     }
 
+    /**
+     * Method that sets the theme, taking the extra from shared preferences and then setting the content views
+     */
     public void setTheme()
     {
         SharedPreferences sharedPreferences = getSharedPreferences("com.example.ivonneortega.the_news_project.Settings", Context.MODE_PRIVATE);
@@ -99,7 +109,9 @@ public class CategoryViewActivity extends AppCompatActivity
         mStartActivity=true;
     }
 
-    //NAVIGATION DRAWER METHOD
+    /**
+     * On Back Pressed method from navigation drawer
+     */
     @Override
     public void onBackPressed() {
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -110,8 +122,11 @@ public class CategoryViewActivity extends AppCompatActivity
         }
     }
 
-    //NAVIGATION DRAWER METHOD
-    //HANDLES THE CLICKS INSIDE THE DRAWER
+    /**
+     * Navigation Drawer
+     * @param item
+     * @return
+     */
     @SuppressWarnings("StatementWithEmptyBody")
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
