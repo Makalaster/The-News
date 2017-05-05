@@ -135,7 +135,7 @@ public class FragmentSave extends Fragment {
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(view.getContext(),LinearLayoutManager.VERTICAL,false);
         mRecyclerView.setLayoutManager(linearLayoutManager);
     }
-    
+
 
     public interface OnFragmentInteractionListener {
         void onFragmentInteraction(Uri uri);

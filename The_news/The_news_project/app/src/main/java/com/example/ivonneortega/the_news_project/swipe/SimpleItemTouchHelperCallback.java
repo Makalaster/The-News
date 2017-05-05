@@ -18,7 +18,9 @@ import android.view.View;
 import com.example.ivonneortega.the_news_project.R;
 import com.example.ivonneortega.the_news_project.recyclerViewAdapters.ArticlesVerticalRecyclerAdapter;
 
-
+/**
+ * Helper call to handle swiping in a recycler view adapter
+ */
 public class SimpleItemTouchHelperCallback extends ItemTouchHelper.Callback {
 
     public static final float ALPHA_FULL = 1.0f;

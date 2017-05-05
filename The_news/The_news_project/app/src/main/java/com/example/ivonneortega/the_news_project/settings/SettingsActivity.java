@@ -17,6 +17,10 @@ import android.widget.Switch;
 import com.example.ivonneortega.the_news_project.R;
 import com.example.ivonneortega.the_news_project.mainActivity.MainActivity;
 
+
+/**
+ * Settings activity where user can set the theme and notifications settings
+ */
 public class SettingsActivity extends AppCompatActivity implements CompoundButton.OnCheckedChangeListener {
     private static final String TAG = "Settings Activity" ;
     private Switch mSwitch_theme, mSwitch_notification;

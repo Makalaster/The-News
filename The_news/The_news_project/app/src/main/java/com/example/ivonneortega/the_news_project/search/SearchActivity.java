@@ -20,6 +20,9 @@ import com.example.ivonneortega.the_news_project.database.DatabaseHelper;
 
 import java.util.List;
 
+/**
+ * Search Activity
+ */
 public class SearchActivity extends AppCompatActivity implements View.OnClickListener {
 
     SearchView mSearchView;
