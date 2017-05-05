@@ -45,7 +45,6 @@ import static com.example.ivonneortega.the_news_project.data.NYTApiData.JSON;
  * create an instance of this fragment.
  */
 public class FragmentAllStories extends Fragment {
-    // TODO: Rename parameter arguments, choose names that match
 
     private OnFragmentInteractionListener mListener;
     private SwipeRefreshLayout mAllRefresh;
@@ -55,19 +54,27 @@ public class FragmentAllStories extends Fragment {
     private List<String> mSources;
     private DatabaseHelper db;
 
+    /**
+     * Fragment constructor
+     */
     public FragmentAllStories() {
         // Required empty public constructor
     }
 
+    /**
+     * Instanciate the fragment
+     * @return the fragment
+     */
     public static FragmentAllStories newInstance() {
         FragmentAllStories fragment = new FragmentAllStories();
         Bundle args = new Bundle();
-//        args.putString(ARG_PARAM1, param1);
-//        args.putString(ARG_PARAM2, param2);
         fragment.setArguments(args);
         return fragment;
     }
 
+    /**
+     * @param savedInstanceState
+     */
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -76,6 +83,13 @@ public class FragmentAllStories extends Fragment {
         }
     }
 
+    /**
+     * Inflating the fragment with the view
+     * @param inflater
+     * @param container
+     * @param savedInstanceState
+     * @return the view we are inflating
+     */
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -84,6 +98,9 @@ public class FragmentAllStories extends Fragment {
         return inflater.inflate(R.layout.fragment_fragment_all_stories,container,false);
     }
 
+    /**
+     * Sources of the second API call
+     */
     public void setSources()
     {
         mSources = new ArrayList<>();
@@ -95,6 +112,11 @@ public class FragmentAllStories extends Fragment {
         mSources.add("espn");
     }
 
+    /**
+     * Setting the recycler view
+     * @param view
+     * @param savedInstanceState
+     */
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
@@ -126,6 +148,9 @@ public class FragmentAllStories extends Fragment {
         });
     }
 
+    /**
+     * Database call that gets all the articles for each category
+     */
     private void getAllStoriesArticles()
     {
         AsyncTask<Void,Void,List<Category>> asyncTask = new AsyncTask<Void, Void, List<Category>>() {
@@ -178,6 +203,12 @@ public class FragmentAllStories extends Fragment {
         }.execute();
     }
 
+    /**
+     * Copying one list into another
+     * @param list1 is the returning list
+     * @param list2 is the list we are copying into list1
+     * @return the final list
+     */
     public List<Article> copyOneListIntoAnother(List<Article> list1, List<Article> list2)
     {
         for(int i=0;i<list2.size();i++)
@@ -187,6 +218,9 @@ public class FragmentAllStories extends Fragment {
         return list1;
     }
 
+    /**
+     * Refresh the stories when user scrolls down
+     */
     private void refreshAllStories() {
         mTask = new AsyncTask<String, Void, Boolean>() {
             @Override
@@ -218,6 +252,11 @@ public class FragmentAllStories extends Fragment {
         mTask.execute("World", "u.s.", "Business Day", "technology", "science", "Sports", "Movies", "fashion+&+style", "Food", "Health");
     }
 
+    /**
+     * Method that gets the articles for the API call
+     * @param topic
+     * @return
+     */
     private JSONArray getArticles(String topic) {
         OkHttpClient client = new OkHttpClient();
 
@@ -240,6 +279,11 @@ public class FragmentAllStories extends Fragment {
         return articles;
     }
 
+    /**
+     * Adds the article to the database
+     * @param articles is the article we are adding to the Database
+     * @return the id of the new article in the database
+     */
     private long addArticlesToDatabase(JSONArray articles) {
         DatabaseHelper db = DatabaseHelper.getInstance(getContext());
         long added = 0;
@@ -307,16 +351,6 @@ public class FragmentAllStories extends Fragment {
         mListener = null;
     }
 
-    /**
-     * This interface must be implemented by activities that contain this
-     * fragment to allow an interaction in this fragment to be communicated
-     * to the activity and potentially other fragments contained in that
-     * activity.
-     * <p>
-     * See the Android Training lesson <a href=
-     * "http://developer.android.com/training/basics/fragments/communicating.html"
-     * >Communicating with Other Fragments</a> for more information.
-     */
     public interface OnFragmentInteractionListener {
         // TODO: Update argument type and name
         void onFragmentInteraction(Uri uri);
