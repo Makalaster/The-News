@@ -36,11 +36,16 @@ import static com.example.ivonneortega.the_news_project.data.NYTApiData.JSON;
 
 public class ArticleRefreshService extends JobService {
     private static final int NOTIFICATION_ID = 1;
+    private static final String TAG = "ArticleRefreshService";
+
     private List<String> mNewsWireList = new ArrayList<>();
     private List<String> mTopStoriesList = new ArrayList<>();
-    private static final String TAG = "ArticleRefreshService";
     private DatabaseHelper mDb;
 
+    /**
+     * Set up lists of topics in onCreate so the lists can be used throughout the service.
+     * Also make sure the database instance is set up here.
+     */
     @Override
     public void onCreate() {
         super.onCreate();
@@ -73,6 +78,16 @@ public class ArticleRefreshService extends JobService {
         }
     }
 
+    /**
+     * Method to handle what happens when the job starts. First the connectivity state is checked.
+     * If there is no network connectivity, nothing happens. Otherwise, two loops are run. One loop
+     * runs a series of AsyncTasks to query the top stories api and the other queries the newswire API
+     * in order. The top stories tasks are run in the background because they need to be delayed a
+     * small amount to prevent too many API calls per second, but not pause the main thread of the
+     * application.
+     * @param params
+     * @return
+     */
     @Override
     public boolean onStartJob(JobParameters params) {
         Log.d(TAG, "onStartJob: REFRESH JOB STARTED");
@@ -106,7 +121,12 @@ public class ArticleRefreshService extends JobService {
         return true;
     }
 
-    private void queryTopStories(String query) {
+    /**
+     * Method to query the top stories API endpoint. Each retrieved article is sent to
+     * the addArticleToDatabase method to be added to the local database.
+     * @param query The topic for which to find articles.
+     */
+    private void queryTopStories(final String query) {
         RequestQueue queue = Volley.newRequestQueue(this);
 
         JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.GET,
@@ -131,7 +151,7 @@ public class ArticleRefreshService extends JobService {
                 }, new com.android.volley.Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                Toast.makeText(getApplicationContext(), "Error", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getApplicationContext(), "Error retrieving top stories for " + query, Toast.LENGTH_SHORT).show();
                 Log.d(TAG, "onErrorResponse: " + error);
             }
         });
@@ -139,6 +159,11 @@ public class ArticleRefreshService extends JobService {
         queue.add(jsonObjectRequest);
     }
 
+    /**
+     * Method to query the newswire API endpoint. Each retrieved article is sent to the
+     * addArticleToDatabase method to be added to the local database.
+     * @param query the topic for which to find articles.
+     */
     private void queryNewsWire(String query) {
         RequestQueue queue = Volley.newRequestQueue(this);
 
@@ -172,6 +197,14 @@ public class ArticleRefreshService extends JobService {
         queue.add(jsonObjectRequest);
     }
 
+    /**
+     * Method to add an article to the database. Creates an article from a JSONObject, then checks to
+     * make sure the article is not already present in the database before adding. Also makes sure the
+     * database has not grown too large. If so, old items are removed before adding new ones.
+     * Generates a notification for the user if the article is a top story.
+     * @param object The raw JSON data of the article to be added.
+     * @param fromTopStories An int that tells the database whether the article is a top story
+     */
     public void addArticleToDatabase(JSONObject object, final int fromTopStories) {
         AsyncTask<JSONObject, Void, Void> dbTask = new AsyncTask<JSONObject, Void, Void>() {
             @Override
@@ -206,12 +239,15 @@ public class ArticleRefreshService extends JobService {
                 String source = "New York Times";
                 int isSaved = Article.FALSE;
 
+                //Only add the article to the database if it has an image
                 if (mDb.getArticleByUrl(url) == null && hasImage) {
                     mDb.checkSizeAndRemoveOldest();
                     Log.d(TAG, "doInBackground: " + title);
                     long id = mDb.insertArticleIntoDatabase(image, title, category, date.substring(0, date.indexOf('T')), null, source, isSaved, fromTopStories, url);
 
-                    generateNotification(title, id);
+                    if (fromTopStories == Article.TRUE) {
+                        generateNotification(title, id);
+                    }
                 }
 
                 return null;
@@ -220,6 +256,13 @@ public class ArticleRefreshService extends JobService {
         dbTask.execute(object);
     }
 
+    /**
+     * A notification that is shown when a new top story is added to the database in the background.
+     * Tapping the notification opens the detail view of the article. The notification also includes
+     * a button that can be used to add the article to the read later list.
+     * @param title The title of the article, to be displayed in the notification.
+     * @param id The ID of the article, so it can be retrieved and displayed in the app.
+     */
     private void generateNotification(String title, long id) {
         SharedPreferences sharedPreferences = getSharedPreferences("com.example.ivonneortega.the_news_project.Settings", Context.MODE_PRIVATE);
         int notification = sharedPreferences.getInt(SettingsActivity.NOTIFICATION,SettingsActivity.TRUE);

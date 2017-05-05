@@ -36,6 +36,7 @@ import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -472,8 +473,7 @@ implements NavigationView.OnNavigationItemSelectedListener, View.OnClickListener
             //((TextView)rootView.findViewById(R.id.detail_content)).setText(args.getString(CONTENT));
             searchArticlesByTop(args.getString(URL),((TextView)rootView.findViewById(R.id.detail_content)),args.getLong(ID));
             ((TextView) rootView.findViewById(R.id.detail_date)).setText((args.getString(DATE)));
-            TextView urlText = (TextView) rootView.findViewById(R.id.detail_url);
-            urlText.setText(args.getString(URL));
+            Button urlText = (Button) rootView.findViewById(R.id.detail_url);
             urlText.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
