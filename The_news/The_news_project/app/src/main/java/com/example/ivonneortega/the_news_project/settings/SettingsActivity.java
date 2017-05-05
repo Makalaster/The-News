@@ -82,7 +82,7 @@ public class SettingsActivity extends AppCompatActivity implements CompoundButto
         }
         else
         {
-            //if the theme is not dark just setContentView 
+            //if the theme is not dark just setContentView
             setContentView(R.layout.activity_settings);
         }
         mStartActivity=true;
