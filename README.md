@@ -47,14 +47,16 @@ In the `OnCreate` method of the main activity, a background service is started t
 #### Screenshots
 
 <p align="center">
-	<img src="screenshots/loading_page.jpg" width ="250"/>
-	<img src="screenshots/all_stories.jpg" width ="250"/>
-	<img src="screenshots/top_stories.jpg" width ="250"/>
-	<img src="screenshots/saved_items.jpg" width ="250"/>
-	<img src="screenshots/navigation_drawer.jpg" width ="250"/>
-	<img src="screenshots/share_using.jpg" width ="250"/>
-	<img src="screenshots/settings_page.jpg" width ="250"/>
-	<img src="screenshots/dark_theme.jpg" width ="250"/>
-	<img src="screenshots/category_view.jpg" width ="250"/>
-	<img src="screenshots/search.jpg" width ="250"/>
+	<img src="screenshots/loading_page.jpg" width="250"/>
+	<img src="screenshots/all_stories.jpg" width="250"/>
+	<img src="screenshots/top_stories.jpg" width="250"/>
+	<img src="screenshots/saved_items.jpg" width="250"/>
+	<img src="screenshots/detail_view.jpg" width="250"/>
+	<img src="screenshots/web_view.jpg" width="250"/>
+	<img src="screenshots/navigation_drawer.jpg" width="250"/>
+	<img src="screenshots/share_using.jpg" width="250"/>
+	<img src="screenshots/settings_page.jpg" width="250"/>
+	<img src="screenshots/dark_theme.jpg" width="250"/>
+	<img src="screenshots/category_view.jpg" width="250"/>
+	<img src="screenshots/search.jpg" width="250"/>
 </p>
