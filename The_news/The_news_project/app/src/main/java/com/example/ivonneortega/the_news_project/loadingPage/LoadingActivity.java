@@ -127,7 +127,9 @@ public class LoadingActivity extends AppCompatActivity {
             response = topClient.newCall(request).execute();
             String reply = response.body().string();
             JSONObject jsonReply = new JSONObject(reply);
-            articles = jsonReply.getJSONArray("results");
+            if (jsonReply.has("results")) {
+                articles = jsonReply.getJSONArray("results");
+            }
         } catch (IOException e) {
             e.printStackTrace();
         } catch (JSONException e) {
