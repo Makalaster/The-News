@@ -1,7 +1,7 @@
 <resources>
-    <string name="app_name">CNN</string>
+    <string name="app_name">The News</string>
     <string name="action_settings">Settings</string>
-    <string name="app_title">CNN</string>
+    <string name="app_title">The News</string>
 
     <!-- TODO: Remove or change this placeholder title -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
