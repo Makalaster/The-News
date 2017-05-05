@@ -5,15 +5,24 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 
 /**
- * Created by ivonneortega on 4/29/17.
+ * Fragment Adapter to manage the swiping between taps in Main Activity
  */
-
 public class FragmentAdapterMainActivity extends FragmentPagerAdapter {
 
+
+    /**
+     * FragmentAdapter constructor
+     * @param fm
+     */
     public FragmentAdapterMainActivity(FragmentManager fm) {
         super(fm);
     }
 
+    /**
+     * Gets the current item
+     * @param position is the position we are in right now
+     * @return the fragment we are going to display for that position
+     */
     @Override
     public Fragment getItem(int position) {
         switch (position)
@@ -29,11 +38,18 @@ public class FragmentAdapterMainActivity extends FragmentPagerAdapter {
         }
     }
 
+    /**
+     * @return the number of fragments
+     */
     @Override
     public int getCount() {
         return 3;
     }
 
+    /**
+     * @param position is the position of the current fragment
+     * @return the title for that fragment
+     */
     @Override
     public CharSequence getPageTitle(int position) {
         switch (position)

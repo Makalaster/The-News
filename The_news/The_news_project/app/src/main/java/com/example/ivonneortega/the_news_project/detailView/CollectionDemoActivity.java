@@ -36,6 +36,7 @@ import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -60,7 +61,11 @@ import org.json.JSONObject;
 
 import java.util.List;
 
-
+/**
+ * Detail view
+ * Shows the detail view of a particular article
+ * Can swipe left and right to read other articles
+ */
 public class CollectionDemoActivity extends FragmentActivity
 implements NavigationView.OnNavigationItemSelectedListener, View.OnClickListener{
     //Constants
@@ -86,7 +91,6 @@ implements NavigationView.OnNavigationItemSelectedListener, View.OnClickListener
     private boolean mStartActivity;
     private DrawerLayout drawer;
 
-    //TODO check on unused member variables
     private ActionBarDrawerToggle mDrawerToggle;
     private ImageView mImage;
     private TextView mTitle, mDate, mContent;
@@ -98,11 +102,7 @@ implements NavigationView.OnNavigationItemSelectedListener, View.OnClickListener
         Intent intent = getIntent();
         mId = intent.getLongExtra(DatabaseHelper.COL_ID,-1);
         String type = intent.getStringExtra(TYPE_OF_INTENT);
-        Log.d(TAG, "clickOnProduct2: "+intent.getStringExtra(CollectionDemoActivity.TYPE_OF_INTENT));
-        Log.d(TAG, "clickOnProduct2: "+type);
-
         mArticle = DatabaseHelper.getInstance(this).getArticlesById(mId);
-        //articleList = DatabaseHelper.getInstance(this).getArticlesByCategory(mArticle.getCategory());
         mArticle = DatabaseHelper.getInstance(this).getArticlesById(mId);
         if(type.equalsIgnoreCase("allStories"))
             articleList = DatabaseHelper.getInstance(this).getArticlesByCategory(mArticle.getCategory());
@@ -342,10 +342,7 @@ implements NavigationView.OnNavigationItemSelectedListener, View.OnClickListener
         mDate = (TextView) findViewById(R.id.detail_date);
         mContent = (TextView) findViewById(R.id.detail_content);
 
-        if(articleList.get(mPosition).isSaved())
-            mHeart.setImageResource(R.mipmap.ic_favorite_black_24dp);
-        else
-            mHeart.setImageResource(R.mipmap.ic_favorite_border_black_24dp);
+        setHeartView();
 
         mHeart = (ImageButton) findViewById(R.id.heart_toolbar);
         setHeartView();
@@ -360,6 +357,7 @@ implements NavigationView.OnNavigationItemSelectedListener, View.OnClickListener
         mViewPager.setAdapter(mDemoCollectionPagerAdapter);
         mViewPager.setCurrentItem(mPosition);
 
+        //View pager change page listener
         mViewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
             public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
@@ -368,7 +366,9 @@ implements NavigationView.OnNavigationItemSelectedListener, View.OnClickListener
 
             @Override
             public void onPageSelected(int position) {
+                //Changing the current position in the list
                 mPosition = position;
+                //setting the heart view
                 setHeartView();
             }
 
@@ -473,8 +473,7 @@ implements NavigationView.OnNavigationItemSelectedListener, View.OnClickListener
             //((TextView)rootView.findViewById(R.id.detail_content)).setText(args.getString(CONTENT));
             searchArticlesByTop(args.getString(URL),((TextView)rootView.findViewById(R.id.detail_content)),args.getLong(ID));
             ((TextView) rootView.findViewById(R.id.detail_date)).setText((args.getString(DATE)));
-            TextView urlText = (TextView) rootView.findViewById(R.id.detail_url);
-            urlText.setText(args.getString(URL));
+            Button urlText = (Button) rootView.findViewById(R.id.detail_url);
             urlText.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {

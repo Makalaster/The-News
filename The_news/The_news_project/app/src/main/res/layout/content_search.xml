@@ -10,8 +10,8 @@
     tools:showIn="@layout/activity_search">
 
     <android.support.v7.widget.RecyclerView
+        android:id="@+id/search_recycler_view"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/search_recycler_view"/>
+        android:layout_height="wrap_content"/>
 
 </android.support.constraint.ConstraintLayout>

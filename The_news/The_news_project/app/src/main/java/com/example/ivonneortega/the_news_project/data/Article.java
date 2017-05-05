@@ -34,7 +34,6 @@ public class Article {
     }
 
     private boolean mIsTopStory;
-    //private boolean mIsTopStory;
 
     public String getBody() {
         return mBody;

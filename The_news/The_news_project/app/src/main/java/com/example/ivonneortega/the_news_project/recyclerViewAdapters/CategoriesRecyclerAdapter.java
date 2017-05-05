@@ -21,16 +21,31 @@ public class CategoriesRecyclerAdapter extends RecyclerView.Adapter<CategoriesRe
 
     private List<Category> mList;
 
+    /**
+     * Recycler view constructor
+     * @param categoriesList
+     */
     public CategoriesRecyclerAdapter(List<Category> categoriesList) {
         mList = categoriesList;
     }
 
+    /**
+     * Inflating the recycler view adapter with the XML file
+     * @param parent
+     * @param viewType
+     * @return
+     */
     @Override
     public CategoriesViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         LayoutInflater inflater = LayoutInflater.from(parent.getContext());
         return new CategoriesViewHolder(inflater.inflate(R.layout.custom_recyclerview_all_stories,parent,false));
     }
 
+    /**
+     * Setting each view
+     * @param holder
+     * @param position
+     */
     @Override
     public void onBindViewHolder(CategoriesViewHolder holder, int position) {
 
@@ -47,17 +62,36 @@ public class CategoriesRecyclerAdapter extends RecyclerView.Adapter<CategoriesRe
         holder.mRecyclerView.setAdapter(adapter);
     }
 
+    /**
+     * @return the list size
+     */
     @Override
     public int getItemCount() {
         return mList.size();
     }
 
+    /**
+     * Swiping the current list with a new list
+     * @param newList is going to be the new list for the recycler view adapter
+     */
+    public void swapData(List<Category> newList) {
+        mList = newList;
+        notifyDataSetChanged();
+    }
+
+    /**
+     * Custom view holder
+     */
     public class CategoriesViewHolder extends RecyclerView.ViewHolder {
 
         //Setting Views including Recycler View
         TextView mTitleOfCategory;
         RecyclerView mRecyclerView;
 
+        /**
+         * Custom view holder constructor
+         * @param itemView
+         */
         public CategoriesViewHolder(View itemView) {
             super(itemView);
             mTitleOfCategory = (TextView) itemView.findViewById(R.id.title_category_main_activity);
@@ -65,8 +99,5 @@ public class CategoriesRecyclerAdapter extends RecyclerView.Adapter<CategoriesRe
         }
     }
 
-    public void swapData(List<Category> newList) {
-        mList = newList;
-        notifyDataSetChanged();
-    }
+
 }

@@ -27,7 +27,7 @@ import static android.content.ContentValues.TAG;
  */
 
 public class ArticlesVerticalRecyclerAdapter extends RecyclerView.Adapter<ArticlesVerticalRecyclerAdapter.ArticlesViewHolder>
-implements View.OnClickListener, SaveSwipeLeft{
+implements  SaveSwipeLeft{
 
     private List<Article> mList;
     private boolean mIsSaveFragment;
@@ -36,17 +36,33 @@ implements View.OnClickListener, SaveSwipeLeft{
     View view;
     boolean isTop;
 
+    /**
+     * Recycler view consturctor
+     * @param list is the list that is going to be displayed by the recycler view
+     * @param isSaveFragment is a boolean to determine if the recycler view is going to be display in the saved fragment or not
+     */
     public ArticlesVerticalRecyclerAdapter(List<Article> list, boolean isSaveFragment) {
         mList = list;
         mIsSaveFragment = isSaveFragment;
     }
 
+    /**
+     * Inflating the view by the XML file
+     * @param parent
+     * @param viewType
+     * @return
+     */
     @Override
     public ArticlesViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         LayoutInflater inflater = LayoutInflater.from(parent.getContext());
         return new ArticlesViewHolder(inflater.inflate(R.layout.custom_top_stories,parent,false));
     }
 
+    /**
+     * Setting each view content
+     * @param holder
+     * @param position
+     */
     @Override
     public void onBindViewHolder(final ArticlesViewHolder holder, final int position) {
 
@@ -65,13 +81,16 @@ implements View.OnClickListener, SaveSwipeLeft{
                 .centerCrop()
                 .into(holder.mImage);
 
+        //if this is not going to be shown in the save fragment
         if(!mIsSaveFragment) {
+            //Depending on if the article is saved or not show a different heart icon
             if (mList.get(position).isSaved())
                 holder.mHeart.setImageResource(R.mipmap.ic_favorite_black_24dp);
             else
             {
                 holder.mHeart.setImageResource(R.mipmap.ic_favorite_border_black_24dp);
             }
+            //Handling the heart click
             holder.mHeart.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -80,6 +99,7 @@ implements View.OnClickListener, SaveSwipeLeft{
                         holder.mHeart.setImageResource(R.mipmap.ic_favorite_border_black_24dp);
                         DatabaseHelper.getInstance(v.getContext()).unSaveArticle(mList.get(holder.getAdapterPosition()).getId());
                         mList.get(holder.getAdapterPosition()).setSaved(false);
+                        //Showing a Snackbar
                         Snackbar.make(holder.mRoot, "Article unsaved", Snackbar.LENGTH_LONG)
                                 .setAction("UNDO", new View.OnClickListener() {
                                     @Override
@@ -97,7 +117,7 @@ implements View.OnClickListener, SaveSwipeLeft{
                         holder.mHeart.setImageResource(R.mipmap.ic_favorite_black_24dp);
                         mList.get(holder.getAdapterPosition()).setSaved(true);
                         DatabaseHelper.getInstance(v.getContext()).saveArticle(mList.get(holder.getAdapterPosition()).getId());
-
+                        //Showing a snackbar
                         Snackbar.make(holder.mRoot, "Article saved", Snackbar.LENGTH_LONG)
                                 .setAction("UNDO", new View.OnClickListener() {
                                     @Override
@@ -116,22 +136,19 @@ implements View.OnClickListener, SaveSwipeLeft{
         }
         else
         {
+            //if it a save fragment the heart is not going to be shown
             holder.mHeart.setVisibility(View.GONE);
         }
-
+        //Share icon click
         holder.mShare.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
                 mList.get(holder.getAdapterPosition()).getUrl();
-
-                // Intent intent  = v.getContext().getPackageManager().getLaunchIntentForPackage(application);
                 Intent sendIntent = new Intent();
                 sendIntent.setAction(Intent.ACTION_SEND);
                 sendIntent.putExtra(Intent.EXTRA_TEXT, mList.get(holder.getAdapterPosition()).getUrl());
-
                 sendIntent.setType("text/plain");
-                //startActivity(Intent.createChooser(sendIntent, getResources().getText(R.string.send_to)));
                 v.getContext().startActivity(Intent.createChooser(sendIntent, "Share this article using.."));
             }
         });
@@ -143,13 +160,19 @@ implements View.OnClickListener, SaveSwipeLeft{
                 clickOnProduct(v,mList.get(holder.getAdapterPosition()).getId());
             }
         });
-        //holder.mShare.setOnClickListener(this);
     }
 
+    /**
+     * Launch Detail View activity when clicking on an article
+     * @param v
+     * @param id
+     */
     private void clickOnProduct(View v, long id)
     {
         Intent intent = new Intent(v.getContext().getApplicationContext(), CollectionDemoActivity.class);
         intent.putExtra(DatabaseHelper.COL_ID,id);
+        //depending on the fragment that is launching detail view, the intent TYPE_OF_INTENT is going to be
+        // different representing which list is going to be shown in detail view when scrolling left and right
         if(mIsSaveFragment) {
             intent.putExtra(CollectionDemoActivity.TYPE_OF_INTENT, "save");
             Log.d(TAG, "clickOnProduct: "+intent.getStringExtra(CollectionDemoActivity.TYPE_OF_INTENT));
@@ -167,27 +190,19 @@ implements View.OnClickListener, SaveSwipeLeft{
         v.getContext().startActivity(intent);
     }
 
+    /**
+     * @return the list size
+     */
     @Override
     public int getItemCount() {
         return mList.size();
     }
 
-    //TODO SAM YOU CAN DELETE THIS
-    //TODO IS NOT BEING USED
-    @Override
-    public void onClick(View v) {
-        switch (v.getId())
-        {
-            case R.id.top_stories_heart:
 
-                break;
-            case R.id.top_stories_share:
-                //TODO DO SOMETHING WHEN USER CLICKS ON SHARE
-                Log.d(TAG, "onClick: Clicked on share");
-                break;
-        }
-    }
-
+    /**
+     * Handling when an icon is being swipe left to remove from the recycler view
+     * @param position
+     */
     @Override
     public void onItemDismiss(final int position) {
         DatabaseHelper.getInstance(mContext).unSaveArticle(mList.get(position).getId());
@@ -207,11 +222,18 @@ implements View.OnClickListener, SaveSwipeLeft{
                 .show();
     }
 
+    /**
+     * Swap the list for a new one
+     * @param newList is going to be the new list
+     */
     public void swapData(List<Article> newList) {
         mList = newList;
         notifyDataSetChanged();
     }
 
+    /**
+     * Custom View Holder
+     */
     public class ArticlesViewHolder extends RecyclerView.ViewHolder {
 
         //Setting Views including Recycler View
@@ -220,6 +242,10 @@ implements View.OnClickListener, SaveSwipeLeft{
         ImageView mHeart, mShare;
         View mRoot;
 
+        /**
+         * Custom view holder constructor
+         * @param itemView
+         */
         public ArticlesViewHolder(View itemView) {
             super(itemView);
             mTitle = (TextView) itemView.findViewById(R.id.top_stories_title);

@@ -17,6 +17,10 @@ import android.widget.Switch;
 import com.example.ivonneortega.the_news_project.R;
 import com.example.ivonneortega.the_news_project.mainActivity.MainActivity;
 
+
+/**
+ * Settings activity where user can set the theme and notifications settings
+ */
 public class SettingsActivity extends AppCompatActivity implements CompoundButton.OnCheckedChangeListener {
     private static final String TAG = "Settings Activity" ;
     private Switch mSwitch_theme, mSwitch_notification;
@@ -29,6 +33,10 @@ public class SettingsActivity extends AppCompatActivity implements CompoundButto
     public ImageView mBack;
     private boolean mStartActivity;
 
+    /**
+     * Creating the activity
+     * @param savedInstanceState
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -49,6 +57,7 @@ public class SettingsActivity extends AppCompatActivity implements CompoundButto
 
         SharedPreferences sharedPreferences = getSharedPreferences("com.example.ivonneortega.the_news_project.Settings", Context.MODE_PRIVATE);
         String str = sharedPreferences.getString(SettingsActivity.THEME,"DEFAULT");
+        //Setting the view depending on the theme
         if(str.equals("dark"))
         {
             mSwitch_theme.setChecked(true);
@@ -61,28 +70,39 @@ public class SettingsActivity extends AppCompatActivity implements CompoundButto
             mSwitch_notification.setChecked(false);
     }
 
+    /**
+     * Setting the theme when the activity launches
+     */
     public void setTheme()
     {
         SharedPreferences sharedPreferences = getSharedPreferences("com.example.ivonneortega.the_news_project.Settings", Context.MODE_PRIVATE);
-        String str = sharedPreferences.getString(SettingsActivity.THEME,"DEFAULT"); //Initial value of the String is "Hello"
+        String str = sharedPreferences.getString(SettingsActivity.THEME,"DEFAULT");
         if(str.equals("dark"))
         {
+            //if the theme is dark change the theme color
             setTheme(R.style.DarkTheme);
             setContentView(R.layout.activity_settings);
             findViewById(R.id.root_toolbar).setBackgroundColor(getResources().getColor(R.color.colorPrimaryDarkTheme));
         }
         else
         {
+            //if the theme is not dark just setContentView
             setContentView(R.layout.activity_settings);
         }
         mStartActivity=true;
 
     }
-    
+
+    /**
+     * On checked change for each Switch button
+     * @param buttonView
+     * @param isChecked
+     */
     @Override
     public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
         switch (buttonView.getId())
         {
+            // If the theme changes add the change to a shared preferences
             case R.id.switch_theme:
                 SharedPreferences sharedPreferences = getSharedPreferences("com.example.ivonneortega.the_news_project.Settings", Context.MODE_PRIVATE);
                 SharedPreferences.Editor editor = sharedPreferences.edit();
@@ -98,6 +118,7 @@ public class SettingsActivity extends AppCompatActivity implements CompoundButto
                 editor.apply();
                 break;
 
+            // If the notification setting changes, add the change to a shared preferences
             case R.id.switch_notification:
                 SharedPreferences sharedPreferences1 = getSharedPreferences("com.example.ivonneortega.the_news_project.Settings", Context.MODE_PRIVATE);
                 SharedPreferences.Editor editor1 = sharedPreferences1.edit();

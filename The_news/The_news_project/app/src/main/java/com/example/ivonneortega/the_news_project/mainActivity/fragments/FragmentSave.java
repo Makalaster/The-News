@@ -26,12 +26,7 @@ import static com.example.ivonneortega.the_news_project.detailView.CollectionDem
 
 
 /**
- * A simple {@link Fragment} subclass.
- * Activities that contain this fragment must implement the
- * {@link FragmentSave.OnFragmentInteractionListener} interface
- * to handle interaction events.
- * Use the {@link FragmentSave#newInstance} factory method to
- * create an instance of this fragment.
+ * Fragment to show only the saved stories
  */
 public class FragmentSave extends Fragment {
 
@@ -41,10 +36,16 @@ public class FragmentSave extends Fragment {
 
     private OnFragmentInteractionListener mListener;
 
+    /**
+     * Fragment constructor
+     */
     public FragmentSave() {
         // Required empty public constructor
     }
 
+    /**
+     * Sets the adapter so an item can be removed by swiping left
+     */
     @Override
     public void onResume() {
         super.onResume();
@@ -63,6 +64,9 @@ public class FragmentSave extends Fragment {
         getSaveArticles();
     }
 
+    /**
+     * Get all the articles that are saved by calling the database
+     */
     private void getSaveArticles()
     {
         AsyncTask<Void,Void,List<Article>> asyncTask = new AsyncTask<Void, Void, List<Article>>() {
@@ -80,22 +84,22 @@ public class FragmentSave extends Fragment {
         }.execute();
     }
 
+
     /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @return A new instance of fragment FragmentSave.
+     * Instanciating the fragment
+     * @return a fragment
      */
-    // TODO: Rename and change types and number of parameters
     public static FragmentSave newInstance() {
         FragmentSave fragment = new FragmentSave();
         Bundle args = new Bundle();
-//        args.putString(ARG_PARAM1, param1);
-//        args.putString(ARG_PARAM2, param2);
         fragment.setArguments(args);
         return fragment;
     }
 
+    /**
+     * Creating the fragment
+     * @param savedInstanceState
+     */
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -104,6 +108,13 @@ public class FragmentSave extends Fragment {
         }
     }
 
+    /**
+     * Inflating the fragment with the xml file
+     * @param inflater
+     * @param container
+     * @param savedInstanceState
+     * @return the view
+     */
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -111,6 +122,11 @@ public class FragmentSave extends Fragment {
         return inflater.inflate(R.layout.fragment_fragment_save, container, false);
     }
 
+    /**
+     * Setting the recycler view
+     * @param view
+     * @param savedInstanceState
+     */
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
@@ -120,42 +136,8 @@ public class FragmentSave extends Fragment {
         mRecyclerView.setLayoutManager(linearLayoutManager);
     }
 
-    // TODO: Rename method, update argument and hook method into UI event
-    public void onButtonPressed(Uri uri) {
-        if (mListener != null) {
-            mListener.onFragmentInteraction(uri);
-        }
-    }
-//
-//    @Override
-//    public void onAttach(Context context) {
-//        super.onAttach(context);
-//        if (context instanceof OnFragmentInteractionListener) {
-//            mListener = (OnFragmentInteractionListener) context;
-//        } else {
-//            throw new RuntimeException(context.toString()
-//                    + " must implement OnFragmentInteractionListener");
-//        }
-//    }
 
-    @Override
-    public void onDetach() {
-        super.onDetach();
-        mListener = null;
-    }
-
-    /**
-     * This interface must be implemented by activities that contain this
-     * fragment to allow an interaction in this fragment to be communicated
-     * to the activity and potentially other fragments contained in that
-     * activity.
-     * <p>
-     * See the Android Training lesson <a href=
-     * "http://developer.android.com/training/basics/fragments/communicating.html"
-     * >Communicating with Other Fragments</a> for more information.
-     */
     public interface OnFragmentInteractionListener {
-        // TODO: Update argument type and name
         void onFragmentInteraction(Uri uri);
     }
 }

@@ -39,9 +39,7 @@ public class MainActivity extends AppCompatActivity
 
     FragmentAdapterMainActivity mAdapter;
     public static final String URL = "https://newsapi.org/v1/articles?source=";
-    //public static final String API_KEY = "b9742f05aeab45e097c3c57a30ccb224";
-    public static final String API_KEY = "8c686febe98446aeaf2f3170b3a5d200";
-
+    public static final String API_KEY = "b9742f05aeab45e097c3c57a30ccb224";
     List<String> mSourcesByTop, mSourcesByLatest;
     boolean mStartActivity;
     private boolean theme_changed;
@@ -53,7 +51,6 @@ public class MainActivity extends AppCompatActivity
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setTheme();
-//        setContentView(R.layout.activity_main);
 
         setSources();
         ViewPager viewPager = (ViewPager) findViewById(R.id.viewpager);
@@ -75,14 +72,18 @@ public class MainActivity extends AppCompatActivity
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
-//
-//        View hView =  navigationView.getHeaderView(0);
-//        ImageView nav_user = (ImageView) hView.findViewById(R.id.navigation_image);
-//        Picasso.with(this)
-//                .load(DatabaseHelper.getInstance(this).getArticlesById(0).getImage())
-//                .fit()
-//                .into(nav_user);
 
+
+        Article article = DatabaseHelper.getInstance(this).getArticlesById(1);
+        if(article!=null)
+        {
+            View hView =  navigationView.getHeaderView(0);
+            ImageView nav_user = (ImageView) hView.findViewById(R.id.navigation_image);
+            Picasso.with(this)
+                    .load(article.getImage())
+                    .fit()
+                    .into(nav_user);
+        }
 
         ImageButton optionsToolbar = (ImageButton) findViewById(R.id.options_toolbar);
         optionsToolbar.setClickable(true);
@@ -91,20 +92,9 @@ public class MainActivity extends AppCompatActivity
         optionsToolbar.setOnClickListener(this);
         searchToolbar.setOnClickListener(this);
 
-//        JobScheduler jobScheduler = (JobScheduler) getSystemService(JOB_SCHEDULER_SERVICE);
-//        ComponentName componentName = new ComponentName(this, ArticleRefreshService.class);
-//
-//        JobInfo refreshJob = new JobInfo.Builder(ARTICLE_REFRESH_JOB, componentName)
-//                .setRequiredNetworkType(JobInfo.NETWORK_TYPE_ANY)
-//                .setRequiresCharging(true)
-//                .build();
-//
-//        jobScheduler.schedule(refreshJob);
+        setupJob();
 
-//        DatabaseHelper.getInstance(this).deleteAllSavedArticles();
-//        addThingsToDatabase();
-
-        //TODO SAM DON'T DELETE THIS
+        //TODO FOR NEWS API CALL
 //        for(int i = 0; i< mSourcesByTop.size(); i++)
 //        {
 //            searchArticlesByTop(mSourcesByTop.get(i));
@@ -134,6 +124,25 @@ public class MainActivity extends AppCompatActivity
 
     }
 
+    /**
+     * Set up a scheduled job to automatically check for new articles in the background.
+     * Only runs if the device is plugged in and on a network
+     */
+    private void setupJob() {
+        JobScheduler jobScheduler = (JobScheduler) getSystemService(JOB_SCHEDULER_SERVICE);
+        ComponentName componentName = new ComponentName(this, ArticleRefreshService.class);
+
+        JobInfo refreshJob = new JobInfo.Builder(ARTICLE_REFRESH_JOB, componentName)
+                .setRequiredNetworkType(JobInfo.NETWORK_TYPE_ANY)
+                .setRequiresCharging(true)
+                .build();
+
+        jobScheduler.schedule(refreshJob);
+    }
+
+    /**
+     * Checks if the theme has changed, if so, update the views
+     */
     @Override
     protected void onResume() {
         super.onResume();
@@ -158,6 +167,10 @@ public class MainActivity extends AppCompatActivity
         }
     }
 
+    /**
+     * On back button pressed
+     * Navigation Drawer method
+     */
     @Override
     public void onBackPressed() {
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -168,6 +181,11 @@ public class MainActivity extends AppCompatActivity
         }
     }
 
+    /**
+     * Handles the clicks on each item on the navigation drawer and launches Category View
+     * @param item
+     * @return
+     */
     @SuppressWarnings("StatementWithEmptyBody")
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
@@ -211,6 +229,10 @@ public class MainActivity extends AppCompatActivity
         return true;
     }
 
+    /**
+     * On click for each item in the toolbar
+     * @param v is the view that has been clicked
+     */
     @Override
     public void onClick(View v) {
         switch (v.getId())
@@ -225,12 +247,19 @@ public class MainActivity extends AppCompatActivity
 
     }
 
+    /**
+     * Launch Search Activity
+     */
     public void moveToSearchActivity()
     {
         Intent intent = new Intent(this, SearchActivity.class);
         startActivity(intent);
     }
 
+    /**
+     * Launch Category Activity
+     * @param category is the category we are going to display in Category Activity
+     */
     public void moveToCategoryViewActivity(String category)
     {
         Intent intent = new Intent(this, CategoryViewActivity.class);
@@ -238,55 +267,19 @@ public class MainActivity extends AppCompatActivity
         startActivity(intent);
     }
 
+    /**
+     * Launch Settings Activity
+     */
     public void moveToSettingsActivity()
     {
         Intent intent = new Intent(this, SettingsActivity.class);
         startActivity(intent);
     }
 
-//
-//    public void addThingsToDatabase()
-//    {
-//        DatabaseHelper databaseHelper = DatabaseHelper.getInstance(this);
-//        databaseHelper.insertArticleIntoDatabase("https://www.transit.dot.gov/sites/fta.dot.gov/files/635847974891062780-425303270_news.jpg","Business 1","Business","Today","This is the body",
-//                "New York Times",Article.FALSE,1,"https://www.transit.dot.gov/sites/fta.dot.gov/files/635847974891062780-425303270_news.jpg");
-//
-//        databaseHelper.insertArticleIntoDatabase("https://www.transit.dot.gov/sites/fta.dot.gov/files/635847974891062780-425303270_news.jpg","Business 2","Business","Today","This is the body",
-//                "New York Times",Article.FALSE,1,"https://www.transit.dot.gov/sites/fta.dot.gov/files/635847974891062780-425303270_news.jpg");
-//        databaseHelper.insertArticleIntoDatabase("https://www.transit.dot.gov/sites/fta.dot.gov/files/635847974891062780-425303270_news.jpg","Business 3","Business","Today","This is the body",
-//                "New York Times",Article.FALSE,0,"https://www.transit.dot.gov/sites/fta.dot.gov/files/635847974891062780-425303270_news.jpg");
-//
-//        databaseHelper.insertArticleIntoDatabase("https://www.transit.dot.gov/sites/fta.dot.gov/files/635847974891062780-425303270_news.jpg","Business 4","Business","Today","This is the body",
-//                "New York Times",Article.FALSE,0,"https://www.transit.dot.gov/sites/fta.dot.gov/files/635847974891062780-425303270_news.jpg");
-//
-//
-//
-//        databaseHelper.insertArticleIntoDatabase("https://www.transit.dot.gov/sites/fta.dot.gov/files/635847974891062780-425303270_news.jpg","Tech 1","Tech","Today","This is the body",
-//                "New York Times",Article.FALSE,1,"https://www.transit.dot.gov/sites/fta.dot.gov/files/635847974891062780-425303270_news.jpg");
-//
-//        databaseHelper.insertArticleIntoDatabase("https://www.transit.dot.gov/sites/fta.dot.gov/files/635847974891062780-425303270_news.jpg","Tech 2","Tech","Today","This is the body",
-//                "New York Times",Article.FALSE,1,"https://www.transit.dot.gov/sites/fta.dot.gov/files/635847974891062780-425303270_news.jpg");
-//        databaseHelper.insertArticleIntoDatabase("https://www.transit.dot.gov/sites/fta.dot.gov/files/635847974891062780-425303270_news.jpg","Tech 3","Tech","Today","This is the body",
-//                "New York Times",Article.FALSE,0,"https://www.transit.dot.gov/sites/fta.dot.gov/files/635847974891062780-425303270_news.jpg");
-//
-//        databaseHelper.insertArticleIntoDatabase("https://www.transit.dot.gov/sites/fta.dot.gov/files/635847974891062780-425303270_news.jpg","Tech 4","Tech","Today","This is the body",
-//                "New York Times",Article.FALSE,0,"https://www.transit.dot.gov/sites/fta.dot.gov/files/635847974891062780-425303270_news.jpg");
-//
-//
-//
-//
-//        databaseHelper.insertArticleIntoDatabase("https://www.transit.dot.gov/sites/fta.dot.gov/files/635847974891062780-425303270_news.jpg","World 1","World","Today","This is the body",
-//                "New York Times",Article.FALSE,1,"https://www.transit.dot.gov/sites/fta.dot.gov/files/635847974891062780-425303270_news.jpg");
-//
-//        databaseHelper.insertArticleIntoDatabase("https://www.transit.dot.gov/sites/fta.dot.gov/files/635847974891062780-425303270_news.jpg","World 2","World","Today","This is the body",
-//                "New York Times",Article.FALSE,1,"https://www.transit.dot.gov/sites/fta.dot.gov/files/635847974891062780-425303270_news.jpg");
-//        databaseHelper.insertArticleIntoDatabase("https://www.transit.dot.gov/sites/fta.dot.gov/files/635847974891062780-425303270_news.jpg","World 3","World","Today","This is the body",
-//                "New York Times",Article.FALSE,0,"https://www.transit.dot.gov/sites/fta.dot.gov/files/635847974891062780-425303270_news.jpg");
-//
-//        databaseHelper.insertArticleIntoDatabase("https://www.transit.dot.gov/sites/fta.dot.gov/files/635847974891062780-425303270_news.jpg","World 4","World","Today","This is the body",
-//                "New York Times",Article.FALSE,0,"https://www.transit.dot.gov/sites/fta.dot.gov/files/635847974891062780-425303270_news.jpg");
-//    }
-
+    /**
+     * Sets the theme that gets from a Shared preference
+     * sets mStartActivity to true so that onResume can verify is the app was already started or not
+     */
     public void setTheme()
     {
         SharedPreferences sharedPreferences = getSharedPreferences("com.example.ivonneortega.the_news_project.Settings", Context.MODE_PRIVATE);
@@ -306,7 +299,10 @@ public class MainActivity extends AppCompatActivity
 
     }
 
-
+    /**
+     * METHOD FOR SECOND API CALL
+     */
+    //TODO DON'T DELETE THIS
 //    public void searchArticlesByTop(final String source) {
 //        RequestQueue queue = Volley.newRequestQueue(this);
 //        final DatabaseHelper db = DatabaseHelper.getInstance(this);
@@ -351,7 +347,7 @@ public class MainActivity extends AppCompatActivity
 //
 //        queue.add(jsonObjectRequest);
 //    }
-//
+//     TODO DON'T DELETE THIS
 //    public void searchArticlesByLatest(final String source) {
 //        RequestQueue queue = Volley.newRequestQueue(this);
 //        final DatabaseHelper db = DatabaseHelper.getInstance(this);
@@ -397,6 +393,7 @@ public class MainActivity extends AppCompatActivity
 //        queue.add(jsonObjectRequest);
 //    }
 
+    //TODO DON'T DELETE THIS
     public void setSources()
     {
         mSourcesByTop = new ArrayList<>();
