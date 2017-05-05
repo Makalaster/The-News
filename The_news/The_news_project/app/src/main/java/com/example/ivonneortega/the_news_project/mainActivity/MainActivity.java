@@ -51,7 +51,6 @@ public class MainActivity extends AppCompatActivity
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setTheme();
-//        setContentView(R.layout.activity_main);
 
         setSources();
         ViewPager viewPager = (ViewPager) findViewById(R.id.viewpager);
@@ -93,7 +92,6 @@ public class MainActivity extends AppCompatActivity
         optionsToolbar.setOnClickListener(this);
         searchToolbar.setOnClickListener(this);
 
-        //TODO DON'T DELETE THIS
         JobScheduler jobScheduler = (JobScheduler) getSystemService(JOB_SCHEDULER_SERVICE);
         ComponentName componentName = new ComponentName(this, ArticleRefreshService.class);
 
@@ -104,10 +102,9 @@ public class MainActivity extends AppCompatActivity
 
         jobScheduler.schedule(refreshJob);
 
-        //DatabaseHelper.getInstance(this).deleteAllSavedArticles();
-        //addThingsToDatabase();
 
-        //TODO SAM DON'T DELETE THIS
+
+        //TODO FOR NEWS API CALL
 //        for(int i = 0; i< mSourcesByTop.size(); i++)
 //        {
 //            searchArticlesByTop(mSourcesByTop.get(i));
@@ -137,6 +134,9 @@ public class MainActivity extends AppCompatActivity
 
     }
 
+    /**
+     * Checks if the theme has changed, if so, update the views
+     */
     @Override
     protected void onResume() {
         super.onResume();
@@ -161,6 +161,10 @@ public class MainActivity extends AppCompatActivity
         }
     }
 
+    /**
+     * On back button pressed
+     * Navigation Drawer method
+     */
     @Override
     public void onBackPressed() {
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -171,6 +175,11 @@ public class MainActivity extends AppCompatActivity
         }
     }
 
+    /**
+     * Handles the clicks on each item on the navigation drawer and launches Category View
+     * @param item
+     * @return
+     */
     @SuppressWarnings("StatementWithEmptyBody")
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
@@ -214,6 +223,10 @@ public class MainActivity extends AppCompatActivity
         return true;
     }
 
+    /**
+     * On click for each item in the toolbar
+     * @param v is the view that has been clicked
+     */
     @Override
     public void onClick(View v) {
         switch (v.getId())
@@ -228,12 +241,19 @@ public class MainActivity extends AppCompatActivity
 
     }
 
+    /**
+     * Launch Search Activity
+     */
     public void moveToSearchActivity()
     {
         Intent intent = new Intent(this, SearchActivity.class);
         startActivity(intent);
     }
 
+    /**
+     * Launch Category Activity
+     * @param category is the category we are going to display in Category Activity
+     */
     public void moveToCategoryViewActivity(String category)
     {
         Intent intent = new Intent(this, CategoryViewActivity.class);
@@ -241,12 +261,19 @@ public class MainActivity extends AppCompatActivity
         startActivity(intent);
     }
 
+    /**
+     * Launch Settings Activity
+     */
     public void moveToSettingsActivity()
     {
         Intent intent = new Intent(this, SettingsActivity.class);
         startActivity(intent);
     }
 
+    /**
+     * Sets the theme that gets from a Shared preference
+     * sets mStartActivity to true so that onResume can verify is the app was already started or not
+     */
     public void setTheme()
     {
         SharedPreferences sharedPreferences = getSharedPreferences("com.example.ivonneortega.the_news_project.Settings", Context.MODE_PRIVATE);
@@ -266,6 +293,9 @@ public class MainActivity extends AppCompatActivity
 
     }
 
+    /**
+     * METHOD FOR SECOND API CALL
+     */
     //TODO DON'T DELETE THIS
 //    public void searchArticlesByTop(final String source) {
 //        RequestQueue queue = Volley.newRequestQueue(this);
