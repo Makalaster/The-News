@@ -26,12 +26,7 @@ import static com.example.ivonneortega.the_news_project.detailView.CollectionDem
 
 
 /**
- * A simple {@link Fragment} subclass.
- * Activities that contain this fragment must implement the
- * {@link FragmentSave.OnFragmentInteractionListener} interface
- * to handle interaction events.
- * Use the {@link FragmentSave#newInstance} factory method to
- * create an instance of this fragment.
+ * Fragment to show only the saved stories
  */
 public class FragmentSave extends Fragment {
 
@@ -140,22 +135,9 @@ public class FragmentSave extends Fragment {
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(view.getContext(),LinearLayoutManager.VERTICAL,false);
         mRecyclerView.setLayoutManager(linearLayoutManager);
     }
-
-    // TODO: Rename method, update argument and hook method into UI event
-    public void onButtonPressed(Uri uri) {
-        if (mListener != null) {
-            mListener.onFragmentInteraction(uri);
-        }
-    }
-
-    @Override
-    public void onDetach() {
-        super.onDetach();
-        mListener = null;
-    }
+    
 
     public interface OnFragmentInteractionListener {
-        // TODO: Update argument type and name
         void onFragmentInteraction(Uri uri);
     }
 }

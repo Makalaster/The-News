@@ -31,6 +31,11 @@ import com.squareup.picasso.Picasso;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Category View Activity
+ * Showing all the articles within one category
+ */
+
 public class CategoryViewActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener, View.OnClickListener {
 

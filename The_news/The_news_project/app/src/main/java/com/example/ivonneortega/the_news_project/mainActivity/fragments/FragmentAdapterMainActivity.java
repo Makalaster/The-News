@@ -5,9 +5,8 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 
 /**
- * Created by ivonneortega on 4/29/17.
+ * Fragment Adapter to manage the swiping between taps in Main Activity
  */
-
 public class FragmentAdapterMainActivity extends FragmentPagerAdapter {
 
 

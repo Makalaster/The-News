@@ -60,7 +60,11 @@ import org.json.JSONObject;
 
 import java.util.List;
 
-
+/**
+ * Detail view
+ * Shows the detail view of a particular article
+ * Can swipe left and right to read other articles
+ */
 public class CollectionDemoActivity extends FragmentActivity
 implements NavigationView.OnNavigationItemSelectedListener, View.OnClickListener{
     //Constants
@@ -86,7 +90,6 @@ implements NavigationView.OnNavigationItemSelectedListener, View.OnClickListener
     private boolean mStartActivity;
     private DrawerLayout drawer;
 
-    //TODO check on unused member variables
     private ActionBarDrawerToggle mDrawerToggle;
     private ImageView mImage;
     private TextView mTitle, mDate, mContent;
@@ -98,11 +101,7 @@ implements NavigationView.OnNavigationItemSelectedListener, View.OnClickListener
         Intent intent = getIntent();
         mId = intent.getLongExtra(DatabaseHelper.COL_ID,-1);
         String type = intent.getStringExtra(TYPE_OF_INTENT);
-        Log.d(TAG, "clickOnProduct2: "+intent.getStringExtra(CollectionDemoActivity.TYPE_OF_INTENT));
-        Log.d(TAG, "clickOnProduct2: "+type);
-
         mArticle = DatabaseHelper.getInstance(this).getArticlesById(mId);
-        //articleList = DatabaseHelper.getInstance(this).getArticlesByCategory(mArticle.getCategory());
         mArticle = DatabaseHelper.getInstance(this).getArticlesById(mId);
         if(type.equalsIgnoreCase("allStories"))
             articleList = DatabaseHelper.getInstance(this).getArticlesByCategory(mArticle.getCategory());

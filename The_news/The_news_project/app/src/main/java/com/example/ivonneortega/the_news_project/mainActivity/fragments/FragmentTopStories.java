@@ -34,7 +34,9 @@ import okhttp3.Response;
 
 import static com.example.ivonneortega.the_news_project.data.NYTApiData.JSON;
 
-
+/**
+ * Fragment to show only the top stories
+ */
 public class FragmentTopStories extends Fragment {
 
     private static final String ARG_PARAM1 = "param1";
