@@ -169,6 +169,20 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         db.delete(TABLE_ARTICLES, COL_ID+" = ?", new String[]{String.valueOf(id)});
     }
 
+    public boolean isDatabaseEmpty()
+    {
+        SQLiteDatabase db = getWritableDatabase();
+        Cursor cursor = db.query(TABLE_ARTICLES,null,null,null,null,null,null);
+        boolean hasSomething = false;
+
+        if(cursor.moveToFirst())
+        {
+            hasSomething = true;
+        }
+        cursor.close();
+        return hasSomething;
+    }
+
     /**
      * Update an article to mark it as saved by the user.
      * @param id The ID of the article to mark as saved.

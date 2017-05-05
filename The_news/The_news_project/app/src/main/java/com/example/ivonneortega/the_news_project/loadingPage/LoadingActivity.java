@@ -108,7 +108,14 @@ public class LoadingActivity extends AppCompatActivity {
             }.execute();
         } else {
             Toast.makeText(this, "No connectivity", Toast.LENGTH_SHORT).show();
-            startActivity(new Intent(LoadingActivity.this, MainActivity.class));
+            if(DatabaseHelper.getInstance(this).isDatabaseEmpty())
+                startActivity(new Intent(LoadingActivity.this, MainActivity.class));
+            else
+            {
+                finish();
+            }
+
+
         }
     }
 
