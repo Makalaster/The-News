@@ -46,3 +46,4 @@ In the `OnCreate` method of the main activity, a background service is started t
 
 #### Screenshots
 
+![](screenshots/loading_page.jpg)
