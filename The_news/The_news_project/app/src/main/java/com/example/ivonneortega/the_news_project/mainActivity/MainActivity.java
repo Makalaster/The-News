@@ -92,17 +92,7 @@ public class MainActivity extends AppCompatActivity
         optionsToolbar.setOnClickListener(this);
         searchToolbar.setOnClickListener(this);
 
-        JobScheduler jobScheduler = (JobScheduler) getSystemService(JOB_SCHEDULER_SERVICE);
-        ComponentName componentName = new ComponentName(this, ArticleRefreshService.class);
-
-        JobInfo refreshJob = new JobInfo.Builder(ARTICLE_REFRESH_JOB, componentName)
-                .setRequiredNetworkType(JobInfo.NETWORK_TYPE_ANY)
-                .setRequiresCharging(true)
-                .build();
-
-        jobScheduler.schedule(refreshJob);
-
-
+        setupJob();
 
         //TODO FOR NEWS API CALL
 //        for(int i = 0; i< mSourcesByTop.size(); i++)
@@ -132,6 +122,22 @@ public class MainActivity extends AppCompatActivity
             }
         });
 
+    }
+
+    /**
+     * Set up a scheduled job to automatically check for new articles in the background.
+     * Only runs if the device is plugged in and on a network
+     */
+    private void setupJob() {
+        JobScheduler jobScheduler = (JobScheduler) getSystemService(JOB_SCHEDULER_SERVICE);
+        ComponentName componentName = new ComponentName(this, ArticleRefreshService.class);
+
+        JobInfo refreshJob = new JobInfo.Builder(ARTICLE_REFRESH_JOB, componentName)
+                .setRequiredNetworkType(JobInfo.NETWORK_TYPE_ANY)
+                .setRequiresCharging(true)
+                .build();
+
+        jobScheduler.schedule(refreshJob);
     }
 
     /**

@@ -219,7 +219,8 @@ public class FragmentAllStories extends Fragment {
     }
 
     /**
-     * Refresh the stories when user scrolls down
+     * Start an async task to go through each NewsWire topic and refresh the article list for each one.
+     * Stops the SwipeRefreshLayout for refreshing in onPostExecute.
      */
     private void refreshAllStories() {
         mTask = new AsyncTask<String, Void, Boolean>() {
@@ -253,9 +254,9 @@ public class FragmentAllStories extends Fragment {
     }
 
     /**
-     * Method that gets the articles for the API call
-     * @param topic
-     * @return
+     * Method that gets the articles for the API call.
+     * @param topic the topic to search for.
+     * @return An array of articles in JSON format.
      */
     private JSONArray getArticles(String topic) {
         OkHttpClient client = new OkHttpClient();
