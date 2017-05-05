@@ -14,14 +14,18 @@ import com.example.ivonneortega.the_news_project.detailView.CollectionDemoActivi
 
 public class WebActivity extends AppCompatActivity {
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        //Create a new WebView to take up the entire activity screen.
         WebView webView = new WebView(this);
         setContentView(webView);
 
+        //Get the current article's URL from the starting intent.
         String url = getIntent().getStringExtra(CollectionDemoActivity.URL);
 
+        //Set up the WebView with e new client, load the retrieved URL.
         webView.setWebViewClient(new WebViewClient());
         webView.loadUrl(url);
     }
