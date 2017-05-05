@@ -28,14 +28,23 @@ public class SearchActivity extends AppCompatActivity implements View.OnClickLis
     boolean mStartActivity;
     private boolean theme_changed;
 
+    /**
+     * On create activity method
+     * @param savedInstanceState
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        //Setting the theme color
         setTheme();
 
+        //Setting all the views
         settingUpTheViews();
 
+        //Search query listener
         mSearchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+
+            //When the query has been summited hide the keyboard
             @Override
             public boolean onQueryTextSubmit(String query) {
                 InputMethodManager imm = (InputMethodManager)mSearchView.getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
@@ -43,6 +52,7 @@ public class SearchActivity extends AppCompatActivity implements View.OnClickLis
                 return true;
             }
 
+            //do a search for everytime the text in the searchview changes
             @Override
             public boolean onQueryTextChange(String newText) {
                 RecyclerView recyclerView = (RecyclerView) findViewById(R.id.search_recycler_view);
@@ -57,6 +67,10 @@ public class SearchActivity extends AppCompatActivity implements View.OnClickLis
         });
     }
 
+    /**
+     * Onclick for the backbutton in the toolbar
+     * @param v
+     */
     @Override
     public void onClick(View v) {
         switch (v.getId())
@@ -67,6 +81,9 @@ public class SearchActivity extends AppCompatActivity implements View.OnClickLis
         }
     }
 
+    /**
+     * Setting all the views
+     */
     public void settingUpTheViews()
     {
         mSearchView = (SearchView) findViewById(R.id.search_editText);
@@ -76,6 +93,10 @@ public class SearchActivity extends AppCompatActivity implements View.OnClickLis
         mBackButton.setOnClickListener(this);
     }
 
+    /**
+     * On resume the activity
+     * Gets if the theme has been changed, if it has been changed then relaunches the activity
+     */
     @Override
     protected void onResume() {
         super.onResume();
@@ -95,6 +116,9 @@ public class SearchActivity extends AppCompatActivity implements View.OnClickLis
         }
     }
 
+    /**
+     * Setting the theme
+     */
     public void setTheme()
     {
         SharedPreferences sharedPreferences = getSharedPreferences("com.example.ivonneortega.the_news_project.Settings", Context.MODE_PRIVATE);
