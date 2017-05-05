@@ -44,6 +44,7 @@ public class MainActivity extends AppCompatActivity
 
     List<String> mSourcesByTop, mSourcesByLatest;
     boolean mStartActivity;
+    private boolean theme_changed;
     List<Category> categories_by_top;
 
     public static final int ARTICLE_REFRESH_JOB = 1;
@@ -137,6 +138,8 @@ public class MainActivity extends AppCompatActivity
     protected void onResume() {
         super.onResume();
 
+        SharedPreferences sharedPreferences = getSharedPreferences("com.example.ivonneortega.the_news_project.Settings", Context.MODE_PRIVATE);
+        theme_changed = sharedPreferences.getBoolean(SettingsActivity.THEME_HAS_CHANGED,false);
         if(mAdapter!=null)
         {
             mAdapter.notifyDataSetChanged();
@@ -145,9 +148,13 @@ public class MainActivity extends AppCompatActivity
         if(mStartActivity){
             mStartActivity = false;
 
-        } else {
-            //finish();
-            //startActivity(getIntent());
+        } else if (theme_changed){
+            SharedPreferences sharedPreferences1 = getSharedPreferences("com.example.ivonneortega.the_news_project.Settings", Context.MODE_PRIVATE);
+            SharedPreferences.Editor editor = sharedPreferences1.edit();
+            editor.putBoolean(SettingsActivity.THEME_HAS_CHANGED,false);
+            editor.apply();
+            finish();
+            startActivity(getIntent());
         }
     }
 
@@ -284,10 +291,8 @@ public class MainActivity extends AppCompatActivity
     {
         SharedPreferences sharedPreferences = getSharedPreferences("com.example.ivonneortega.the_news_project.Settings", Context.MODE_PRIVATE);
         String str = sharedPreferences.getString(SettingsActivity.THEME,"DEFAULT"); //Initial value of the String is "Hello"
-        Log.d("weqweqweqwe", "setTheme: "+str);
         if(str.equals("dark"))
         {
-            Log.d("sdsdfsdfsdfsdf", "setTheme: qweqwdqqwdqwdqwdwd");
             setTheme(R.style.DarkTheme);
             setContentView(R.layout.activity_main);
             findViewById(R.id.root_toolbar).setBackgroundColor(getResources().getColor(R.color.colorPrimaryDarkTheme));

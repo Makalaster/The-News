@@ -21,7 +21,8 @@ import com.example.ivonneortega.the_news_project.R;
 import com.example.ivonneortega.the_news_project.data.Article;
 import com.example.ivonneortega.the_news_project.database.DatabaseHelper;
 
-public class oDetailViewActivity eoOnNavigationItemSelectedListener, View.OnClickListener, DetailViewFragment.OnFragmentInteractionListener {
+public class DetailViewActivity extends AppCompatActivity
+        implements  NavigationView.OnNavigationItemSelectedListener, View.OnClickListener, DetailViewFragment.OnFragmentInteractionListener {
 
     private long mId;
     private ImageView mImage;
@@ -29,23 +30,33 @@ public class oDetailViewActivity eoOnNavigationItemSelectedListener, View.OnClic
 
     //TODO I KNOW WE ARE NOT USING THIS BUT DON'T DELETE IT JUST YET
 
-    proivate ShareActionProvider mShareActionProvider;
-o        o        this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+    private ShareActionProvider mShareActionProvider;
+
+        protected void onCreate(Bundle savedInstanceState)
+        {
+            super.onCreate(savedInstanceState);
+            setContentView(R.layout.activity_detail_view);
+            Toolbar toolbar = (Toolbar) findViewById(R.id.root_toolbar);
+            setSupportActionBar(toolbar);
+
+            DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+            ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
+                   this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.setDrawerListener(toggle);
         toggle.syncState();
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
-        navigationView.setNavigationItemSelectedListener(tohis);
+        navigationView.setNavigationItemSelectedListener(this);
 
         ImageButton optionsToolbar = (ImageButton) findViewById(R.id.options_toolbar);
-        optionsToolbar.setClickable(true);o
+        optionsToolbar.setClickable(true);
         ImageButton shareToolbar = (ImageButton) findViewById(R.id.share_toolbar);
         shareToolbar.setClickable(true);
         optionsToolbar.setOnClickListener(this);
         shareToolbar.setOnClickListener(this);
         ImageButton heartToolbar = (ImageButton) findViewById(R.id.heart_toolbar);
         heartToolbar.setClickable(true);
-        heartToolbar.setOnClickListener(this);o
+        heartToolbar.setOnClickListener(this);
 
         Intent intent = getIntent();
         mId = intent.getLongExtra(DatabaseHelper.COL_ID,-1);

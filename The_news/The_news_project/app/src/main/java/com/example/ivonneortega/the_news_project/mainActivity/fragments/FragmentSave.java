@@ -1,12 +1,14 @@
 package com.example.ivonneortega.the_news_project.mainActivity.fragments;
 
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.helper.ItemTouchHelper;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,6 +22,8 @@ import com.example.ivonneortega.the_news_project.database.DatabaseHelper;
 import java.util.ArrayList;
 import java.util.List;
 
+import static com.example.ivonneortega.the_news_project.detailView.CollectionDemoActivity.TAG;
+
 
 /**
  * A simple {@link Fragment} subclass.
@@ -31,8 +35,9 @@ import java.util.List;
  */
 public class FragmentSave extends Fragment {
 
-    ArticlesVerticalRecyclerAdapter mAdapter;
-    RecyclerView mRecyclerView;
+    private ArticlesVerticalRecyclerAdapter mAdapter;
+    private RecyclerView mRecyclerView;
+    private DatabaseHelper db;
 
     private OnFragmentInteractionListener mListener;
 
@@ -45,16 +50,34 @@ public class FragmentSave extends Fragment {
         super.onResume();
         //Creating a list to test recycler view
         List<Article> categoryIndividualItems = new ArrayList<>();
-
-
-        categoryIndividualItems = DatabaseHelper.getInstance(mRecyclerView.getContext()).getSavedArticles();
         mAdapter = new ArticlesVerticalRecyclerAdapter(categoryIndividualItems,true);
         mRecyclerView.setAdapter(mAdapter);
+
+        db = DatabaseHelper.getInstance(mRecyclerView.getContext());
 
         ItemTouchHelper.Callback callback =
                 new SimpleItemTouchHelperCallback(mAdapter);
         ItemTouchHelper touchHelper = new ItemTouchHelper(callback);
         touchHelper.attachToRecyclerView(mRecyclerView);
+
+        getSaveArticles();
+    }
+
+    private void getSaveArticles()
+    {
+        AsyncTask<Void,Void,List<Article>> asyncTask = new AsyncTask<Void, Void, List<Article>>() {
+            @Override
+            protected List<Article> doInBackground(Void... params) {
+                List<Article> list = db.getSavedArticles();
+                return list;
+            }
+
+            @Override
+            protected void onPostExecute(List<Article> list) {
+                super.onPostExecute(list);
+                mAdapter.swapData(list);
+            }
+        }.execute();
     }
 
     /**

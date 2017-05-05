@@ -8,6 +8,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.example.ivonneortega.the_news_project.R;
+import com.example.ivonneortega.the_news_project.data.Article;
 import com.example.ivonneortega.the_news_project.data.Category;
 
 import java.util.List;
@@ -62,5 +63,10 @@ public class CategoriesRecyclerAdapter extends RecyclerView.Adapter<CategoriesRe
             mTitleOfCategory = (TextView) itemView.findViewById(R.id.title_category_main_activity);
             mRecyclerView = (RecyclerView) itemView.findViewById(R.id.recyclerView_each_category);
         }
+    }
+
+    public void swapData(List<Category> newList) {
+        mList = newList;
+        notifyDataSetChanged();
     }
 }
