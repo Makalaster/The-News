@@ -27,10 +27,21 @@ public class ArticleRecyclerAdapter extends RecyclerView.Adapter<ArticleRecycler
     private static final int VIEW_TYPE_ARTICLE = 2 ;
     private List<Article> mList;
 
+    /**
+     * Recycler view constructor
+     * @param individualItems is the list that is going to be displayed by the recycler view adapter
+     */
     public ArticleRecyclerAdapter(List<Article> individualItems) {
         mList = individualItems;
     }
 
+    /**
+     * Inflating the view of the recycler view
+     * @param parent
+     * @param viewType depending on the type of view the method can inflate two different views
+     *                 one for the articles and one for the see more view
+     * @return
+     */
     @Override
     public CategoryIndividualItemViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
 
@@ -48,6 +59,11 @@ public class ArticleRecyclerAdapter extends RecyclerView.Adapter<ArticleRecycler
         }
     }
 
+    /**
+     * Setting each article view by their content
+     * @param holder
+     * @param position
+     */
     @Override
     public void onBindViewHolder(final ArticleRecyclerAdapter.CategoryIndividualItemViewHolder holder, int position) {
         //This is the recycler view that scrolls horizontally
@@ -86,6 +102,11 @@ public class ArticleRecyclerAdapter extends RecyclerView.Adapter<ArticleRecycler
         }
     }
 
+    /**
+     * Launch Detail View when an article is clicked
+     * @param v a view to be able to get a context
+     * @param id is the id of the article
+     */
     private void clickOnProduct(View v,long id)
     {
         Intent intent = new Intent(v.getContext().getApplicationContext(), CollectionDemoActivity.class);
@@ -94,6 +115,11 @@ public class ArticleRecyclerAdapter extends RecyclerView.Adapter<ArticleRecycler
         v.getContext().startActivity(intent);
     }
 
+    /**
+     * Launch Category View when clicking on see more
+     * @param category is the category that is going to be displayed in category view
+     * @param v is a view to be able to get a context
+     */
     private void goToCategoryView(String category,View v)
     {
         Intent intent = new Intent(v.getContext().getApplicationContext(), CategoryViewActivity.class);
@@ -102,13 +128,32 @@ public class ArticleRecyclerAdapter extends RecyclerView.Adapter<ArticleRecycler
         v.getContext().startActivity(intent);
     }
 
+    /**
+     * Number of items in the recycler view
+     * @return
+     */
     @Override
     public int getItemCount() {
+        //if the list is empty return 0
         if(mList.size()<=0)
             return 0;
+        //else return just 6 so we are always displaying just 6 articles
         return 6;
     }
+    /**
+     * Get the type by the position in the recycler view
+     * if it's the last one then is going to be a see more button
+     * @param position
+     * @return
+     */
+    @Override
+    public int getItemViewType(int position) {
+        return (position == 5) ? VIEW_TYPE_MORE : VIEW_TYPE_ARTICLE;
+    }
 
+    /**
+     * Custom view holder for the recycler view
+     */
     public class CategoryIndividualItemViewHolder extends RecyclerView.ViewHolder {
         TextView mTitleOfArticle;
         ImageView mArticleImage;
@@ -116,6 +161,10 @@ public class ArticleRecyclerAdapter extends RecyclerView.Adapter<ArticleRecycler
         View mRoot;
         ImageView mHeart;
 
+        /**
+         * View holder constructor
+         * @param itemView
+         */
         public CategoryIndividualItemViewHolder(View itemView) {
             super(itemView);
             mTitleOfArticle = (TextView) itemView.findViewById(R.id.all_stories_article_title);
@@ -128,8 +177,5 @@ public class ArticleRecyclerAdapter extends RecyclerView.Adapter<ArticleRecycler
         }
     }
 
-    @Override
-    public int getItemViewType(int position) {
-        return (position == 5) ? VIEW_TYPE_MORE : VIEW_TYPE_ARTICLE;
-    }
+
 }
