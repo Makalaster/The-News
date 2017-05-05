@@ -342,10 +342,7 @@ implements NavigationView.OnNavigationItemSelectedListener, View.OnClickListener
         mDate = (TextView) findViewById(R.id.detail_date);
         mContent = (TextView) findViewById(R.id.detail_content);
 
-        if(articleList.get(mPosition).isSaved())
-            mHeart.setImageResource(R.mipmap.ic_favorite_black_24dp);
-        else
-            mHeart.setImageResource(R.mipmap.ic_favorite_border_black_24dp);
+        setHeartView();
 
         mHeart = (ImageButton) findViewById(R.id.heart_toolbar);
         setHeartView();
@@ -360,6 +357,7 @@ implements NavigationView.OnNavigationItemSelectedListener, View.OnClickListener
         mViewPager.setAdapter(mDemoCollectionPagerAdapter);
         mViewPager.setCurrentItem(mPosition);
 
+        //View pager change page listener
         mViewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
             public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
@@ -368,7 +366,9 @@ implements NavigationView.OnNavigationItemSelectedListener, View.OnClickListener
 
             @Override
             public void onPageSelected(int position) {
+                //Changing the current position in the list
                 mPosition = position;
+                //setting the heart view
                 setHeartView();
             }
 
