@@ -188,7 +188,7 @@ implements NavigationView.OnNavigationItemSelectedListener, View.OnClickListener
         } else if (id == R.id.nav_politics) {
             moveToCategoryViewActivity("Politics");
         } else if (id == R.id.nav_business) {
-            moveToCategoryViewActivity("Business");
+            moveToCategoryViewActivity("Business Day");
         } else if (id == R.id.nav_technology) {
             moveToCategoryViewActivity("Technology");
         } else if (id == R.id.nav_science) {
