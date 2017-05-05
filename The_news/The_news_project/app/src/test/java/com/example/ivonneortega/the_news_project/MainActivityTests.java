@@ -5,4 +5,5 @@ package com.example.ivonneortega.the_news_project;
  */
 
 public class MainActivityTests {
+
 }
